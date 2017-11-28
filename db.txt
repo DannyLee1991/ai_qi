@@ -1,0 +1,320 @@
+
+------------------------
+股票(stock)          get_stock_basics、get_industry_classified、get_concept_classified、get_area_classified
+
+code,代码
+name,名称
+industry,细分行业
+area,地区
+c_name,概念名称
+timeToMarket,上市日期
+
+------------------------
+公司每日基本信息（stock_basic）             get_stock_basics
+
+code,代码
+name,名称
+date,日期
+pe,市盈率
+outstanding,流通股本
+totals,总股本(万)
+totalAssets,总资产(万)
+liquidAssets,流动资产
+fixedAssets,固定资产
+reserved,公积金
+eps,每股收益
+bvps,每股净资
+pb,市净率
+
+
+------------------------------------------------------------------------------------------------
+交易数据
+-------------------------
+个股历史交易记录（transaction）       get_hist_data
+
+code: 股票代码
+date: 日期
+open: 开盘价
+high: 最高价
+close: 收盘价
+low: 最低价
+volume: 成交量
+price_change: 价格变动
+p_change: 涨跌幅
+ma5: 5日均价
+ma10: 10日均价
+ma20: 20日均价
+v_ma5: 5日均量
+v_ma10: 10日均量
+v_ma20: 20日均量
+turnover: 换手率
+
+-------------------------
+个股历史交易记录-5分钟(transaction_5min)      get_hist_data(dtype="5")
+
+code: 股票代码
+date: 日期
+open: 开盘价
+high: 最高价
+close: 收盘价
+low: 最低价
+volume: 成交量
+price_change: 价格变动
+p_change: 涨跌幅
+ma5: 5日均价
+ma10: 10日均价
+ma20: 20日均价
+v_ma5: 5日均量
+v_ma10: 10日均量
+v_ma20: 20日均量
+turnover: 换手率
+
+-------------------------
+复权数据（fuquan）        get_h_data
+
+code 股票代码
+autype 复权类型
+date 交易日期 (index)
+open 开盘价
+high  最高价
+close 收盘价
+low 最低价
+volume 成交量
+amount 成交金额
+
+-------------------------
+分笔数据（tick_data）     get_tick_data
+
+code 股票代码
+date 交易日期
+time 成交时间
+price 成交价格
+change 价格变动
+volume 成交手
+amount 成交金额(元)
+type 买卖类型
+
+-------------------------
+
+------------------------------------------------------------------------------------------------------------------------
+业绩报表（report）    get_report_data
+
+code,代码
+name,名称
+year,年度
+quarter,季度
+eps,每股收益
+eps_yoy,每股收益同比(%)
+bvps,每股净资产
+roe,净资产收益率(%)
+epcf,每股现金流量(元)
+net_profits,净利润(万元)
+profits_yoy,净利润同比(%)
+distrib,分配方案
+report_date,发布日期
+
+------------------------
+盈利能力数据（profit）      get_profit_data
+
+code,代码
+name,名称
+year,年度
+quarter,季度
+roe,净资产收益率(%)
+net_profit_ratio,净利率(%)
+gross_profit_rate,毛利率(%)
+net_profits,净利润(万元)
+eps,每股收益
+business_income,营业收入(百万元)
+bips,每股主营业务收入(元)
+
+------------------------
+营运能力数据（operation）       get_operation_data
+
+code,代码
+name,名称
+year,年度
+quarter,季度
+arturnover,应收账款周转率(次)
+arturndays,应收账款周转天数(天)
+inventory_turnover,存货周转率(次)
+inventory_days,存货周转天数(天)
+currentasset_turnover,流动资产周转率(次)
+currentasset_days,流动资产周转天数(天)
+
+------------------------
+成长能力数据（growth）         get_growth_data
+
+code,代码
+name,名称
+year,年度
+quarter,季度
+mbrg,主营业务收入增长率(%)
+nprg,净利润增长率(%)
+nav,净资产增长率
+targ,总资产增长率
+epsg,每股收益增长率
+seg,股东权益增长率
+
+------------------------
+------------------------
+TODO：以下数据暂时没入库
+------------------------
+------------------------
+偿债能力（debtpaying）        get_debtpaying_data
+
+code,代码
+name,名称
+year,年度
+quarter,季度
+currentratio,流动比率
+quickratio,速动比率
+cashratio,现金比率
+icratio,利息支付倍数
+sheqratio,股东权益比率
+adratio,股东权益增长率
+
+------------------------
+现金流量（cashflow）      get_cashflow_data
+
+code,代码
+name,名称
+year,年度
+quarter,季度
+cf_sales,经营现金净流量对销售收入比率
+rateofreturn,资产的经营现金流量回报率
+cf_nm,经营现金净流量与净利润的比率
+cf_liabilities,经营现金净流量对负债比率
+cashflowratio,现金流量比率
+
+----------------------------------------------------------------------------------------------------
+其他数据：
+
+-------------------------
+获取分配预案数据（profit_data）       profit_data
+
+code:股票代码
+name:股票名称
+year:分配年份
+report_date:公布日期
+divi:分红金额（每10股）
+shares:转增和送股数（每10股）
+year:年份
+
+-------------------------
+业绩预告数据（forecast_data）       forecast_data
+
+code,代码
+name,名称
+year,年度
+quarter,季度
+type,业绩变动类型【预增、预亏等】
+report_date,发布日期
+pre_eps,上年同期每股收益
+range,业绩变动范围
+
+-------------------------
+限售股解禁数据（xsg_data）       xsg_data
+
+code:股票代码
+name:名称
+year:年份,默认为当前年
+month:解禁月份，默认为当前月
+date:解禁日期
+count:解禁数量（万股）
+ratio:占总盘比率
+
+-------------------------
+基金持股数据（fund_holdings）       fund_holdings
+
+code:股票代码
+name:名称
+year:年份
+quarter:季度
+date:报告日期
+nums:基金家数
+nlast:与上期相比（增加或减少了）
+count:基金持股数（万股）
+clast:与上期相比
+amount:基金持股市值
+ratio:占流通盘比率
+
+-------------------------
+新股上市数据（new_stocks）      new_stocks
+
+code:股票代码
+xcode:申购代码
+name:名称
+ipo_date:上网发行日期
+issue_date:上市日期
+amount:发行数量(万股)
+markets:上网发行数量(万股)
+price:发行价格(元)
+pe:发行市盈率
+limit:个人申购上限(万股)
+funds：募集资金(亿元)
+ballot:网上中签率(%)
+
+-------------------------
+沪市融资融券数据列表（sh_margins/sz_margins）   sh_margins、sz_margins
+
+opDate:信用交易日期
+rzye:本日融资余额(元)
+rzmre: 本日融资买入额(元)
+rqyl: 本日融券余量
+rqylje: 本日融券余量金额(元)
+rqmcl: 本日融券卖出量
+rzrqjyzl:本日融资融券余额(元)
+type：沪市还是深市
+
+----------------------------------------------------------------------------------------------------
+新闻
+
+-------------------------
+个股信息地雷（news_notices）        get_notices
+
+code:股票代码
+date:信息公布日期
+title:信息标题
+type:信息类型
+date:公告日期
+url:信息内容URL
+
+-------------------------
+sina财经股吧首页的重点消息(guba_sina)      guba_sina(show_content=True)
+
+title, 消息标题
+content, 消息内容（show_content=True的情况下）
+ptime, 发布时间
+rcounts,阅读次数
+
+-------------------------
+
+电影
+-------------------------
+月度票房（movie_month_boxoffice）    month_boxoffice
+
+month_date    月份（YYYY-MM）
+Irank         排名
+MovieName     电影名称
+WomIndex      口碑指数
+avgboxoffice  平均票价
+avgshowcount  场均人次
+box_pro       月度占比
+boxoffice     单月票房(万)
+days          月内天数
+releaseTime   上映日期
+-------------------------
+影院单日票房排行数据（movie_day_cinema）     day_cinema
+
+date               日期
+Attendance         上座率
+AvgPeople          场均人次
+CinemaName         影院名称
+RowNum             排名
+TodayAudienceCount 当日观众人数
+TodayBox           当日票房
+TodayShowCount     当日场次
+price              场均票价（元）
+
+-------------------------
