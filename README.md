@@ -10,6 +10,32 @@ pip3 install -r requirements.txt
 
 -----
 
+### 获取数据
+
+> **注意：** 目前数据会存储在sqlite数据库中
+
+执行`./get_data/manager.py`中的`get_data`方法，即可获取指定表的数据。
+
+例如:
+
+```
+get_data(TABLE_STOCK)
+```
+
+即可获得股票基本信息表的数据
+
+----
+
+支持参数传递 例如：
+
+```
+get_data(TABLE_STOCK_BASICS, begin_date='1999-01-01', end_date='2017-10-10')
+```
+
+具体传递参数的含义，需要到对应的方法中查看
+
+-----
+
 todo:
 
 sqlite转mysql

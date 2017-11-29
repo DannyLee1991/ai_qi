@@ -1,6 +1,6 @@
 import tushare as ts
 from get_data import engine
-from get_data import distinct_codes
+from get_data import distinct_codes, TABLE_TRANSACTION, TABLE_TRANSACTION_5MIN
 from utils.strutils import nextDayStr, nextMinStr
 from utils.strutils import date2str
 import pandas as pd
@@ -44,12 +44,6 @@ v_ma20 = Column(Float)
 # 换手率 eg: 1.33
 turnover = Column(Float) 
 '''
-
-# 每日交易数据
-TABLE_TRANSACTION = 'transaction'
-# 五分钟交易数据
-TABLE_TRANSACTION_5MIN = 'transaction_5min'
-
 
 def sql_for_transaction(ktype="D"):
     '''
@@ -112,10 +106,17 @@ def get_newest_date(code, start_date, ktype='D'):
     return start_date
 
 
-# 爬取K线数据
+def sql_for_transaction_d():
+    '''
+    交易记录 - 每日
+    :return:
+    '''
+    sql_for_transaction('D')
 
-# 单位为 日
-# sql_for_transaction('D')
-# 单位为 5分钟
-sql_for_transaction('5')
+def sql_for_transaction_5min():
+    '''
+    交易记录 - 每5分钟
+    :return:
+    '''
+    sql_for_transaction('5')
 

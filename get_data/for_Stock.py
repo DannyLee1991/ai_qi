@@ -1,6 +1,6 @@
-from get_data import ts
+import tushare as ts
 import pandas as pd
-from get_data import engine
+from get_data import engine, TABLE_STOCK, TABLE_STOCK_AREA, TABLE_STOCK_CONCEPT, TABLE_STOCK_INDUSTRY
 
 '''
 相关接口 get_stock_basics、get_industry_classified、get_area_classified、get_concept_classified
@@ -20,6 +20,7 @@ c_name = Column(String)
 timeToMarket = Column(String)
 '''
 
+
 def sql_for_basic_stock():
     '''
     股票基础表
@@ -29,7 +30,8 @@ def sql_for_basic_stock():
     name = df['name']
     timeToMarket = df['timeToMarket']
     df = pd.DataFrame({'name': name, 'timeToMarket': timeToMarket})
-    df.to_sql('stock', engine, if_exists='append')
+    df.to_sql(TABLE_STOCK, engine, if_exists='append')
+
 
 def sql_for_industry_stock():
     '''
@@ -37,7 +39,8 @@ def sql_for_industry_stock():
     :return:
     '''
     df = ts.get_industry_classified()
-    df.to_sql('stock_industry', engine, if_exists='append')
+    df.to_sql(TABLE_STOCK_INDUSTRY, engine, if_exists='append')
+
 
 def sql_for_area_stock():
     '''
@@ -45,7 +48,8 @@ def sql_for_area_stock():
     :return:
     '''
     df = ts.get_area_classified()
-    df.to_sql('stock_area', engine, if_exists='append')
+    df.to_sql(TABLE_STOCK_AREA, engine, if_exists='append')
+
 
 def sql_for_concept_stock():
     '''
@@ -53,7 +57,8 @@ def sql_for_concept_stock():
     :return:
     '''
     df = ts.get_concept_classified()
-    df.to_sql('stock_concept', engine, if_exists='append')
+    df.to_sql(TABLE_STOCK_CONCEPT, engine, if_exists='append')
+
 
 # sql_for_basic_stock()
 # sql_for_industry_stock()
