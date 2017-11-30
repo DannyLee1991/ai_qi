@@ -14,9 +14,9 @@ import tushare as ts
 # print(td)
 #
 #
-# # 获取分笔数据
-# df = ts.get_tick_data('600848',date='2014-01-09')
-# print(df)
+# 获取分笔数据
+df = ts.get_tick_data('600848',date='2014-01-09')
+print(df)
 #
 #
 # # 获取实时分笔数据

@@ -17,6 +17,8 @@ TABLE_TRANSACTION = 'transaction'
 TABLE_TRANSACTION_5MIN = 'transaction_5min'
 # 复权数据
 TABLE_FUQUAN = 'fuquan'
+# 分笔数据
+TABLE_TICK = 'tick'
 
 def distinct_codes():
     '''
