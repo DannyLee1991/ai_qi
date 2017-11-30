@@ -1,6 +1,6 @@
 import tushare as ts
 from get_data import engine
-from get_data import distinct_codes, TABLE_TRANSACTION, TABLE_TRANSACTION_5MIN
+from get_data import distinct_codes, TABLE_TRANSACTION_D, TABLE_TRANSACTION_5MIN
 from utils.strutils import nextDayStr, nextMinStr
 from utils.strutils import date2str
 import pandas as pd
@@ -82,7 +82,7 @@ def save_2_db(code, start_date, ktype='D'):
     '''
     df = ts.get_hist_data(code, start_date, ktype=ktype)
     df['code'] = code
-    table = TABLE_TRANSACTION_5MIN if ktype is '5' else TABLE_TRANSACTION
+    table = TABLE_TRANSACTION_5MIN if ktype is '5' else TABLE_TRANSACTION_D
     df.to_sql(table, engine, if_exists='append')
 
 
@@ -97,7 +97,7 @@ def get_newest_date(code, start_date, ktype='D'):
     if ktype is '5':
         table = TABLE_TRANSACTION_5MIN
     else:
-        table = TABLE_TRANSACTION
+        table = TABLE_TRANSACTION_D
 
     old_df = pd.read_sql("select date from '%s' where code = '%s'" % (table, str(code)), engine)
 

@@ -30,7 +30,7 @@ def sql_for_basic_stock():
     name = df['name']
     timeToMarket = df['timeToMarket']
     df = pd.DataFrame({'name': name, 'timeToMarket': timeToMarket})
-    df.to_sql(TABLE_STOCK, engine, if_exists='append')
+    df.to_sql(TABLE_STOCK, engine, if_exists='replace')
 
 
 def sql_for_industry_stock():
@@ -39,7 +39,7 @@ def sql_for_industry_stock():
     :return:
     '''
     df = ts.get_industry_classified()
-    df.to_sql(TABLE_STOCK_INDUSTRY, engine, if_exists='append')
+    df.to_sql(TABLE_STOCK_INDUSTRY, engine, if_exists='replace')
 
 
 def sql_for_area_stock():
@@ -48,7 +48,7 @@ def sql_for_area_stock():
     :return:
     '''
     df = ts.get_area_classified()
-    df.to_sql(TABLE_STOCK_AREA, engine, if_exists='append')
+    df.to_sql(TABLE_STOCK_AREA, engine, if_exists='replace')
 
 
 def sql_for_concept_stock():
@@ -57,7 +57,7 @@ def sql_for_concept_stock():
     :return:
     '''
     df = ts.get_concept_classified()
-    df.to_sql(TABLE_STOCK_CONCEPT, engine, if_exists='append')
+    df.to_sql(TABLE_STOCK_CONCEPT, engine, if_exists='replace')
 
 
 # sql_for_basic_stock()

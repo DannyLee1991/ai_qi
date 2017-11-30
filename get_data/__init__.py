@@ -12,7 +12,7 @@ TABLE_STOCK_CONCEPT = "stock_concept"
 # 股票每日基本信息表
 TABLE_STOCK_BASICS = "stock_basics"
 # 交易数据 - 每日
-TABLE_TRANSACTION = 'transaction'
+TABLE_TRANSACTION_D = 'transaction_d'
 # 交易数据 - 每五分钟
 TABLE_TRANSACTION_5MIN = 'transaction_5min'
 # 复权数据
