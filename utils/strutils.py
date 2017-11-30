@@ -41,6 +41,27 @@ def nextDayStr(datestr=date2str(), format='%Y-%m-%d'):
     nd = td + datetime.timedelta(days=1)
     return nd.strftime(format)
 
+def perDayStr(datestr=date2str(), format='%Y-%m-%d'):
+    '''
+    获取前一天日期字符串
+    :param datestr:
+    :param format:
+    :return:
+    '''
+    td = datetime.datetime.strptime(datestr, format)
+    nd = td - datetime.timedelta(days=1)
+    return nd.strftime(format)
+
+def perYearStr(datestr=date2str(), format='%Y-%m-%d'):
+    '''
+    获取前一天日期字符串
+    :param datestr:
+    :param format:
+    :return:
+    '''
+    td = datetime.datetime.strptime(datestr, format)
+    nd = td - datetime.timedelta(days=365)
+    return nd.strftime(format)
 
 def nextMinStr(datestr=time2str(), format='%Y-%m-%d %H:%M:%S'):
     '''

@@ -2,10 +2,10 @@ import tushare as ts
 
 
 # # 获取个股历史交易记录
-t = ts.get_hist_data('600848',start='2016-11-28 13:00:00',ktype='5') #一次性获取全部日k线数据
-print(t)
+# t = ts.get_hist_data('600848',start='2016-11-28 13:00:00',ktype='5') #一次性获取全部日k线数据
+# print(t)
 
-# # 获取历史复权数据
+# 获取历史复权数据
 # h = ts.get_h_data('600000',start='2017-01-01')
 # print(h)
 #

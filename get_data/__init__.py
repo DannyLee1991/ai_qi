@@ -15,12 +15,14 @@ TABLE_STOCK_BASICS = "stock_basics"
 TABLE_TRANSACTION = 'transaction'
 # 交易数据 - 每五分钟
 TABLE_TRANSACTION_5MIN = 'transaction_5min'
+# 复权数据
+TABLE_FUQUAN = 'fuquan'
 
 def distinct_codes():
     '''
     获取不重复的股票代码
     :return:
     '''
-    r = pd.read_sql("select code from stock", engine)
+    r = pd.read_sql("select distinct code from stock", engine)
     codes = r['code']
     return codes
