@@ -1,30 +1,16 @@
-from db import engine
 import pandas as pd
+from get_data.db import engine
+from get_data.db import TABLE_STOCK
 
-# 股票基本信息表
-TABLE_STOCK = "stock"
-# 股票行业表
-TABLE_STOCK_INDUSTRY = "stock_industry"
-# 股票地区表
-TABLE_STOCK_AREA = "stock_area"
-# 股票概念表
-TABLE_STOCK_CONCEPT = "stock_concept"
-# 股票每日基本信息表
-TABLE_STOCK_BASICS = "stock_basics"
-# 交易数据 - 每日
-TABLE_TRANSACTION_D = 'transaction_d'
-# 交易数据 - 每五分钟
-TABLE_TRANSACTION_5MIN = 'transaction_5min'
-# 复权数据
-TABLE_FUQUAN = 'fuquan'
-# 分笔数据
-TABLE_TICK = 'tick'
 
-def distinct_codes():
+def all_codes():
     '''
     获取不重复的股票代码
     :return:
     '''
-    r = pd.read_sql("select distinct code from stock", engine)
-    codes = r['code']
-    return codes
+    try:
+        r = pd.read_sql("select distinct code from %s" % TABLE_STOCK, engine)
+        codes = r['code']
+        return codes
+    except:
+        print("stock表不存在，请先获取stock相关数据再执行此操作")

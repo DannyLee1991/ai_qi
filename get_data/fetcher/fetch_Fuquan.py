@@ -1,6 +1,8 @@
-import tushare as ts
-from get_data import engine, distinct_codes, TABLE_FUQUAN
 import pandas as pd
+import tushare as ts
+
+from get_data import all_codes
+from get_data.db import engine, TABLE_FUQUAN
 from utils.pdutils import difference
 from utils.strutils import date2str, nextDayStr, perDayStr, perYearStr
 
@@ -30,16 +32,6 @@ amount = Column(BIGINT)
 '''
 
 
-def left_join(df1, df2):
-    '''
-    求df1和df2的差集  结果为df1中有，但df2中没有 的数据
-    :param df1:
-    :param df2:
-    :return:
-    '''
-    return difference(df2, df1, on=['code', 'autype'])
-
-
 def get_diff_set(q_df, n_df):
     '''
     获取数据差集
@@ -49,11 +41,11 @@ def get_diff_set(q_df, n_df):
     '''
     d_df = n_df
     if q_df is not None:
-        d_df = left_join(n_df, q_df)
+        d_df = difference(n_df, q_df, on=['code', 'autype'])
     return d_df
 
 
-def fetch_data(code, start, end, autype):
+def fetch_fuquan(code, start, end, autype):
     '''
     获取数据
     :param code:
@@ -122,37 +114,3 @@ def gen_time_interval(code, autype, start_date, end_date):
     else:
         # 历史数据不存在，不需要处理 直接返回
         return start_date, end_date
-
-
-def sql_for_fuquan_one_stock(code, start_date=perYearStr(), end_date=date2str(), autype='qfq'):
-    '''
-    获取某个股票的复权数据
-    :code: 股票代码
-    :param start_date: 开始日期 format：YYYY-MM-DD 默认取当前日期
-    :param end_date: 结束日期 format：YYYY-MM-DD 默认取去年今日
-    :param autype: 复权类型，qfq-前复权 hfq-后复权 None-不复权，默认为qfq
-    :return:
-    '''
-    s_date, e_date = gen_time_interval(code, autype, start_date, end_date)
-
-    if s_date and e_date:
-        n_df = fetch_data(code, s_date, e_date, autype)
-        n_df.to_sql(TABLE_FUQUAN, engine, if_exists='append')
-    else:
-        print("%s数据已是最新，不需要重新获取")
-
-
-def sql_for_fuquan(start_date=perYearStr(), end_date=date2str(), autype='qfq'):
-    '''
-    获取复权数据
-    :param start_date: 开始日期 format：YYYY-MM-DD 为空时取当前日期
-    :param end_date: 结束日期 format：YYYY-MM-DD 为空时取去年今日
-    :param autype: 复权类型，qfq-前复权 hfq-后复权 None-不复权，默认为qfq
-    :return:
-    '''
-
-    for code in distinct_codes():
-        sql_for_fuquan_one_stock(code, start_date, end_date, autype)
-
-
-# sql_for_fuquan(autype='hfq')

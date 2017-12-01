@@ -3,6 +3,8 @@ import datetime
 
 wrap_0 = lambda arg: "0" + str(arg) if (arg < 10) else arg
 
+def todayStr():
+    return date2str()
 
 def date2str(t=time.localtime()):
     '''

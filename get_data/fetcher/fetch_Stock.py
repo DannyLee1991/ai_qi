@@ -1,6 +1,7 @@
-import tushare as ts
 import pandas as pd
-from get_data import engine, TABLE_STOCK, TABLE_STOCK_AREA, TABLE_STOCK_CONCEPT, TABLE_STOCK_INDUSTRY
+import tushare as ts
+
+from get_data.db import engine, TABLE_STOCK, TABLE_STOCK_AREA, TABLE_STOCK_CONCEPT, TABLE_STOCK_INDUSTRY
 
 '''
 相关接口 get_stock_basics、get_industry_classified、get_area_classified、get_concept_classified
@@ -20,44 +21,43 @@ c_name = Column(String)
 timeToMarket = Column(String)
 '''
 
-
-def sql_for_basic_stock():
+def fetch_stock_basic():
     '''
-    股票基础表
+    获取股票 基础数据
     :return:
     '''
     df = ts.get_stock_basics()
     name = df['name']
     timeToMarket = df['timeToMarket']
     df = pd.DataFrame({'name': name, 'timeToMarket': timeToMarket})
-    df.to_sql(TABLE_STOCK, engine, if_exists='replace')
+    return df
 
 
-def sql_for_industry_stock():
+def fetch_stock_industry():
     '''
-    股票 行业表
+    获取股票 行业数据
     :return:
     '''
     df = ts.get_industry_classified()
-    df.to_sql(TABLE_STOCK_INDUSTRY, engine, if_exists='replace')
+    return df
 
 
-def sql_for_area_stock():
+def fetch_stock_area():
     '''
-    股票 地区表
+    获取股票 地区数据
     :return:
     '''
     df = ts.get_area_classified()
-    df.to_sql(TABLE_STOCK_AREA, engine, if_exists='replace')
+    return df
 
 
-def sql_for_concept_stock():
+def fetch_stock_concept():
     '''
-    股票 概念表
+    获取股票 概念数据
     :return:
     '''
     df = ts.get_concept_classified()
-    df.to_sql(TABLE_STOCK_CONCEPT, engine, if_exists='replace')
+    return df
 
 
 # sql_for_basic_stock()

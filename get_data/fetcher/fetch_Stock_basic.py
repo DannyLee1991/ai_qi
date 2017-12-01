@@ -1,7 +1,7 @@
-import tushare as ts
-from get_data import engine, TABLE_STOCK_BASICS
-from utils.strutils import getEveryDay, date2str
 import pandas as pd
+import tushare as ts
+
+from get_data.db import engine, TABLE_STOCK_BASICS_DAILY
 
 '''
 公司每日基本信息
@@ -56,41 +56,20 @@ def check_is_exist(date):
     :return:
     '''
     try:
-        old_df = pd.read_sql("select * from '%s' where date = '%s'" % (TABLE_STOCK_BASICS, date), engine)
+        old_df = pd.read_sql("select * from '%s' where date = '%s'" % (TABLE_STOCK_BASICS_DAILY, date), engine)
         return old_df.size > 0
     except:
         return False
 
 
-def sql_for_stock_basics_date(date_str):
+def fetch_stock_basics_daily(date_str):
     '''
-    将目标日期的 get_stock_basics 数据入库
+    获取全部股票每日基本信息
     :param date_str:
     :return:
     '''
-
-    if check_is_exist(date_str):
-        print("该日期 %s 记录已存在" % date_str)
-        return
-
-    try:
-        df = ts.get_stock_basics(date_str)
-        df['date'] = date_str
-        df.to_sql(TABLE_STOCK_BASICS, engine, if_exists='append')
-    except:
-        print("该日期 %s 没有数据" % date_str)
-
-
-def sql_for_stock_basics(begin_date='1991-01-01', end_date=date2str()):
-    '''
-    将begin_date到end_date 的日期的数据全部入库 （注意数据不去重）
-    数据可是是YYYY-MM-DD
-    :param begin_date:
-    :param end_date:
-    :return:
-    '''
-    dates = getEveryDay(begin_date, end_date)[::-1]
-    for date in dates:
-        sql_for_stock_basics_date(date)
+    df = ts.get_stock_basics(date_str)
+    df['date'] = date_str
+    return df
 
 # sql_for_stock_basics('2010-11-20', '2017-11-27')

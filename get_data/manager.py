@@ -1,61 +1,202 @@
-from get_data import TABLE_STOCK, TABLE_STOCK_INDUSTRY, TABLE_STOCK_AREA, TABLE_STOCK_CONCEPT, TABLE_TRANSACTION_D, \
-    TABLE_TRANSACTION_5MIN, TABLE_STOCK_BASICS, TABLE_FUQUAN, TABLE_TICK
-from get_data.for_Stock import sql_for_basic_stock, sql_for_industry_stock, sql_for_area_stock, sql_for_concept_stock
-from get_data.for_Stock_basic import sql_for_stock_basics
-from get_data.for_Transaction import sql_for_transaction_d, sql_for_transaction_5min
-from get_data.for_Fuquan import sql_for_fuquan
-from get_data.for_Tick import sql_for_Tick
+import pandas as pd
+from get_data import all_codes
+from get_data.fetcher.fetch_Stock import fetch_stock_basic, fetch_stock_industry, fetch_stock_area, \
+    fetch_stock_concept
+from get_data.fetcher.fetch_Stock_basic import fetch_stock_basics_daily
+from get_data.fetcher.fetch_Tick import fetch_tick
+from get_data.fetcher.fetch_Transaction import fetch_transaction, start_date
+from get_data.fetcher.fetch_Fuquan import fetch_fuquan, gen_time_interval
 
-table_func_dict = {
-    TABLE_STOCK: sql_for_basic_stock,
-    TABLE_STOCK_INDUSTRY: sql_for_industry_stock,
-    TABLE_STOCK_AREA: sql_for_area_stock,
-    TABLE_STOCK_CONCEPT: sql_for_concept_stock,
-    TABLE_STOCK_BASICS: sql_for_stock_basics,
-    TABLE_TRANSACTION_D: sql_for_transaction_d,
-    TABLE_TRANSACTION_5MIN: sql_for_transaction_5min,
-    TABLE_FUQUAN: sql_for_fuquan,
-    TABLE_TICK: sql_for_Tick
-}
+from get_data.db import *
+from get_data.db.manager import write2db, check_is_exist_in_stock_basics_daily, check_is_exist_in_tick
+
+from utils.strutils import getEveryDay, todayStr, perYearStr
 
 
-def get_data(table_name, **kwargs):
-    func = table_func_dict[table_name]
-    func(**kwargs)
+def clear_data(table_name):
+    '''
+    清空某个表的数据
+    :param table_name:
+    :return:
+    '''
+    df = pd.DataFrame()
+    df.to_sql(table_name, engine, if_exists='replace')
 
 
-# # ---- 获取基础数据 不必要频繁更新 ----
-# # 获取【股票基础信息】 - 必备
-# get_data(TABLE_STOCK)
-# # 获取【股票行业表】数据
-# get_data(TABLE_STOCK_INDUSTRY)
-# # 获取【股票地区表】数据
-# get_data(TABLE_STOCK_AREA)
-# # 获取【股票概念表】数据
-# get_data(TABLE_STOCK_CONCEPT)
-#
-#
-# # ---- 获取股票每日基本信息 ----
-# # 股票每日基本信息 包含指定时间区间的股票基础信息数据，大部分字段不会发生变化，不建议大量获取
-# get_data(TABLE_STOCK_BASICS, begin_date='2016-01-01', end_date='2017-10-10')
-#
-#
-# # ---- 获取股票交易数据（重要数据） 需要频繁更新----
-# # 股票每日交易数据
-# get_data(TABLE_TRANSACTION_D)
-# # 股票每5分钟交易数据
-# get_data(TABLE_TRANSACTION_5MIN)
-#
-#
-# # ---- 获取复权数据 （重要数据）需要频繁更新 ----
-# # 获取【前复权】数据
-# get_data(TABLE_FUQUAN, autype='qfq')
-# # 获取【后复权】数据
-# get_data(TABLE_FUQUAN, autype='hfq')
-# # 获取【不复权】数据
-# get_data(TABLE_FUQUAN, autype=None)
-#
-#
-# # ---- 获取分笔数据 （重要数据）需要频繁更新 ----
-# # 获取指定股票的分笔数据
-# get_data(TABLE_TICK,code='000001', date='2017-11-29')
+# --------------------------------------------------------
+
+def fs_stock():
+    '''
+    获取股票数据 并入库
+    :return:
+    '''
+    df = fetch_stock_basic()
+    write2db(df, TABLE_STOCK, 'replace')
+
+
+def fs_stock_industry():
+    '''
+    获取股票行业数据 并入库
+    :return:
+    '''
+    df = fetch_stock_industry()
+    write2db(df, TABLE_STOCK_INDUSTRY, 'replace')
+
+
+def fs_stock_area():
+    '''
+    获取股票地区数据 并入库
+    :return:
+    '''
+    df = fetch_stock_area()
+    write2db(df, TABLE_STOCK_AREA, if_exists='replace')
+
+
+def fs_stock_concept():
+    '''
+    获取股票概念数据 并入库
+    :return:
+    '''
+    # FIXME 写入数据有问题
+    df = fetch_stock_concept()
+    write2db(df, TABLE_STOCK_CONCEPT, if_exists='replace')
+
+
+def fs_stock_basics_daily(date):
+    '''
+    获取大盘某日股票基本信息数据 并入库
+    :param date:
+    :return:
+    '''
+    is_exist = check_is_exist_in_stock_basics_daily(date)
+    if is_exist:
+        print("该日期 %s 记录已存在" % date)
+    else:
+        try:
+            df = fetch_stock_basics_daily(date)
+            write2db(df, TABLE_STOCK_BASICS_DAILY, if_exists='append')
+        except:
+            print("该日期 %s 没有数据" % date)
+
+
+def fs_stock_basics_daily_r(begin_date, end_date):
+    '''
+    获取大盘某个时间区间股票基本信息数据 并入库
+    :param begin_date: YYYY-MM-DD
+    :param end_date: YYYY-MM-DD
+    :return:
+    '''
+    for date in getEveryDay(begin_date, end_date)[::-1]:
+        fs_stock_basics_daily(date)
+
+
+def fs_tick(code, date):
+    '''
+    获取某只股票某天的分笔数据 并入库
+    :param code:
+    :param date:
+    :return:
+    '''
+    if check_is_exist_in_tick(code, date):
+        print("数据已存在 [code %s  date %s]" % (code, date))
+    else:
+        df = fetch_tick(code, date)
+        if df is not None:
+            write2db(df, TABLE_TICK, if_exists='append')
+
+
+def fs_tick_r(code, begin_date, end_date):
+    '''
+    获取某只股票具体时间区间的分笔数据 并入库
+    :param code:
+    :param begin_date:
+    :param end_date:
+    :return:
+    '''
+    for date in getEveryDay(begin_date, end_date)[::-1]:
+        fs_tick(code, date)
+
+
+def _fs_transaction(code, ktype):
+    if ktype is 'D':
+        fs_transaction_d(code)
+
+
+def fs_transaction_d(code):
+    '''
+    获取某只股票的最新的日交易数据 并入库
+    :param code:
+    :return:
+    '''
+    ktype = 'D'
+    s = start_date(code, ktype)
+    if s is todayStr():
+        print("%s 数据已是最新 无需获取 [%s]" % (str(code), s))
+    else:
+        df = fetch_transaction(code, s, ktype)
+        write2db(df, TABLE_TRANSACTION_D, if_exists='append')
+
+
+def fs_transaction_5min(code):
+    '''
+    获取某只股票的最新的5分钟交易数据 并入库
+    :param code:
+    :return:
+    '''
+    ktype = '5'
+    s = start_date(code, ktype)
+    df = fetch_transaction(code, s, ktype)
+    write2db(df, TABLE_TRANSACTION_5MIN, if_exists='append')
+
+
+def fs_transaction_d_all():
+    '''
+    获取全部股票的最新的日交易数据 并入库
+    :return:
+    '''
+    codes = all_codes()
+    for index, code in enumerate(codes):
+        print("当前进度 [%s/%s]" % (index, len(codes)))
+        fs_transaction_d(code)
+
+
+def fs_transaction_5min_all():
+    '''
+    获取全部股票的最新的5分钟交易数据 并入库
+    :param code:
+    :return:
+    '''
+    codes = all_codes()
+    for index, code in enumerate(codes):
+        print("当前进度 [%s/%s]" % (index, len(codes)))
+        fs_transaction_5min(code)
+
+
+def fs_fuquan(code, start_date=perYearStr(), end_date=todayStr(), autype='qfq'):
+    '''
+    获取某个股票的复权数据 并入库
+    :param code:
+    :param start_date:
+    :param end_date:
+    :param autype:
+    :return:
+    '''
+    s_date, e_date = gen_time_interval(code, autype, start_date, end_date)
+    if s_date and e_date:
+        df = fetch_fuquan(code, s_date, e_date, autype)
+        write2db(df, TABLE_FUQUAN, 'append')
+    else:
+        print("%s数据已是最新，不需要重新获取")
+
+
+def fs_fuquan_all(start_date=perYearStr(), end_date=todayStr(), autype='qfq'):
+    '''
+    获取全部股票的复权数据 并入库
+    :param start_date:
+    :param end_date:
+    :param autype:
+    :return:
+    '''
+    codes = all_codes()
+    for code in codes:
+        fs_fuquan(code, start_date, end_date, autype)
