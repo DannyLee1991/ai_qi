@@ -4,6 +4,7 @@ certifi==2017.11.5
 chardet==3.0.4
 idna==2.6
 lxml==4.1.1
+mysql-connector-python==8.0.5
 numpy==1.13.3
 pandas==0.21.0
 python-dateutil==2.6.1

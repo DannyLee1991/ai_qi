@@ -1,5 +1,6 @@
 import pandas as pd
 from get_data.db import *
+from sqlalchemy import VARCHAR
 
 
 def write2db(df,table,if_exists):
@@ -8,7 +9,12 @@ def write2db(df,table,if_exists):
     :param df:
     :return:
     '''
-    df.to_sql(table, engine, if_exists=if_exists)
+    index_name = df.index.name
+    dtype = {}
+    if index_name:
+        dtype[index_name] = VARCHAR(df.index.get_level_values(index_name).str.len().max())
+
+    df.to_sql(table, engine, if_exists=if_exists,dtype=dtype)
     print("新数据插入成功 [table: %s ]" % (table))
 
 # ---------------------------------------------------

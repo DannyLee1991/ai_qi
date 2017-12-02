@@ -19,4 +19,13 @@ TABLE_FUQUAN = 'fuquan'
 # 分笔数据
 TABLE_TICK = 'tick'
 
-engine = create_engine('sqlite:///tu.db', echo=True)
+
+USER_NAME = 'root'
+PASS_WORD = 'root'
+DB_NAME = 'tu'
+
+conn_mysql = 'mysql+mysqlconnector://%s:%s@localhost:3306/%s?charset=utf8'%(USER_NAME,PASS_WORD,DB_NAME)
+conn_sqlite = 'sqlite:///%s.db'%DB_NAME
+
+
+engine = create_engine(conn_mysql, echo=True)

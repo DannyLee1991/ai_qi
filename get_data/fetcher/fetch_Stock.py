@@ -1,8 +1,6 @@
 import pandas as pd
 import tushare as ts
 
-from get_data.db import engine, TABLE_STOCK, TABLE_STOCK_AREA, TABLE_STOCK_CONCEPT, TABLE_STOCK_INDUSTRY
-
 '''
 相关接口 get_stock_basics、get_industry_classified、get_area_classified、get_concept_classified
 
