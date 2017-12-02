@@ -28,4 +28,4 @@ conn_mysql = 'mysql+mysqlconnector://%s:%s@localhost:3306/%s?charset=utf8'%(USER
 conn_sqlite = 'sqlite:///%s.db'%DB_NAME
 
 
-engine = create_engine(conn_mysql, echo=True)
+engine = create_engine(conn_mysql, echo=False)

@@ -1,7 +1,7 @@
 # coding=utf-8
 import pickle, os, hashlib
 
-CACHE_PATH = '../_cache'
+CACHE_PATH = './_cache'
 
 mem_cache = {}
 
@@ -20,7 +20,7 @@ def write_mem_cache(cache_name, cache):
 # 计算md5
 def md5(arg):
     md5 = hashlib.md5()
-    md5.update(str(zip(arg)))
+    md5.update(str(arg).encode("utf8"))
     return md5.hexdigest()
 
 
@@ -53,6 +53,8 @@ def cache(use_mem=False, use_file=True, print_log=False, cache_path=CACHE_PATH):
                 args_str += "_kwargs:"
                 for k in kwargs.keys():
                     args_str += "(" + k + "-" + md5(kwargs.get(k)) + ")"
+
+            args_str = md5(args_str)
 
             # 带有参数的缓存文件名称
             cache_file_with_args = cache_file + args_str

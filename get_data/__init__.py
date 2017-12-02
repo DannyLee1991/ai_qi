@@ -1,8 +1,9 @@
 import pandas as pd
 from get_data.db import engine
 from get_data.db import TABLE_STOCK
+from utils.cache import cache
 
-
+@cache(use_mem=True)
 def all_codes():
     '''
     获取不重复的股票代码

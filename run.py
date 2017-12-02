@@ -5,4 +5,6 @@ from get_data.manager import *
 # fs_stock_concept()
 # fs_stock_industry()
 
-fs_transaction_d_all()
+# fs_transaction_d_all()
+
+# fs_transaction_5min_all()

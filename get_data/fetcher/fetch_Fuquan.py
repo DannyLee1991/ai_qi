@@ -1,10 +1,10 @@
 import pandas as pd
 import tushare as ts
 
-from get_data import all_codes
 from get_data.db import engine, TABLE_FUQUAN
 from utils.pdutils import difference
-from utils.strutils import date2str, nextDayStr, perDayStr, perYearStr
+from utils.strutils import nextDayStr, perDayStr
+from utils.cache import cache
 
 '''
 复权数据

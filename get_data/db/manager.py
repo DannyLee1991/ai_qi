@@ -9,13 +9,16 @@ def write2db(df,table,if_exists):
     :param df:
     :return:
     '''
-    index_name = df.index.name
-    dtype = {}
-    if index_name:
-        dtype[index_name] = VARCHAR(df.index.get_level_values(index_name).str.len().max())
+    if df is not None:
+        index_name = df.index.name
+        dtype = {}
+        if index_name:
+            dtype[index_name] = VARCHAR(df.index.get_level_values(index_name).str.len().max())
 
-    df.to_sql(table, engine, if_exists=if_exists,dtype=dtype)
-    print("新数据插入成功 [table: %s ]" % (table))
+        df.to_sql(table, engine, if_exists=if_exists,dtype=dtype)
+        print("新数据插入成功 [table: %s ]" % (table))
+    else:
+        print("数据异常 没有数据入库")
 
 # ---------------------------------------------------
 

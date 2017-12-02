@@ -11,6 +11,7 @@ from get_data.db import *
 from get_data.db.manager import write2db, check_is_exist_in_stock_basics_daily, check_is_exist_in_tick
 
 from utils.strutils import getEveryDay, todayStr, perYearStr
+from utils.cache import cache
 
 
 def clear_data(table_name):
@@ -122,6 +123,7 @@ def _fs_transaction(code, ktype):
         fs_transaction_d(code)
 
 
+# @cache()
 def fs_transaction_d(code):
     '''
     获取某只股票的最新的日交易数据 并入库

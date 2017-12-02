@@ -3,6 +3,7 @@ import tushare as ts
 
 from get_data.db import engine, TABLE_TRANSACTION_D, TABLE_TRANSACTION_5MIN
 from utils.strutils import nextDayStr, nextMinStr
+from utils.cache import cache
 
 '''
 个股历史交易记录
@@ -56,7 +57,7 @@ def start_date(code, ktype):
     except:
         return None
 
-
+# @cache()
 def fetch_transaction(code, date, ktype):
     '''
     获取交易数据
@@ -66,7 +67,8 @@ def fetch_transaction(code, date, ktype):
     :return:
     '''
     df = ts.get_hist_data(code, start=date, ktype=ktype)
-    df['code'] = code
+    if df is not None:
+        df['code'] = code
     return df
 
 
