@@ -182,5 +182,5 @@ Network Trash Folder
 Temporary Items
 .apdisk
 
-get_data/tu.db
+web/flaskr/get_data/tu.db
 _cache/

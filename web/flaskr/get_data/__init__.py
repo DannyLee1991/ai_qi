@@ -1,7 +1,8 @@
 import pandas as pd
-from get_data.db import engine
-from get_data.db import TABLE_STOCK
-from utils.cache import cache
+from ..utils.cache import cache
+
+from .db import engine,TABLE_STOCK
+
 
 @cache(use_mem=True)
 def all_codes():

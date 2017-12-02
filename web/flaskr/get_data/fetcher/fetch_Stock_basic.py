@@ -1,7 +1,7 @@
 import pandas as pd
 import tushare as ts
 
-from get_data.db import engine, TABLE_STOCK_BASICS_DAILY
+from ..db import engine, TABLE_STOCK_BASICS_DAILY
 
 '''
 公司每日基本信息

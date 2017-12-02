@@ -1,6 +1,6 @@
-import pandas as pd
-from get_data.db import *
 from sqlalchemy import VARCHAR
+
+from . import *
 
 
 def write2db(df,table,if_exists):

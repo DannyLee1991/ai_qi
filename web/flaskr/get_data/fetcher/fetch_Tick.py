@@ -1,8 +1,4 @@
-import pandas as pd
 import tushare as ts
-
-from get_data.db import engine, TABLE_TICK
-from utils.strutils import date2str
 
 '''
 分笔数据

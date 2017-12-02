@@ -1,17 +1,15 @@
 import pandas as pd
-from get_data import all_codes
-from get_data.fetcher.fetch_Stock import fetch_stock_basic, fetch_stock_industry, fetch_stock_area, \
+from . import all_codes
+from .db import *
+from .fetcher.fetch_Fuquan import fetch_fuquan, gen_time_interval
+from .fetcher.fetch_Stock import fetch_stock_basic, fetch_stock_industry, fetch_stock_area, \
     fetch_stock_concept
-from get_data.fetcher.fetch_Stock_basic import fetch_stock_basics_daily
-from get_data.fetcher.fetch_Tick import fetch_tick
-from get_data.fetcher.fetch_Transaction import fetch_transaction, start_date
-from get_data.fetcher.fetch_Fuquan import fetch_fuquan, gen_time_interval
+from .fetcher.fetch_Stock_basic import fetch_stock_basics_daily
+from .fetcher.fetch_Tick import fetch_tick
+from .fetcher.fetch_Transaction import fetch_transaction, start_date
+from ..utils.strutils import getEveryDay, todayStr, perYearStr
 
-from get_data.db import *
-from get_data.db.manager import write2db, check_is_exist_in_stock_basics_daily, check_is_exist_in_tick
-
-from utils.strutils import getEveryDay, todayStr, perYearStr
-from utils.cache import cache
+from .db.manager import write2db, check_is_exist_in_stock_basics_daily, check_is_exist_in_tick
 
 
 def clear_data(table_name):

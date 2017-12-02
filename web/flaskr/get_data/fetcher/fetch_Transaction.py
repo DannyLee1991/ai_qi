@@ -1,9 +1,8 @@
 import pandas as pd
 import tushare as ts
+from ...utils.strutils import nextDayStr, nextMinStr
 
-from get_data.db import engine, TABLE_TRANSACTION_D, TABLE_TRANSACTION_5MIN
-from utils.strutils import nextDayStr, nextMinStr
-from utils.cache import cache
+from ..db import engine, TABLE_TRANSACTION_D, TABLE_TRANSACTION_5MIN
 
 '''
 个股历史交易记录
@@ -56,6 +55,7 @@ def start_date(code, ktype):
         return r
     except:
         return None
+
 
 # @cache()
 def fetch_transaction(code, date, ktype):
