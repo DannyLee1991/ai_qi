@@ -1,0 +1,36 @@
+<!doctype html>
+<title>Flaskr</title>
+<script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+<link rel=stylesheet type=text/css href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.css">
+<link rel=stylesheet type=text/css href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
+<script type="text/javascript" src="{{ url_for('static', filename='main.js') }}"></script>
+
+<br/>
+
+<div class=page>
+    <div class=metanav>
+    </div>
+    {% for message in get_flashed_messages() %}
+    <div class=flash>{{ message }}</div>
+    {% endfor %}
+
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="span12">
+                <ul class="nav nav-tabs">
+                    <li id="nav_index">
+                        <a href="./">首页</a>
+                    </li>
+                    <li id="nav_setting">
+                        <a href="./setting">设置</a>
+                    </li>
+                    <li id="nav_getdata">
+                        <a href="./getdata">获取数据</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    {% block body %}{% endblock %}
+</div>
