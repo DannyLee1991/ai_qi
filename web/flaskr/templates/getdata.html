@@ -1,5 +1,54 @@
 {% extends "layout.html" %}
+
+{% import "bootstrap/wtf.html" as wtf %}
+
 {% block body %}
-  <h2>获取数据</h2>
-  {% if error %}<p class=error><strong>Error:</strong> {{ error }}{% endif %}
+<script type="text/javascript" src="{{ url_for('static', filename='getdata.js') }}"></script>
+
+{% for form in forms %}
+{{ wtf.quick_form(form) }}
+{% endfor %}
+
+<div class="container-fluid">
+    <table class="table">
+        <thead>
+        <tr>
+            <th>
+                功能
+            </th>
+            <th>
+                参数
+            </th>
+            <th>
+                获取
+            </th>
+            <th>
+                清空
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+
+        {% for item in t_items %}
+        <tr>
+            <form action="/fs_data" method="post">
+                <td>
+                    {{item.name}}
+                </td>
+                <td>
+                    {{item.params}}
+                </td>
+                <td>
+                    <button class="btn btn-primary btn-xs" onclick="sendFSPost('{{item.what}}','{{item.params}}')">获取</button>
+                </td>
+                <td>
+                    清空
+                </td>
+            </form>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
 {% endblock %}

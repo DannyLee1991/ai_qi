@@ -1,9 +1,9 @@
-
-运行setup 打包
-sudo pip3 install --editable .
-
 直接运行
 
 ```
-./run.sh
+./manage.py runserver
 ```
+
+打开浏览器：
+
+http://localhost:5000/
