@@ -185,5 +185,5 @@ Temporary Items
 web/flaskr/get_data/tu.db
 _cache/
 /web/migrations/
-/web/.sqlite
-/web/.db
+/web/*.sqlite
+/web/*.db
