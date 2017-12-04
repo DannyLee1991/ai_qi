@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import os
 from flaskr import create_app, db
+from flaskr.models import History
 from flask_script import Manager, Shell
 from flask_migrate import Migrate, MigrateCommand
 
@@ -10,7 +11,7 @@ migrate = Migrate(app, db)
 
 
 def make_shell_context():
-    return dict(app=app, db=db)
+    return dict(app=app, db=db, History=History)
 
 
 manager.add_command('shell', Shell(make_context=make_shell_context))

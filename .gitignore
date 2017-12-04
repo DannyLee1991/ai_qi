@@ -184,3 +184,4 @@ Temporary Items
 
 web/flaskr/get_data/tu.db
 _cache/
+/web/migrations/

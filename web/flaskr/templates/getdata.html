@@ -2,12 +2,8 @@
 
 {% import "bootstrap/wtf.html" as wtf %}
 
-{% block body %}
+{% block page_content %}
 <script type="text/javascript" src="{{ url_for('static', filename='getdata.js') }}"></script>
-
-{% for form in forms %}
-{{ wtf.quick_form(form) }}
-{% endfor %}
 
 <div class="container-fluid">
     <table class="table">
@@ -23,7 +19,7 @@
                 获取
             </th>
             <th>
-                清空
+                上次获取时间
             </th>
         </tr>
         </thead>
@@ -42,7 +38,11 @@
                     <button class="btn btn-primary btn-xs" onclick="sendFSPost('{{item.what}}','{{item.params}}')">获取</button>
                 </td>
                 <td>
-                    清空
+                    {% if item.history %}
+                        {{ moment(item.history).format('YYYY年M月D日, h:mm:ss a') }}
+                    {% else %}
+                        暂无记录
+                    {% endif %}
                 </td>
             </form>
         </tr>

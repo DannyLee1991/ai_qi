@@ -1,26 +1,22 @@
-<!doctype html>
-<title>Flaskr</title>
+{% extends "bootstrap/base.html" %}
+
+{% block title %}Flasky{% endblock %}
+
+{% block head %}
+{{ super() }}
+{{ moment.include_moment() }}
+
 <link rel=stylesheet type=text/css href="{{ url_for('static', filename='main.css') }}">
 <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
 <link rel=stylesheet type=text/css href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.css">
 <link rel=stylesheet type=text/css href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
 <script type="text/javascript" src="{{ url_for('static', filename='main.js') }}"></script>
+{% endblock %}
 
-<br/>
-
+{% block body %}
 <div class=page>
     <div class=metanav>
     </div>
-
-    {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-            <ul class=flashes>
-            {% for category, message in messages %}
-                <div class="alert alert-{{category}}" role="alert">{{ message }}</div>
-            {% endfor %}
-            </ul>
-        {% endif %}
-    {% endwith %}
 
     <div class="container-fluid">
         <div class="row-fluid">
@@ -40,5 +36,24 @@
         </div>
     </div>
 
-    {% block body %}{% endblock %}
+    {% block content %}
+    <div class="container">
+        {% for category,message in get_flashed_messages(with_categories=true) %}
+        <div id="flash" class="alert alert-{{category}}" role="alert">
+            <button type="button" class="close" data-dismiss="alert" onclick="$('#flash').hide()">&times;</button>
+            {{ message }}
+        </div>
+        {% endfor %}
+
+        {% block page_content %}{% endblock %}
+    </div>
+    {% endblock %}
 </div>
+
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+{{ moment.include_moment() }}
+{{moment.lang('zh-CN')}}
+{% endblock %}

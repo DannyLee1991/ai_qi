@@ -3,6 +3,7 @@ from flaskr.utils.flash import *
 
 from . import main
 from ..get_data import manager
+from ..models import History
 
 
 @main.route('/', methods=['GET', 'POST'])
@@ -24,7 +25,7 @@ def getdata():
     return resp
 
 
-@main.route('/fs_data', methods=['GET','POST'])
+@main.route('/fs_data', methods=['GET', 'POST'])
 def fs_data():
     t_items = gen_getdata_items()
 
@@ -34,7 +35,10 @@ def fs_data():
             if item['what'] == what:
                 item['method']()
                 flash_success("%s 获取成功！" % item['name'])
+
+                History.update_history(what)
     return redirect(url_for('.getdata'))
+
 
 # ------------
 
@@ -45,12 +49,21 @@ def gen_getdata_items():
     '''
 
     item = lambda name, params, method, what: {'name': name,
-                                               'params': params,
-                                               'method': method,
-                                               'what': what
-                                               }
-    items = [item("【股票基础数据】", None, manager.fs_stock, "stock"),
-             item("【股票行业数据】", None, manager.fs_stock_industry, "stock_industry"),
+                                                        'params': params,
+                                                        'method': method,
+                                                        'what': what,
+                                                        'history': History.query_history_time(what)
+                                                        }
+    items = [item(name="【股票基础数据】",
+                  params=None,
+                  method=manager.fs_stock,
+                  what="stock",
+                  ),
+             item(name="【股票行业数据】",
+                  params=None,
+                  method=manager.fs_stock_industry,
+                  what="stock_industry",
+                  ),
              item("【股票地区数据】", None, manager.fs_stock_area, "stock_area"),
              item("【股票概念数据】", None, manager.fs_stock_concept, "stock_concept"),
              ]
