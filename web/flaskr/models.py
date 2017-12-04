@@ -16,13 +16,14 @@ class History(db.Model):
         if history is None:
             history = History(name=name)
             db.session.add(history)
+            db.session.commit()
         else:
-            history.timestamp = datetime.utcnow
-        db.session.commit()
+            history.timestamp = datetime.utcnow()
+            db.session.commit()
 
     @staticmethod
     def query_history_time(name):
         history = History.query.filter_by(name=name).first()
         if history:
-            return history.timestamp;
+            return history.timestamp
         return None

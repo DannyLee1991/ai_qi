@@ -14,41 +14,40 @@
 {% endblock %}
 
 {% block body %}
-<div class=page>
-    <div class=metanav>
-    </div>
-
-    <div class="container-fluid">
-        <div class="row-fluid">
-            <div class="span12">
-                <ul class="nav nav-tabs">
-                    <li id="nav_index">
-                        <a href="./">首页</a>
-                    </li>
-                    <li id="nav_setting">
-                        <a href="./setting">设置</a>
-                    </li>
-                    <li id="nav_getdata">
-                        <a href="./getdata">获取数据</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
-
-    {% block content %}
+<div class="navbar navbar-inverse" role="navigation">
     <div class="container">
-        {% for category,message in get_flashed_messages(with_categories=true) %}
-        <div id="flash" class="alert alert-{{category}}" role="alert">
-            <button type="button" class="close" data-dismiss="alert" onclick="$('#flash').hide()">&times;</button>
-            {{ message }}
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="{{ url_for('main.index') }}">AI-QI</a>
         </div>
-        {% endfor %}
-
-        {% block page_content %}{% endblock %}
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li id="nav-index"><a href="{{ url_for('main.index') }}">首页</a></li>
+                <li id="nav-setting"><a href="{{ url_for('main.setting') }}">设置</a></li>
+                <li id="nav-getdata"><a href="{{ url_for('main.getdata') }}">数据获取</a></li>
+            </ul>
+        </div>
     </div>
-    {% endblock %}
 </div>
+
+
+{% block content %}
+<div class="container">
+    {% for category,message in get_flashed_messages(with_categories=true) %}
+    <div id="flash" class="alert alert-{{category}}" role="alert">
+        <button type="button" class="close" data-dismiss="alert" onclick="$('#flash').hide()">&times;</button>
+        {{ message }}
+    </div>
+    {% endfor %}
+
+    {% block page_content %}{% endblock %}
+</div>
+{% endblock %}
 
 {% endblock %}
 
