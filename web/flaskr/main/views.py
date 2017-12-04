@@ -29,22 +29,30 @@ def getdata():
 
 @main.route('/fs_data', methods=['GET', 'POST'])
 def fs_data():
-    if request.args:
+    args_dict = request.args.to_dict()
+    if args_dict:
         t_items = gen_getdata_items()
-        id = int(request.args.get('id'))
-        params = json.loads(request.args.get('params'))
+        id = args_dict.pop("id")
+
+        params = []
+        if args_dict:
+            for (k, v) in args_dict.items():
+                params.append(v)
+
+        print(type(id))
 
         for item in t_items:
-            if item['id'] == id:
+            if str(item['id']) == id:
                 # 执行对应的方法 FIXME 实现方式太蠢，是否有更好的实现呢？
-                if len(params) == 4:
-                    item['method'](params[0]['value'], params[1]['value'], params[2]['value'], params[3]['value'])
-                if len(params) == 3:
-                    item['method'](params[0]['value'], params[1]['value'], params[2]['value'])
-                elif len(params) == 2:
-                    item['method'](params[0]['value'], params[1]['value'])
-                elif len(params) == 1:
-                    item['method'](params[0]['value'])
+                if params:
+                    if len(params) == 4:
+                        item['method'](params[0], params[1], params[2], params[3])
+                    if len(params) == 3:
+                        item['method'](params[0], params[1], params[2])
+                    elif len(params) == 2:
+                        item['method'](params[0], params[1])
+                    elif len(params) == 1:
+                        item['method'](params[0])
                 else:
                     item['method']()
                 flash_success("%s 获取成功！" % item['name'])

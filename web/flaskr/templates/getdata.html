@@ -5,7 +5,7 @@
 {% block page_content %}
 
 <div class="container-fluid">
-    <table class="table">
+    <table class="table table-striped">
         <thead>
         <tr>
             <th>
@@ -26,41 +26,22 @@
 
         {% for item in t_items %}
         <tr>
-            <form action="/fs_data" method="post">
+            <form action="/fs_data" method="get">
                 <td>
                     {{item.name}}
                 </td>
                 <td>
+                    <input name="id" value="{{item.id}}" hidden/>
                     {% if item.params %}
                         {% for param in item.params %}
-                        <label for="{{param.id}}">{{param.name}}</label>
-                        <input id="{{param.id}}" type="text" value="{{param.def_value}}" placeholder="{{param.hint}}" required="required"/>
+                        <label for="{{param.for_what}}">{{param.name}}</label>
+                        <input name="{{param.for_what}}" type="text" value="{{param.def_value}}" placeholder="{{param.hint}}" required="required"/>
                         <br/>
                         {% endfor %}
                     {% endif %}
                 </td>
                 <td>
-                    <button id="bt_{{item.id}}" class="btn btn-primary btn-xs">获取</button>
-
-                    <script type="text/javascript">
-                        $("#bt_{{item.id}}").click(function(){
-                            var paramsJson = {{item.params|tojson}};
-                            var _params = new Array();
-                            if (paramsJson !== null) {
-                                for(var i=0;i<paramsJson.length;i++) {
-                                    _params.push({
-                                        for_what:paramsJson[i].for_what,
-                                        value:$('#'+paramsJson[i].id).val()
-                                    });
-                                }
-                            }
-                            $.get("/fs_data", {
-                                'id':'{{item.id}}',
-                                'params':JSON.stringify(_params)
-                            });
-
-                        });
-                    </script>
+                    <input class="btn btn-primary btn-xs" type="submit" value="获取"/>
                 </td>
                 <td>
                     {% if item.history %}
