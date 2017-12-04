@@ -10,36 +10,33 @@ pip3 install -r requirements.txt
 
 -----
 
-### 获取数据
+### 1.初始化数据库
 
-> **注意：** 目前数据会存储在sqlite数据库中
-
-执行`./get_data/manager.py`中的`get_data`方法，即可获取指定表的数据。
-
-例如:
+进入web目录，执行:
 
 ```
-get_data(TABLE_STOCK)
+python3 manage.py db init
 ```
 
-即可获得股票基本信息表的数据
-
-----
-
-支持参数传递 例如：
+创建db文件:
 
 ```
-get_data(TABLE_STOCK_BASICS, begin_date='1999-01-01', end_date='2017-10-10')
+python3 manage.py db migrate
 ```
 
-具体传递参数的含义，需要到对应的方法中查看
+### 2.开启服务
+
+```
+python3 manage.py runserver
+```
+
+打开浏览器 [http://127.0.0.1:5000/](http://127.0.0.1:5000/)
+
 
 -----
 
 todo:
 
-sqlite转mysql
-爬取数据脚本
 数据可视化
 数据预测
 
