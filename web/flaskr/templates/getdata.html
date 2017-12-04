@@ -19,7 +19,7 @@
                 获取
             </th>
             <th>
-                上次获取时间
+                调用记录
             </th>
         </tr>
         </thead>
@@ -32,16 +32,24 @@
                     {{item.name}}
                 </td>
                 <td>
-                    {{item.params}}
+                    {% if item.params %}
+                        {% for param in item.params %}
+                        <label for="{{param.id}}">{{param.name}}</label>
+                        <input id="{{param.id}}" type="text" value="{{param.def_value}}" placeholder="{{param.hint}}"/>
+                        <br/>
+                        {% endfor %}
+                    {% endif %}
                 </td>
                 <td>
-                    <button class="btn btn-primary btn-xs" onclick="sendFSPost('{{item.what}}','{{item.params}}')">获取</button>
+                    <button class="btn btn-primary btn-xs"
+                            onclick="sendFSPost('{{item.what}}',{{item.params}})">获取
+                    </button>
                 </td>
                 <td>
                     {% if item.history %}
-                        {{ moment(item.history).format('YYYY年M月D日, h:mm:ss a') }}
+                    {{ moment(item.history).format('YYYY年M月D日, h:mm:ss a') }}
                     {% else %}
-                        暂无记录
+                    暂无记录
                     {% endif %}
                 </td>
             </form>

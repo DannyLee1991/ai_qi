@@ -56,12 +56,11 @@ def fs_stock_concept():
     获取股票概念数据 并入库
     :return:
     '''
-    # FIXME 写入数据有问题
     df = fetch_stock_concept()
     write2db(df, TABLE_STOCK_CONCEPT, if_exists='replace')
 
 
-def fs_stock_basics_daily(date):
+def fs_stock_basics_daily(date=todayStr()):
     '''
     获取大盘某日股票基本信息数据 并入库
     :param date:
