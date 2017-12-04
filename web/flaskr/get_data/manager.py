@@ -66,6 +66,8 @@ def fs_stock_basics_daily(date=todayStr()):
     :param date:
     :return:
     '''
+    print("=====>")
+    print(date)
     is_exist = check_is_exist_in_stock_basics_daily(date)
     if is_exist:
         print("该日期 %s 记录已存在" % date)
@@ -180,6 +182,9 @@ def fs_fuquan(code, start_date=perYearStr(), end_date=todayStr(), autype='qfq'):
     :param autype:
     :return:
     '''
+    if autype == 'none':
+        autype = None
+
     s_date, e_date = gen_time_interval(code, autype, start_date, end_date)
     if s_date and e_date:
         df = fetch_fuquan(code, s_date, e_date, autype)

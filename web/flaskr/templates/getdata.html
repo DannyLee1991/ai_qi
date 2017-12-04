@@ -3,7 +3,6 @@
 {% import "bootstrap/wtf.html" as wtf %}
 
 {% block page_content %}
-<script type="text/javascript" src="{{ url_for('static', filename='getdata.js') }}"></script>
 
 <div class="container-fluid">
     <table class="table">
@@ -41,9 +40,27 @@
                     {% endif %}
                 </td>
                 <td>
-                    <button class="btn btn-primary btn-xs"
-                            onclick="sendFSPost('{{item.what}}',{{item.params}})">获取
-                    </button>
+                    <button id="bt_{{item.id}}" class="btn btn-primary btn-xs">获取</button>
+
+                    <script type="text/javascript">
+                        $("#bt_{{item.id}}").click(function(){
+                            var paramsJson = {{item.params|tojson}};
+                            var _params = new Array();
+                            if (paramsJson !== null) {
+                                for(var i=0;i<paramsJson.length;i++) {
+                                    _params.push({
+                                        for_what:paramsJson[i].for_what,
+                                        value:$('#'+paramsJson[i].id).val()
+                                    });
+                                }
+                            }
+                            $.get("/fs_data", {
+                                'id':'{{item.id}}',
+                                'params':JSON.stringify(_params)
+                            });
+
+                        });
+                    </script>
                 </td>
                 <td>
                     {% if item.history %}
