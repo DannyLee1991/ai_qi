@@ -33,11 +33,15 @@
                 <td>
                     <input name="id" value="{{item.id}}" hidden/>
                     {% if item.params %}
-                        {% for param in item.params %}
-                        <label for="{{param.for_what}}">{{param.name}}</label>
-                        <input name="{{param.for_what}}" type="text" value="{{param.def_value}}" placeholder="{{param.hint}}" required="required"/>
-                        <br/>
-                        {% endfor %}
+                    {% for param in item.params %}
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-addon">{{param.name}}</div>
+                            <input type="text" name="{{param.for_what}}" value="{{param.def_value}}"
+                                   class="form-control" placeholder="{{param.hint}}" required="required"/>
+                        </div>
+                    </div>
+                    {% endfor %}
                     {% endif %}
                 </td>
                 <td>
