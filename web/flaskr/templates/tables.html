@@ -1,4 +1,41 @@
 {% extends "layout.html" %}
 {% block page_content %}
-  <h2>数据</h2>
+
+<div class="container">
+    <div class="row clearfix">
+        <div class="col-md-3 column">
+            <ol>
+                {% for table in tables %}
+                <li><a href="{{ url_for('.table_details',table=table.table) }}">{{ table.name }}</a></li>
+                {% endfor %}
+            </ol>
+        </div>
+        <div class="col-md-7 column">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        {% for th in table.th %}
+                        <th>{{th}}</th>
+                        {% endfor %}
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for tr in table.tb %}
+                    <tr>
+                        {% for td in tr %}
+                        <td>{{td}}</td>
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col-md-2 column">
+        </div>
+    </div>
+</div>
+
+
 {% endblock %}

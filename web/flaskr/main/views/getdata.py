@@ -13,9 +13,9 @@ def getdata():
     return resp
 
 
-@main.route('/fs_data', methods=['GET', 'POST'])
+@main.route('/fs_data', methods=['POST'])
 def fs_data():
-    args_dict = request.args.to_dict()
+    args_dict = request.form.to_dict()
     if args_dict:
         t_items = gen_getdata_items()
         id = args_dict.pop("id")

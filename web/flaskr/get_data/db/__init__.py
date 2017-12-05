@@ -19,6 +19,20 @@ TABLE_FUQUAN = 'fuquan'
 # 分笔数据
 TABLE_TICK = 'tick'
 
+table = lambda table, name: {"table": table, "name": name}
+
+TABLES_INFO_LIST = [
+    table(TABLE_STOCK, "股票基本信息表"),
+    table(TABLE_STOCK_INDUSTRY, "股票行业表"),
+    table(TABLE_STOCK_AREA, "股票地区表"),
+    table(TABLE_STOCK_CONCEPT, "股票概念表"),
+    table(TABLE_STOCK_BASICS_DAILY, "股票每日基本信息表"),
+    table(TABLE_TRANSACTION_D, "交易数据 - 每日"),
+    table(TABLE_TRANSACTION_5MIN, "交易数据 - 每五分钟"),
+    table(TABLE_FUQUAN, "复权数据"),
+    table(TABLE_TICK, "分笔数据")
+]
+
 USER_NAME = 'root'
 PASS_WORD = 'root'
 DB_NAME = 'tu'

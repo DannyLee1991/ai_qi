@@ -1,9 +1,11 @@
 from sqlalchemy import VARCHAR
+import pandas as pd
+from sqlalchemy.exc import OperationalError
 
 from . import *
 
 
-def write2db(df,table,if_exists):
+def write2db(df, table, if_exists):
     '''
     写入db
     :param df:
@@ -15,10 +17,11 @@ def write2db(df,table,if_exists):
         if index_name:
             dtype[index_name] = VARCHAR(df.index.get_level_values(index_name).str.len().max())
 
-        df.to_sql(table, engine, if_exists=if_exists,dtype=dtype)
+        df.to_sql(table, engine, if_exists=if_exists, dtype=dtype)
         print("新数据插入成功 [table: %s ]" % (table))
     else:
         print("数据异常 没有数据入库")
+
 
 # ---------------------------------------------------
 
@@ -34,6 +37,7 @@ def check_is_exist_in_stock_basics_daily(date):
     except:
         return False
 
+
 def check_is_exist_in_tick(code, date):
     '''
     指定日期的股票记录是否存在
@@ -47,3 +51,17 @@ def check_is_exist_in_tick(code, date):
         return len(df) > 0
     except:
         return False
+
+
+def read_top_data(table, top=100):
+    '''
+    读取数据
+    :param table:
+    :param top:
+    :return:
+    '''
+    try:
+        df = pd.read_sql("select * from '%s' limit %s" % (table, top), engine)
+    except OperationalError:
+        df = None
+    return df
