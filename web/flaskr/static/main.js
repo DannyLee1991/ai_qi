@@ -4,18 +4,16 @@ $(function(){
 
 
 function toggle_nav() {
-    var pathname = window.location.pathname
+    var pathname = window.location.pathname;
 
-    $('#nav-setting').removeClass("active")
-    $('#nav-index').removeClass("active")
-    $('#nav-getdata').removeClass("active")
-
+    $('#nav-*').removeClass("active");
+    var to = pathname.length;
+    var id = "";
     if (pathname == '/') {
-        $('#nav-index').addClass("active")
-    } else if(pathname == '/setting') {
-        $('#nav-setting').addClass("active")
-    } else if(pathname == '/getdata') {
-        $('#nav-getdata').addClass("active")
+        id = '#nav-index';
+    } else {
+        id = '#nav-' + pathname.substring(1,to);
     }
+    $(id).addClass("active");
 
 }
