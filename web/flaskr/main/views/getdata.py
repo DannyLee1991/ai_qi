@@ -1,24 +1,10 @@
 from flask import render_template, make_response, request, redirect, url_for
 from flaskr.utils.flash import *
-import json
 
-from . import main
-from ..models import History
-from ..get_data import manager
-from ..utils.strutils import todayStr, perYearStr
-
-
-@main.route('/', methods=['GET', 'POST'])
-def index():
-    resp = make_response(render_template('index.html'))
-    return resp
-
-
-@main.route('/setting')
-def setting():
-    resp = make_response(render_template('setting.html'))
-    return resp
-
+from .. import main
+from ...models import History
+from ...get_data import manager
+from ...utils.strutils import todayStr, perYearStr
 
 @main.route('/getdata', methods=['GET'])
 def getdata():

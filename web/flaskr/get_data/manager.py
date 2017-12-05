@@ -66,8 +66,6 @@ def fs_stock_basics_daily(date=todayStr()):
     :param date:
     :return:
     '''
-    print("=====>")
-    print(date)
     is_exist = check_is_exist_in_stock_basics_daily(date)
     if is_exist:
         print("该日期 %s 记录已存在" % date)
