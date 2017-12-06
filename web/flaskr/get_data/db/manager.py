@@ -65,3 +65,15 @@ def read_top_data(table, top=100):
     except OperationalError:
         df = None
     return df
+
+def query_by_sql(sql):
+    '''
+    根据sql查询数据
+    :param sql:
+    :return:
+    '''
+    try:
+        df = pd.read_sql(sql, engine)
+    except OperationalError:
+        df = None
+    return df

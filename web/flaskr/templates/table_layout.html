@@ -1,0 +1,29 @@
+<h4>{{title}}</h4>
+
+{% if sql %}
+<h5>sql语句：</h5>
+<code>{{sql}}</code>
+{% endif %}
+
+{% if table %}
+<div class="table-responsive">
+    <table class="table">
+        <thead>
+        <tr>
+            {% for th in table.th %}
+            <th>{{th}}</th>
+            {% endfor %}
+        </tr>
+        </thead>
+        <tbody>
+        {% for tr in table.tb %}
+        <tr>
+            {% for td in tr %}
+            <td>{{td}}</td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endif %}

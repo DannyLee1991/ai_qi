@@ -1,43 +1,36 @@
 {% extends "layout.html" %}
 {% block page_content %}
+<script type="text/javascript" src="{{ url_for('static', filename='tables.js') }}"></script>
 
 <div class="container">
     <div class="row clearfix">
         <div class="col-md-3 column">
-            <ol>
-                {% if tables %}
-                    {% for table in tables %}
-                    <li><a href="{{ url_for('.table_details',table=table.table) }}">{{ table.name }}</a></li>
-                    {% endfor %}
-                {%endif%}
-            </ol>
-        </div>
-        <div class="col-md-7 column">
-
-            {% if table %}
-            <div class="table-responsive">
-                <table class="table">
-                    <thead>
-                    <tr>
-                        {% for th in table.th %}
-                        <th>{{th}}</th>
+            <div class="page [secondary] with-sidebar">
+                <div class="page-sidebar">
+                    <ul>
+                        {% if tables %}
+                        {% for table in tables %}
+                        <li style="list-style-type:none;">
+                            <p>
+                                <button id="bt_table_{{table.table}}" type="button"
+                                        class="btn btn-info btn-block btn-sm">{{ table.name }}
+                                </button>
+                            </p>
+                        </li>
                         {% endfor %}
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {% for tr in table.tb %}
-                    <tr>
-                        {% for td in tr %}
-                        <td>{{td}}</td>
-                        {% endfor %}
-                    </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
+                        {%endif%}
+                    </ul>
+                </div>
             </div>
-            {% endif %}
+        </div>
+        <div id="table_container" class="col-md-7 column">
+
         </div>
         <div class="col-md-2 column">
+            <label>执行sql</label>
+            <textarea id="txt_sql" class="form-control" rows="3" placeholder="输入sql语句">{{executed_sql or ''}}</textarea>
+            <br/>
+            <button id="bt_execute" type="button" class="btn btn-xs btn-info btn-block">Execute</button>
         </div>
     </div>
 </div>
