@@ -20,7 +20,8 @@ def table_details(table=None):
     else:
         flash_warning("表不存在，请确认是否已经拉取过数据")
 
-    return make_response(render_template('tables.html', tables=TABLES_INFO_LIST, table=table, executed_sql=executed_sql))
+    return make_response(
+        render_template('tables.html', tables=TABLES_INFO_LIST, table=table, executed_sql=executed_sql))
 
 
 @main.route('/tables/sql', methods=['POST'])
@@ -28,6 +29,7 @@ def execute_sql():
     sql = request.form.get('sql')
     title = "查询执行结果"
     table = None
+    count = None
 
     save = request.form.get('save')
 
@@ -39,8 +41,9 @@ def execute_sql():
             title = "没有查到相关数据，请检查您的sql是否正确以及检查相关数据是否已经获取"
         else:
             table = dfData2View(df)
+            count = len(df)
 
-    resp = make_response(render_template('table_layout.html', table=table, title=title, sql=sql))
+    resp = make_response(render_template('table_layout.html', table=table, title=title,count=count, sql=sql))
 
     # 保存sql
     if save and str(save).lower() == "true":
