@@ -43,7 +43,7 @@ def execute_sql():
             table = dfData2View(df)
             count = len(df)
 
-    resp = make_response(render_template('table_layout.html', table=table, title=title,count=count, sql=sql))
+    resp = make_response(render_template('tables/table_layout.html', table=table, title=title,count=count, sql=sql))
 
     # 保存sql
     if save and str(save).lower() == "true":

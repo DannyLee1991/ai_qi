@@ -11,9 +11,11 @@
 <code>{{sql}}</code>
 {% endif %}
 
+<hr/>
+
 {% if table %}
 <div class="table-responsive">
-    <table class="table">
+    <table class="table table-bordered table-hover table-condensed">
         <thead>
         <tr>
             {% for th in table.th %}
