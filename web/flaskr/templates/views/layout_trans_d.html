@@ -1,0 +1,27 @@
+<script type="text/javascript" src="{{ url_for('static', filename='typeahead.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='view_trans_d.js') }}"></script>
+
+<div id="table_container" class="col-xs-9 column">
+    <div id="view">
+    </div>
+    <hr/>
+
+    <h3>特征选取</h3>
+    <div class="checkbox">
+        {% for column in columns%}
+        <label class="checkbox-inline">
+            <input type="checkbox" id="cb_which_{{column}}" checked> {{column}}
+        </label>
+        {% endfor %}
+    </div>
+
+    <div class="col-xs-8 column">
+        <div class="input-group">
+            <input id="searchWords" type="text" class="form-control" data-provide="typeahead" autocomplete="off"
+                   placeholder="请输入股票名称或代码">
+            <span class="input-group-btn">
+                <button id="searchbtn" class="btn btn-default" type="button">Go!</button>
+            </span>
+        </div>
+    </div>
+</div>

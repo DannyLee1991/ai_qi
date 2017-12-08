@@ -66,6 +66,7 @@ def read_top_data(table, top=100):
         df = None
     return df
 
+
 def query_by_sql(sql):
     '''
     根据sql查询数据
@@ -73,7 +74,71 @@ def query_by_sql(sql):
     :return:
     '''
     try:
+        print("sql > %s" % sql)
         df = pd.read_sql(sql, engine)
     except OperationalError:
         df = None
     return df
+
+def query_code_by_name(name):
+    '''
+    根据股票名称查询id
+    :param name:
+    :return:
+    '''
+    sql = "select code from stock where name = '" + str(name) + "'"
+    df = query_by_sql(sql)
+
+    if df is not None and len(df) > 0:
+        r = df.loc[0, ['code']]
+        code = r['code']
+        return code
+    return
+
+def query_name_by_code(code):
+    '''
+    根据股票id查股票名
+    :param code:
+    :return:
+    '''
+    sql = "select name from stock where code = '" + str(code) + "'"
+    df = query_by_sql(sql)
+
+    if df is not None and len(df) > 0:
+        r = df.loc[0, ['name']]
+        name = r['name']
+        return name
+    return
+
+# -----------
+
+def create_sql(table, which, where, whereis, orderby, limit):
+    '''
+    构造sql
+    :param table:
+    :param which:
+    :param limit:
+    :return:
+    '''
+    which_sql = gen_which_sql_str(which)
+    limit_sql = str(limit) if limit > 0 else ""
+    sql = "select %s from %s where %s = '%s' order by %s %s" % (which_sql, table, where, whereis, orderby, limit_sql)
+    print("create sql > %s" % sql)
+    return sql
+
+def gen_which_sql_str(which):
+    '''
+    根据元组参数 生成sql查询语句的which部分
+    :param which:
+    :return:
+    '''
+    sql = "*"
+    if which:
+        if type(which) is str:
+            sql = which
+        else:
+            sql = ""
+            for s in which:
+                sql += s + ","
+            sql = sql[:-1]
+    return sql

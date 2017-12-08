@@ -1,0 +1,6 @@
+<div>
+    {% if error %}<h4>{{error}}</h4>{%endif%}
+    {% if data %}
+    <img src="data:image/png;base64,{{data}}"/>
+    {% endif %}
+</div>

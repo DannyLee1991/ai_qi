@@ -9,21 +9,6 @@ from ...utils.flash import flash_warning
 def tables():
     return make_response(render_template('tables.html', tables=TABLES_INFO_LIST))
 
-
-@main.route('/tables/<table>')
-def table_details(table=None):
-    df = read_top_data(table)
-    executed_sql = request.cookies.get('executed_sql')
-
-    if df is not None:
-        table = dfData2View(df)
-    else:
-        flash_warning("表不存在，请确认是否已经拉取过数据")
-
-    return make_response(
-        render_template('tables.html', tables=TABLES_INFO_LIST, table=table, executed_sql=executed_sql))
-
-
 @main.route('/tables/sql', methods=['POST'])
 def execute_sql():
     sql = request.form.get('sql')
