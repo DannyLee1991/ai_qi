@@ -5,6 +5,8 @@ from .. import main
 from ...models import History
 from ...get_data import manager
 from ...utils.strutils import todayStr, perYearStr
+from . import parseQueryStockStr
+
 
 @main.route('/getdata', methods=['GET'])
 def getdata():
@@ -23,6 +25,8 @@ def fs_data():
         params = []
         if args_dict:
             for (k, v) in args_dict.items():
+                if k == 'nameCode':
+                    v = parseQueryStockStr(v)
                 params.append(v)
 
         print(type(id))
@@ -49,121 +53,125 @@ def fs_data():
 
 # ------------
 
+item = lambda _id, name, method, params=[]: {'_id': _id,
+                                             'name': name,
+                                             'params': params,
+                                             'method': method,
+                                             'history': History.query_history_time(_id),
+                                             'param_names': [param['name'] for param in params]
+                                             }
+
+param = lambda label, name, def_value='', hint='', type='': {'label': label,
+                                                             'name': name,
+                                                             'def_value': def_value,
+                                                             'hint': hint,
+                                                             'type': type
+                                                             }
+
+
 def gen_getdata_items():
     '''
     数据获取 表格数据生成
     :return:
     '''
 
-    item = lambda id, name, method, params=[]: {'id': id,
-                                                'name': name,
-                                                'params': params,
-                                                'method': method,
-                                                'history': History.query_history_time(id),
-                                                'param_ids': [param['id'] for param in params]
-                                                }
-    param = lambda name, id, for_what, def_value='', hint='': {'name': name,
-                                                               'id': id,
-                                                               'for_what': for_what,
-                                                               'def_value': def_value,
-                                                               'hint': hint
-                                                               }
-
-    items = [item(id=1,
+    items = [item(_id=1,
                   name="【股票基础数据】",
                   method=manager.fs_stock,
                   ),
-             item(id=2,
+             item(_id=2,
                   name="【股票行业数据】",
                   method=manager.fs_stock_industry,
                   ),
-             item(id=3,
+             item(_id=3,
                   name="【股票地区数据】",
                   method=manager.fs_stock_area,
                   ),
-             item(id=4,
+             item(_id=4,
                   name="【股票概念数据】",
                   method=manager.fs_stock_concept,
                   ),
 
-             item(id=5,
+             item(_id=5,
                   name="【大盘全部股票基本数据】",
                   params=[
-                      param(name='日期', id='id_daily_date', for_what='date', def_value=todayStr(), hint='请输入日期')
+                      param(label='日期', name='date', def_value=todayStr(), hint='请输入日期',
+                            type="date")
                   ],
                   method=manager.fs_stock_basics_daily,
                   ),
-             item(id=6,
+             item(_id=6,
                   name="【获取大盘指定时间区间内的股票基本数据】",
                   params=[
-                      param(name='起始日期', id='id_daily_r_begin_date', for_what='begin_date', def_value=perYearStr(),
-                            hint='请输入日期'),
-                      param(name='结束日期', id='id_daily_r_end_date', for_what='end_date', def_value=todayStr(),
-                            hint='请输入日期')
+                      param(label='起始日期', name='begin_date', def_value=perYearStr(),
+                            hint='请输入日期', type="date"),
+                      param(label='结束日期', name='end_date', def_value=todayStr(),
+                            hint='请输入日期', type="date")
                   ],
                   method=manager.fs_stock_basics_daily_r,
                   ),
-             item(id=7,
+             item(_id=7,
                   name="【股票分笔数据】",
                   params=[
-                      param(name='股票代码', id='id_tick_code', for_what='code', hint='请输入股票代码'),
-                      param(name='日期', id='id_tick_date', for_what='date', def_value=todayStr(), hint='请输入日期')
+                      param(label='股票代码', name='nameCode', hint='请输入股票代码', type='stock'),
+                      param(label='日期', name='date', def_value=todayStr(), hint='请输入日期',
+                            type="date")
                   ],
                   method=manager.fs_tick,
                   ),
-             item(id=8,
+             item(_id=8,
                   name="【指定时间区间内的股票分笔数据】",
                   params=[
-                      param(name='股票代码', id='id_tick_code', for_what='code', hint='请输入股票代码'),
-                      param(name='起始日期', id='id_tick_r_begin_date', for_what='begin_date', def_value=perYearStr(),
-                            hint='请输入日期'),
-                      param(name='结束日期', id='id_tick_r_end_date', for_what='end_date', def_value=todayStr(),
-                            hint='请输入日期')
+                      param(label='股票代码', name='nameCode', hint='请输入股票代码', type='stock'),
+                      param(label='起始日期', name='begin_date', def_value=perYearStr(),
+                            hint='请输入日期', type="date"),
+                      param(label='结束日期', name='end_date', def_value=todayStr(),
+                            hint='请输入日期', type="date")
                   ],
                   method=manager.fs_tick_r,
                   ),
-             item(id=9,
+             item(_id=9,
                   name="【股票最新的日交易数据】",
                   params=[
-                      param(name='股票代码', id='id_transaction_d_code', for_what='code', hint='请输入股票代码')
+                      param(label='股票代码', name='nameCode', hint='请输入股票代码', type='stock')
                   ],
                   method=manager.fs_transaction_d,
                   ),
-             item(id=10,
+             item(_id=10,
                   name="【股票最新的5分钟交易数据】",
                   params=[
-                      param(name='股票代码', id='id_transaction_5min_code', for_what='code', hint='请输入股票代码')
+                      param(label='股票代码', name='nameCode', hint='请输入股票代码', type='stock')
                   ],
                   method=manager.fs_transaction_5min,
                   ),
-             item(id=11,
+             item(_id=11,
                   name="【全部股票的最新的日交易数据】",
                   method=manager.fs_transaction_d_all,
                   ),
-             item(id=12,
+             item(_id=12,
                   name="【全部股票的最新的5分钟交易数据】",
                   method=manager.fs_transaction_5min_all,
                   ),
-             item(id=13,
+             item(_id=13,
                   name="【股票复权数据】",
                   params=[
-                      param(name='股票代码', id='id_fuquan_code', for_what='code', hint='请输入股票代码'),
-                      param(name='起始日期', id='id_fuquan_start_date', for_what='start_date', def_value=perYearStr(),
-                            hint='请输入日期'),
-                      param(name='结束日期', id='id_fuquan_end_date', for_what='end_date', def_value=todayStr(),
-                            hint='请输入日期'),
-                      param(name='复权类型', id='id_fuquan_autype', for_what='autype', def_value='qfq', hint='qfq/hfq/none')
+                      param(label='股票代码', name='nameCode', hint='请输入股票代码', type='stock'),
+                      param(label='起始日期', name='start_date', def_value=perYearStr(),
+                            hint='请输入日期', type="date"),
+                      param(label='结束日期', name='end_date', def_value=todayStr(),
+                            hint='请输入日期', type="date"),
+                      param(label='复权类型', name='autype', def_value='qfq', hint='qfq/hfq/none')
                   ],
                   method=manager.fs_fuquan,
                   ),
-             item(id=14,
+             item(_id=14,
                   name="【指定时间区间内的股票复权数据】",
                   params=[
-                      param(name='起始日期', id='id_fuquan_all_start_date', for_what='start_date', def_value=perYearStr(),
-                            hint='请输入日期'),
-                      param(name='结束日期', id='id_fuquan_all_end_date', for_what='end_date', def_value=todayStr(),
-                            hint='请输入日期'),
-                      param(name='复权类型', id='id_fuquan_all_autype', for_what='autype', def_value='qfq',
+                      param(label='起始日期', name='start_date', def_value=perYearStr(),
+                            hint='请输入日期', type="date"),
+                      param(label='结束日期', name='end_date', def_value=todayStr(),
+                            hint='请输入日期', type="date"),
+                      param(label='复权类型', name='autype', def_value='qfq',
                             hint='qfq/hfq/none')
                   ],
                   method=manager.fs_fuquan_all,

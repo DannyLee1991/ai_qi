@@ -4,6 +4,18 @@
 
 {% block page_content %}
 
+<!--用于时间选择-->
+<script src="{{ url_for('static', filename='js/moment-with-locales.js') }}"></script>
+<link href="{{ url_for('static', filename='css/bootstrap-datetimepicker.min.css') }}" rel="stylesheet">
+<script src="{{ url_for('static', filename='js/bootstrap-datetimepicker.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/bootstrap-datetimepicker.zh-CN.js') }}"></script>
+
+<script src="{{ url_for('static', filename='js/datetimepick.js') }}"></script>
+
+<!--用于输入提示-->
+<script src="{{ url_for('static', filename='js/bootstrap3-typeahead.min.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/typeahead.js') }}"></script>
+
 <div class="container-fluid">
     <table class="table table-striped">
         <thead>
@@ -36,9 +48,10 @@
                     {% for param in item.params %}
                     <div class="form-group">
                         <div class="input-group">
-                            <div class="input-group-addon">{{param.name}}</div>
-                            <input type="text" name="{{param.for_what}}" value="{{param.def_value}}"
-                                   class="form-control" placeholder="{{param.hint}}" required="required"/>
+                            <div class="input-group-addon">{{param.label}}</div>
+                            <input type="text" name="{{param.name}}" value="{{param.def_value}}"
+                                   class="form-control {{param.type}}" placeholder="{{param.hint}}"
+                                   required="required"/>
                         </div>
                     </div>
                     {% endfor %}

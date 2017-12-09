@@ -1,5 +1,5 @@
 $(function() {
-    $('#searchWords').typeahead({
+    var forSearchStock = {
         source: function (query, process) {
             $.get("/query/stockNames",
             {
@@ -17,5 +17,7 @@ $(function() {
         },
         items: 8, //显示8条
         delay: 100 //延迟时间
-    });
+    };
+    $('#searchWords').typeahead(forSearchStock);
+    $(".stock").typeahead(forSearchStock);
 })
