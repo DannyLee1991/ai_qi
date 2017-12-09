@@ -110,6 +110,18 @@ def query_name_by_code(code):
         return name
     return
 
+def column_names(table_name):
+    '''
+    获取表的列名
+    :param table_name:
+    :return:
+    '''
+    df = query_by_sql("select * from %s limit 1"%table_name)
+    if df is not None:
+        columns = [column for column in df]
+        return columns
+    return None
+
 # -----------
 
 def create_sql(table, which, where, whereis, orderby, limit):
