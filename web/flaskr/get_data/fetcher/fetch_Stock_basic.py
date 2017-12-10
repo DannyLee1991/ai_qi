@@ -1,7 +1,7 @@
 import pandas as pd
 import tushare as ts
 
-from ..db import engine, TABLE_STOCK_BASICS_DAILY
+from ..db import engine, TN_STOCK_BASICS_DAILY
 
 '''
 公司每日基本信息
@@ -56,7 +56,7 @@ def check_is_exist(date):
     :return:
     '''
     try:
-        old_df = pd.read_sql("select * from '%s' where date = '%s'" % (TABLE_STOCK_BASICS_DAILY, date), engine)
+        old_df = pd.read_sql("select * from '%s' where date = '%s'" % (TN_STOCK_BASICS_DAILY, date), engine)
         return old_df.size > 0
     except:
         return False

@@ -3,7 +3,7 @@ import tushare as ts
 from ...utils.pdutils import difference
 from ...utils.strutils import nextDayStr, perDayStr
 
-from ..db import engine, TABLE_FUQUAN
+from ..db import engine, TN_FUQUAN
 
 '''
 复权数据
@@ -74,7 +74,7 @@ def query_date(code, autype, type='newest'):
             way = 'desc'
 
         sql = "select date from %s where code = '%s' and autype = '%s' order by date %s limit 1" % (
-            TABLE_FUQUAN, code, autype, way)
+            TN_FUQUAN, code, autype, way)
 
         df = pd.read_sql(sql, engine)
         result = df.date[0][:10]

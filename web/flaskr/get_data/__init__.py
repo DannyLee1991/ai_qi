@@ -1,7 +1,7 @@
 import pandas as pd
 from ..utils.cache import cache
 
-from .db import engine,TABLE_STOCK
+from .db import engine,TN_STOCK
 
 
 @cache(use_mem=True)
@@ -11,7 +11,7 @@ def all_codes():
     :return:
     '''
     try:
-        r = pd.read_sql("select distinct code from %s" % TABLE_STOCK, engine)
+        r = pd.read_sql("select distinct code from %s" % TN_STOCK, engine)
         codes = r['code']
         return codes
     except:

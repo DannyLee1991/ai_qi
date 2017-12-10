@@ -9,8 +9,7 @@ from .fetcher.fetch_Tick import fetch_tick
 from .fetcher.fetch_Transaction import fetch_transaction, start_date
 from ..utils.strutils import getEveryDay, todayStr, perYearStr
 
-from .db.manager import write2db, check_is_exist_in_stock_basics_daily, check_is_exist_in_tick
-
+from .db.handler import write2db, check_is_exist_in_stock_basics_daily, check_is_exist_in_tick
 
 def clear_data(table_name):
     '''
@@ -30,7 +29,7 @@ def fs_stock():
     :return:
     '''
     df = fetch_stock_basic()
-    write2db(df, TABLE_STOCK, 'replace')
+    write2db(df, TN_STOCK, 'replace')
 
 
 def fs_stock_industry():
@@ -39,7 +38,7 @@ def fs_stock_industry():
     :return:
     '''
     df = fetch_stock_industry()
-    write2db(df, TABLE_STOCK_INDUSTRY, 'replace')
+    write2db(df, TN_STOCK_INDUSTRY, 'replace')
 
 
 def fs_stock_area():
@@ -48,7 +47,7 @@ def fs_stock_area():
     :return:
     '''
     df = fetch_stock_area()
-    write2db(df, TABLE_STOCK_AREA, if_exists='replace')
+    write2db(df, TN_STOCK_AREA, if_exists='replace')
 
 
 def fs_stock_concept():
@@ -57,7 +56,7 @@ def fs_stock_concept():
     :return:
     '''
     df = fetch_stock_concept()
-    write2db(df, TABLE_STOCK_CONCEPT, if_exists='replace')
+    write2db(df, TN_STOCK_CONCEPT, if_exists='replace')
 
 
 def fs_stock_basics_daily(date=todayStr()):
@@ -72,7 +71,7 @@ def fs_stock_basics_daily(date=todayStr()):
     else:
         try:
             df = fetch_stock_basics_daily(date)
-            write2db(df, TABLE_STOCK_BASICS_DAILY, if_exists='append')
+            write2db(df, TN_STOCK_BASICS_DAILY, if_exists='append')
         except:
             print("该日期 %s 没有数据" % date)
 
@@ -100,7 +99,7 @@ def fs_tick(code, date):
     else:
         df = fetch_tick(code, date)
         if df is not None:
-            write2db(df, TABLE_TICK, if_exists='append')
+            write2db(df, TN_TICK, if_exists='append')
 
 
 def fs_tick_r(code, begin_date, end_date):
@@ -133,7 +132,7 @@ def fs_transaction_d(code):
         print("%s 数据已是最新 无需获取 [%s]" % (str(code), s))
     else:
         df = fetch_transaction(code, s, ktype)
-        write2db(df, TABLE_TRANSACTION_D, if_exists='append')
+        write2db(df, TN_TRANSACTION_D, if_exists='append')
 
 
 def fs_transaction_5min(code):
@@ -145,7 +144,7 @@ def fs_transaction_5min(code):
     ktype = '5'
     s = start_date(code, ktype)
     df = fetch_transaction(code, s, ktype)
-    write2db(df, TABLE_TRANSACTION_5MIN, if_exists='append')
+    write2db(df, TN_TRANSACTION_5MIN, if_exists='append')
 
 
 def fs_transaction_d_all():
@@ -186,7 +185,7 @@ def fs_fuquan(code, start_date=perYearStr(), end_date=todayStr(), autype='qfq'):
     s_date, e_date = gen_time_interval(code, autype, start_date, end_date)
     if s_date and e_date:
         df = fetch_fuquan(code, s_date, e_date, autype)
-        write2db(df, TABLE_FUQUAN, 'append')
+        write2db(df, TN_FUQUAN, 'append')
     else:
         print("%s数据已是最新，不需要重新获取")
 

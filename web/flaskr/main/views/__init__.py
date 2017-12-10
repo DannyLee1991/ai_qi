@@ -1,4 +1,4 @@
-from flaskr.get_data.db.manager import query_code_by_name
+from flaskr.get_data.db.handler import query_code_by_name
 
 def parseQueryStockStr(queryWord):
     '''

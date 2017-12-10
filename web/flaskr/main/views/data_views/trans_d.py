@@ -1,7 +1,7 @@
 from flask import render_template, make_response, request
-from flaskr.get_data.db.manager import query_by_sql, query_name_by_code, create_sql
+from flaskr.get_data.db.handler import query_by_sql, query_name_by_code, create_sql
 from ....get_data.db import *
-from ....get_data.db.manager import column_names
+from ....get_data.db.handler import column_names
 from ... import main
 from .. import parseQueryStockStr
 from . import gen_view_data

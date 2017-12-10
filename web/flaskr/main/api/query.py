@@ -1,7 +1,7 @@
 from flask import render_template, make_response, request
 from .. import main
 import json
-from ...get_data.db.manager import query_by_sql
+from ...get_data.db.handler import query_by_sql
 
 
 @main.route('/query/stockNames', methods=['GET'])

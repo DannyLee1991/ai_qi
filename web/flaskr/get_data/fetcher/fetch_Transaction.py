@@ -2,7 +2,7 @@ import pandas as pd
 import tushare as ts
 from ...utils.strutils import nextDayStr, nextMinStr
 
-from ..db import engine, TABLE_TRANSACTION_D, TABLE_TRANSACTION_5MIN
+from ..db import engine, TN_TRANSACTION_D, TN_TRANSACTION_5MIN
 
 '''
 个股历史交易记录
@@ -80,9 +80,9 @@ def get_newest_date(code, ktype='D'):
     :return:
     '''
     if ktype is '5':
-        table = TABLE_TRANSACTION_5MIN
+        table = TN_TRANSACTION_5MIN
     else:
-        table = TABLE_TRANSACTION_D
+        table = TN_TRANSACTION_D
 
     df = pd.read_sql("select date from '%s' where code = '%s'" % (table, str(code)), engine)
 

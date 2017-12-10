@@ -1,13 +1,12 @@
 from flask import render_template, make_response, request
 from .. import main
-from ...get_data.db import TABLES_INFO_LIST
-from ...get_data.db.manager import read_top_data, query_by_sql
-from ...utils.flash import flash_warning
+from ...get_data.db import TABLE_LIST
+from ...get_data.db.handler import query_by_sql
 
 
 @main.route('/tables')
 def tables():
-    return make_response(render_template('tables.html', tables=TABLES_INFO_LIST))
+    return make_response(render_template('tables.html', tables=TABLE_LIST))
 
 @main.route('/tables/sql', methods=['POST'])
 def execute_sql():
