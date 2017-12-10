@@ -12,7 +12,7 @@ def trans_d_layout_resp():
     获取日交易数据操作界面的布局相应对象
     :return:
     '''
-    columns = column_names(TABLE_TRANSACTION_D)
+    columns = column_names(TN_TRANSACTION_D)
     if columns:
         columns.remove('date')
         columns.remove('code')
@@ -62,7 +62,7 @@ def plot_transaction_d(view_name, code, which, limit=-1):
     '''
     if "date" not in which:
         which.append("date")
-    sql = create_sql(TABLE_TRANSACTION_D, which, "code", code, "date", limit)
+    sql = create_sql(TN_TRANSACTION_D, which, "code", code, "date", limit)
     df = query_by_sql(sql)
     df.cumsum(0)
     plot = df.plot(x='date', title=view_name)
