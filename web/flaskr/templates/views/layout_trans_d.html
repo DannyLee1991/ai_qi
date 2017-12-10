@@ -15,10 +15,12 @@
 
     <h3>特征选取</h3>
     <div class="row">
-        <div class="checkbox">
+        <div class="checkbox col-xs-5">
             {% for column in columns%}
-            <label class="checkbox-inline">
-                <input type="checkbox" id="cb_which_{{column}}" checked> {{column}}
+            <label class="checkbox-inline ">
+                <input type="checkbox" id="cb_which_{{column.name}}" checked>
+                {{column.label}}/
+                <b>{{column.name}}</b>
             </label>
             {% endfor %}
         </div>

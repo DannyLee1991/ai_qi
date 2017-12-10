@@ -44,6 +44,63 @@ TABLE_LIST = [
     T_TICK
 ]
 
+COLUMN_LABEL_DICT = {
+    'code':'代码',
+    'name':'名称',
+    'industry':'细分行业',
+    'area':'地区',
+    'timeToMarket':'上市日期',
+    'pe':'市盈率',
+    'outstanding':'流通股本',
+    'totals':'总股本(万)',
+    'totalAssets':'总资产(万)',
+    'liquidAssets':'流动资产(万)',
+    'fixedAssets':'固定资产(万)',
+    'reserved':'公积金(万)',
+    'bvps':'每股净资',
+    'pb':'市净率',
+    'undp':'未分利润',
+    'perundp':'每股未分配',
+    'rev':'收入同比( %)',
+    'profit':'利润同比( %)',
+    'gpr':'毛利率( %)',
+    'npr':'净利润率( %)',
+    'holders':'股东人数',
+    'open':'开盘价',
+    'high':'最高价',
+    'close':'收盘价',
+    'low':'最低价',
+    'volume':'成交量',
+    'price_change':'价格变动',
+    'p_change':'涨跌幅',
+    'ma5':'5日均价',
+    'ma10':'10日均价',
+    'ma20':'20日均价',
+    'v_ma5':'5日均量',
+    'v_ma10':'10日均量',
+    'v_ma20':'20日均量',
+    'turnover':'换手率',
+    'autype':'复权类型',
+    'amount':'成交金额',
+    'type':'类型',
+    'year':'年度',
+    'quarter':'季度',
+    'eps':'每股收益',
+    'eps_yoy':'每股收益同比(%)',
+    'roe':'净资产收益率(%)',
+    'epcf':'每股现金流量(元)',
+    'net_profits':'净利润(万元)',
+    'profits_yoy':'净利润同比(%)',
+    'distrib':'分配方案',
+    'report_date':'发布日期',
+    'net_profit_ratio':'净利率( %)',
+    'gross_profit_rate':'毛利率( %)',
+    'business_income':'营业收入(百万元)',
+    'bips':'每股主营业务收入(元)',
+}
+
+# ----------------------------------------------------------------------------------------
+
 USER_NAME = 'root'
 PASS_WORD = 'root'
 DB_NAME = 'tu'

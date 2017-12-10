@@ -1,7 +1,7 @@
 from flask import render_template, make_response, request
 from flaskr.get_data.db.handler import query_by_sql, query_name_by_code, create_sql
 from ....get_data.db import *
-from ....get_data.db.handler import column_names, SqlWhereIs, SqlWhereRange
+from ....get_data.db.handler import column_names, column_label, SqlWhereIs, SqlWhereRange
 from ... import main
 from .. import parseQueryStockStr
 from . import gen_view_data
@@ -13,10 +13,15 @@ def trans_d_layout_resp():
     获取日交易数据操作界面的布局相应对象
     :return:
     '''
-    columns = column_names(TN_TRANSACTION_D)
-    if columns:
-        columns.remove('date')
-        columns.remove('code')
+    c_names = column_names(TN_TRANSACTION_D)
+    columns = []
+    if c_names:
+        c_names.remove('date')
+        c_names.remove('code')
+        for name in c_names:
+            label = column_label(name)
+            columns.append({'name': name, 'label': label})
+
     date = {'start': perYearStr(), 'end': todayStr()}
     resp = make_response(render_template('views/layout_trans_d.html', columns=columns, date=date))
     return resp

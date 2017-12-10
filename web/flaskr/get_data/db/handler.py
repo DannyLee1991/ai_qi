@@ -112,6 +112,13 @@ def query_name_by_code(code):
         return name
     return
 
+def column_label(column):
+    '''
+    根据列名 获取对应的标签名
+    :param column:
+    :return:
+    '''
+    return COLUMN_LABEL_DICT[column]
 
 def column_names(table_name):
     '''
