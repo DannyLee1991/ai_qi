@@ -17,7 +17,7 @@
 <script type="text/javascript" src="{{ url_for('static', filename='js/typeahead.js') }}"></script>
 
 <div class="container-fluid">
-    <table class="table table-striped">
+    <table class="table table-striped col-md-7">
         <thead>
         <tr>
             <th>
@@ -41,6 +41,8 @@
             <form action="/fs_data" method="post">
                 <td>
                     {{item.name}}
+                    <br/>
+                    table：{{item.table.table}}
                 </td>
                 <td>
                     <input name="id" value="{{item.id}}" hidden/>
