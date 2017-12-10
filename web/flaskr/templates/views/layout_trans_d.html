@@ -1,30 +1,60 @@
 <script type="text/javascript" src="{{ url_for('static', filename='js/typeahead.js') }}"></script>
 <script type="text/javascript" src="{{ url_for('static', filename='view_trans_d.js') }}"></script>
 
+<!--用于时间选择-->
+<script src="{{ url_for('static', filename='js/moment-with-locales.js') }}"></script>
+<link href="{{ url_for('static', filename='css/bootstrap-datetimepicker.min.css') }}" rel="stylesheet">
+<script src="{{ url_for('static', filename='js/bootstrap-datetimepicker.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/bootstrap-datetimepicker.zh-CN.js') }}"></script>
+<script src="{{ url_for('static', filename='js/datetimepick.js') }}"></script>
+
 <div id="table_container" class="col-xs-9 column">
     <div id="view">
     </div>
     <hr/>
 
     <h3>特征选取</h3>
-    <div class="checkbox">
-        {% for column in columns%}
-        <label class="checkbox-inline">
-            <input type="checkbox" id="cb_which_{{column}}" checked> {{column}}
-        </label>
-        {% endfor %}
+    <div class="row">
+        <div class="checkbox">
+            {% for column in columns%}
+            <label class="checkbox-inline">
+                <input type="checkbox" id="cb_which_{{column}}" checked> {{column}}
+            </label>
+            {% endfor %}
+        </div>
     </div>
 
     <h3>时间区间</h3>
-    
 
-    <div class="col-xs-8 column">
-        <div class="input-group">
-            <input id="searchWords" type="text" class="form-control" data-provide="typeahead" autocomplete="off"
-                   placeholder="请输入股票名称或代码">
-            <span class="input-group-btn">
+    <div class="row">
+        <div class="col-xs-5">
+            <div class="input-group">
+                <div class="input-group-addon">开始时间</div>
+                <input id="ip_date_start" type="text" name="start" value="{{date.start}}"
+                       class="form-control date"/>
+            </div>
+        </div>
+        <div class="col-xs-5">
+            <div class="input-group">
+                <div class="input-group-addon">截止时间</div>
+                <input id="ip_date_end" type="text" name="end" value="{{date.end}}"
+                       class="form-control date"/>
+            </div>
+        </div>
+        <br/>
+    </div>
+
+    <h3>查询</h3>
+
+    <div class="row">
+        <div class="col-xs-5 column">
+            <div class="input-group">
+                <input id="searchWords" type="text" class="form-control" data-provide="typeahead" autocomplete="off"
+                       placeholder="请输入股票名称或代码">
+                <span class="input-group-btn">
                 <button id="searchbtn" class="btn btn-default" type="button">Go!</button>
             </span>
+            </div>
         </div>
     </div>
 </div>

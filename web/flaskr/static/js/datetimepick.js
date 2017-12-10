@@ -9,7 +9,6 @@
     });
     //动态设置最小值
     picker.on('dp.change', function (e) {
-        alert(e.date);
         picker.data('DateTimePicker').minDate(e.date);
     });
 });

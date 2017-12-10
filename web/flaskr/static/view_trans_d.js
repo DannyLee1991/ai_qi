@@ -7,10 +7,17 @@ $(function() {
         // 生成which查询语句
         var selection=get_select_which();
 
-        if(selection.length == 0) {
+        var start = $('#ip_date_start').val();
+        var end = $('#ip_date_end').val();
+
+        if(!validSarchWord(words)) {
+            alert("请输入要查询的股票名或代码");
+        } else if(selection.length == 0) {
             alert("至少需要选取一个特征");
+        } else if (!validTime(start,end)) {
+            alert("开始时间必须小于结束时间");
         } else {
-            ajaxForView(words,selection);
+            ajaxForView(words,selection,start,end);
         }
 
     });
@@ -31,19 +38,29 @@ $(function() {
     }
 
     // 用户获取绘图结果的ajax请求
-    function ajaxForView(searchWord,selection){
+    function ajaxForView(searchWord,selection,start,end){
         $.ajax({
             url:"/views/view_trans_d",
             type:'post',
             data:{
                   queryWord:searchWord,
-                  which:selection
+                  which:selection,
+                  start:start,
+                  end:end
                 },
             dataType:"html",
             success: function(data,status){
               $('#view').html(data);
             }
         });
+    }
+
+    function validTime(start,end) {
+        return start < end;
+    }
+
+    function validSarchWord(words) {
+        return words.length > 0;
     }
 
 })
