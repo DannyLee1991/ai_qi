@@ -4,8 +4,6 @@ from flask_sqlalchemy import SQLAlchemy
 from config import config
 from flask_moment import Moment
 
-from .get_data import manager
-
 bootstrap = Bootstrap()
 moment = Moment()
 db = SQLAlchemy()

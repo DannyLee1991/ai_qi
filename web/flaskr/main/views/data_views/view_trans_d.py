@@ -1,8 +1,9 @@
+import tudata as tu
 from flask import render_template, make_response, request
-from flaskr.get_data.db import *
-from ... import main
+from utils.strutils import perYearStr, todayStr
+
 from . import gen_view_data, make_view_response
-from flaskr.utils.strutils import perYearStr, todayStr
+from ... import main
 
 
 def layout_resp():
@@ -10,13 +11,13 @@ def layout_resp():
     获取日交易数据操作界面的布局相应对象
     :return:
     '''
-    c_names = column_names(TN_TRANSACTION_D)
+    c_names = tu.column_names(tu.TN_TRANSACTION_D)
     columns = []
     if c_names:
         c_names.remove('date')
         c_names.remove('code')
         for name in c_names:
-            label = column_label(name)
+            label = tu.column_label(name)
             columns.append({'name': name, 'label': label})
 
     date = {'start': perYearStr(), 'end': todayStr()}
@@ -39,7 +40,7 @@ def view_trans_d():
     else:
         which = "open"
 
-    code = parseQueryStockStr(queryWord)
+    code = tu.parseQueryStockStr(queryWord)
 
     return make_view_response(plot_trans_d, code=code, which=which, date_start=start, date_end=end)
 
@@ -57,20 +58,20 @@ def plot_trans_d(kwargs):
     date_end = kwargs['date_end']
     limit = -1
 
-    stock_name = query_name_by_code(code)
+    stock_name = tu.query_name_by_code(code)
     name = "%s(%s) 日交易记录" % (stock_name, code)
 
     if "date" not in which:
         which.append("date")
 
-    where_is_list = [SqlWhereIs('code', code), ]
-    where_range_list = [SqlWhereRange('date', date_start, date_end), ]
+    where_is_list = [tu.SqlWhereIs('code', code), ]
+    where_range_list = [tu.SqlWhereRange('date', date_start, date_end), ]
 
-    sql = create_sql(TN_TRANSACTION_D, which, "date", limit,
+    sql = tu.create_sql(tu.TN_TRANSACTION_D, which, "date", limit,
                      where_is_list=where_is_list,
                      where_range_list=where_range_list
                      )
-    df = execute_sql(sql)
+    df = tu.execute_sql(sql)
     df.cumsum(0)
     plot = df.plot(x='date', title=name)
     fig = plot.get_figure()

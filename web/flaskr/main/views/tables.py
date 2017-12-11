@@ -1,11 +1,12 @@
+import tudata as tu
 from flask import render_template, make_response, request
+
 from .. import main
-from ...get_data import db as tudb
 
 
 @main.route('/tables')
 def tables():
-    return make_response(render_template('tables.html', tables=tudb.TABLE_LIST))
+    return make_response(render_template('tables.html', tables=tu.TABLE_LIST))
 
 @main.route('/tables/sql', methods=['POST'])
 def execute_sql():
@@ -19,7 +20,7 @@ def execute_sql():
     if sql is None or sql == "":
         title = "查询语句不能为空"
     else:
-        df = tudb.execute_sql(sql)
+        df = tu.execute_sql(sql)
         if df is None:
             title = "没有查到相关数据，请检查您的sql是否正确以及检查相关数据是否已经获取"
         else:

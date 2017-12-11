@@ -1,13 +1,13 @@
 import matplotlib.pyplot as plt
-from flaskr.get_data.db.manager import query_by_sql
+from flaskr.get_data.db import handler
 import pandas as pd
 import matplotlib.ticker as ticker
 
-df = query_by_sql("select * from transaction_d ")
+df = handler.execute_sql("select count(*) as count,c_name from stock_industry group by c_name order by count desc")
 print(df)
 df.cumsum(0)
 plt.figure()
 
-df.plot(x='date',title="标题")
+df.plot(x='c_name',title="标题",kind='bar')
 
 plt.show()
