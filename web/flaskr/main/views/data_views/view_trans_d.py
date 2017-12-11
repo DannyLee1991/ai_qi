@@ -1,7 +1,5 @@
 from flask import render_template, make_response, request
-from flaskr.get_data.db.handler import query_by_sql, query_name_by_code, create_sql
-from ....get_data.db import *
-from ....get_data.db.handler import column_names, column_label, SqlWhereIs, SqlWhereRange
+from flaskr.get_data.db.handler import *
 from ... import main
 from .. import parseQueryStockStr
 from . import gen_view_data, make_view_response
@@ -50,8 +48,7 @@ def view_trans_d():
 def plot_trans_d(kwargs):
     '''
     绘制 股票交易记录数据 【每日】
-    :param name:
-    :param which:
+    :param kwargs: 绘图相关参数
     :return:
     '''
 

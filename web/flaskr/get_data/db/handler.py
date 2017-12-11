@@ -32,7 +32,7 @@ def check_is_exist_in_stock_basics_daily(date):
     :return:
     '''
     try:
-        old_df = pd.read_sql("select * from '%s' where date = '%s'" % (TABLE_STOCK_BASICS_DAILY, date), engine)
+        old_df = pd.read_sql("select * from '%s' where date = '%s'" % (T_STOCK_BASICS_DAILY, date), engine)
         return old_df.size > 0
     except:
         return False
@@ -46,7 +46,7 @@ def check_is_exist_in_tick(code, date):
     :return:
     '''
     try:
-        sql = "select date from %s where code = '%s' and date = '%s'" % (TABLE_TICK, code, date)
+        sql = "select date from %s where code = '%s' and date = '%s'" % (T_TICK, code, date)
         df = pd.read_sql(sql, engine)
         return len(df) > 0
     except:
