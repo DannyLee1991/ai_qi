@@ -4,11 +4,11 @@ from ....get_data.db import *
 from ....get_data.db.handler import column_names, column_label, SqlWhereIs, SqlWhereRange
 from ... import main
 from .. import parseQueryStockStr
-from . import gen_view_data
+from . import gen_view_data, make_view_response
 from flaskr.utils.strutils import perYearStr, todayStr
 
 
-def trans_d_layout_resp():
+def layout_resp():
     '''
     获取日交易数据操作界面的布局相应对象
     :return:
@@ -43,34 +43,27 @@ def view_trans_d():
         which = "open"
 
     code = parseQueryStockStr(queryWord)
-    data = error = None
-    try:
-        stock_name = query_name_by_code(code)
-        name = "%s(%s) 日交易记录" % (stock_name, code)
-        data = gen_trans_d_view_data(name, code, which=which, date_start=start, date_end=end)
-    except Exception as e:
-        print(e)
-        error = e
-    return make_response(render_template('views/view.html', data=data, error=error))
+
+    return make_view_response(plot_trans_d, code=code, which=which, date_start=start, date_end=end)
 
 
-def gen_trans_d_view_data(view_name, code, which, date_start, date_end):
+def plot_trans_d(kwargs):
     '''
-    生成每日交易数据的视图数据
+    绘制 股票交易记录数据 【每日】
     :param name:
     :param which:
     :return:
     '''
-    fig = plot_transaction_d(view_name, code, which, date_start, date_end)
-    return gen_view_data(fig)
 
+    code = kwargs['code']
+    which = kwargs['which']
+    date_start = kwargs['date_start']
+    date_end = kwargs['date_end']
+    limit = -1
 
-def plot_transaction_d(view_name, code, which, date_start, date_end, limit=-1):
-    '''
-    绘制 股票交易记录数据 【每日】
-    :param name:
-    :return:
-    '''
+    stock_name = query_name_by_code(code)
+    name = "%s(%s) 日交易记录" % (stock_name, code)
+
     if "date" not in which:
         which.append("date")
 
@@ -83,6 +76,8 @@ def plot_transaction_d(view_name, code, which, date_start, date_end, limit=-1):
                      )
     df = query_by_sql(sql)
     df.cumsum(0)
-    plot = df.plot(x='date', title=view_name)
+    plot = df.plot(x='date', title=name)
     fig = plot.get_figure()
-    return fig
+
+    data = gen_view_data(fig)
+    return data
