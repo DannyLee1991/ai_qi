@@ -1,7 +1,7 @@
 from flask import render_template, make_response, request
 from .. import main
 import json
-from ...get_data.db.handler import query_by_sql
+from ...get_data.db import execute_sql
 
 
 @main.route('/query/stockNames', methods=['GET'])
@@ -13,7 +13,7 @@ def queryStockNames():
     if word:
         sql = "select name, code from stock where name like '%" + str(word) + "%' or code like '%" + str(
             word) + "%' limit 10"
-        df = query_by_sql(sql)
+        df = execute_sql(sql)
 
         if df is not None:
             for i in range(len(df)):

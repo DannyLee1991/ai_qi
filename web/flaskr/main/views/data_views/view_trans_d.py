@@ -1,5 +1,5 @@
 from flask import render_template, make_response, request
-from flaskr.get_data.db.handler import *
+from flaskr.get_data.db import *
 from ... import main
 from . import gen_view_data, make_view_response
 from flaskr.utils.strutils import perYearStr, todayStr
@@ -70,7 +70,7 @@ def plot_trans_d(kwargs):
                      where_is_list=where_is_list,
                      where_range_list=where_range_list
                      )
-    df = query_by_sql(sql)
+    df = execute_sql(sql)
     df.cumsum(0)
     plot = df.plot(x='date', title=name)
     fig = plot.get_figure()

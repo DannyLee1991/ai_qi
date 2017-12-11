@@ -1,6 +1,6 @@
 from flask import render_template, make_response, request, redirect, url_for
 from flaskr.utils.flash import *
-from flaskr.get_data.db.handler import *
+from flaskr.get_data.db import *
 from flaskr.get_data import manager
 
 from .. import main

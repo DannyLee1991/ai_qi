@@ -1,4 +1,4 @@
-from .db.handler import *
+from .db import *
 
 from .fetcher.fetch_Fuquan import fetch_fuquan, gen_time_interval
 from .fetcher.fetch_Stock import fetch_stock_basic, fetch_stock_industry, fetch_stock_area, \

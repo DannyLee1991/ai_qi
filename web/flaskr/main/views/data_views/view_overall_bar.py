@@ -1,7 +1,7 @@
 from flask import render_template, make_response, request
 from ... import main
 from . import gen_view_data, make_view_response
-from flaskr.get_data.db.handler import query_by_sql
+from flaskr.get_data.db import execute_sql
 import matplotlib.pyplot as plt
 
 
@@ -23,7 +23,7 @@ def plot_overall_bar(type):
     :return:
     '''
     sql = "select count(*) as count,c_name from stock_industry group by c_name order by count desc limit 5"
-    df = query_by_sql(sql)
+    df = execute_sql(sql)
     df.cumsum(0)
 
     plot = df.plot(x='c_name', title="行业公司数量分布", kind='bar')

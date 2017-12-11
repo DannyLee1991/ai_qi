@@ -7,7 +7,7 @@ def all_codes():
     获取不重复的股票代码
     :return:
     '''
-    r = query_by_sql("select distinct code from %s" % TN_STOCK)
+    r = execute_sql("select distinct code from %s" % TN_STOCK)
     if r is not None:
         return r['code']
     else:
@@ -41,7 +41,7 @@ def query_code_by_name(name):
     :return:
     '''
     sql = "select code from stock where name = '" + str(name) + "'"
-    df = query_by_sql(sql)
+    df = execute_sql(sql)
 
     if df is not None and len(df) > 0:
         r = df.loc[0, ['code']]
@@ -57,7 +57,7 @@ def query_name_by_code(code):
     :return:
     '''
     sql = "select name from stock where code = '" + str(code) + "'"
-    df = query_by_sql(sql)
+    df = execute_sql(sql)
 
     if df is not None and len(df) > 0:
         r = df.loc[0, ['name']]
@@ -73,4 +73,4 @@ def read_top_data(table, top=100):
     :param top:
     :return:
     '''
-    return query_by_sql("select * from '%s' limit %s" % (table, top))
+    return execute_sql("select * from '%s' limit %s" % (table, top))
