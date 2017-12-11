@@ -1,7 +1,6 @@
 from flask import render_template, make_response, request
 from flaskr.get_data.db.handler import *
 from ... import main
-from .. import parseQueryStockStr
 from . import gen_view_data, make_view_response
 from flaskr.utils.strutils import perYearStr, todayStr
 

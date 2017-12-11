@@ -1,6 +1,5 @@
-import pandas as pd
-from . import all_codes
-from .db import *
+from .db.handler import *
+
 from .fetcher.fetch_Fuquan import fetch_fuquan, gen_time_interval
 from .fetcher.fetch_Stock import fetch_stock_basic, fetch_stock_industry, fetch_stock_area, \
     fetch_stock_concept
@@ -9,7 +8,6 @@ from .fetcher.fetch_Tick import fetch_tick
 from .fetcher.fetch_Transaction import fetch_transaction, start_date
 from ..utils.strutils import getEveryDay, todayStr, perYearStr
 
-from .db.handler import write2db, check_is_exist_in_stock_basics_daily, check_is_exist_in_tick
 
 def clear_data(table_name):
     '''

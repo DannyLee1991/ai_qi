@@ -1,4 +1,5 @@
 from sqlalchemy import create_engine
+import pandas as pd
 
 # 股票基本信息表名
 TN_STOCK = "stock"
@@ -98,6 +99,14 @@ COLUMN_LABEL_DICT = {
     'business_income':'营业收入(百万元)',
     'bips':'每股主营业务收入(元)',
 }
+
+def column_label(column):
+    '''
+    根据列名 获取对应的标签名
+    :param column:
+    :return:
+    '''
+    return COLUMN_LABEL_DICT[column]
 
 # ----------------------------------------------------------------------------------------
 
