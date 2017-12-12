@@ -4,22 +4,18 @@
 
 <div class="container">
     <div class="row clearfix">
-        <div class="col-md-3 column">
+        <div class="col-md-2 column">
             <div class="page [secondary] with-sidebar">
                 <div class="page-sidebar">
-                    <ul>
+                    <div class="btn-group-vertical" role="group" aria-label="...">
                         {% if tables %}
                         {% for table in tables %}
-                        <li style="list-style-type:none;">
-                            <p>
                                 <button id="bt_table_{{table.table}}" type="button"
-                                        class="btn btn-info btn-block btn-sm">{{ table.name }}
+                                        class="btn btn-default btn-block btn-sm">{{ table.name }}
                                 </button>
-                            </p>
-                        </li>
                         {% endfor %}
                         {%endif%}
-                    </ul>
+                    </div>
                 </div>
             </div>
         </div>
