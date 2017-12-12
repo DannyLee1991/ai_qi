@@ -2,7 +2,6 @@
 sql 构造器   通过传参的方式来构造sql语句
 '''
 
-
 SqlWhereIs = lambda name, val: {'name': name, 'val': val}
 SqlWhereRange = lambda name, start='', end='': {'name': name, 'start': start, 'end': end}
 SqlAnd = ' and '
@@ -19,7 +18,10 @@ def create_sql(table, which, orderby, limit, **kwargs):
     :param limit:
     :return:
     '''
-    which_sql = gen_which_sql_str(which)
+    which_as_prefix = kwargs['which_as_prefix']
+    # 没有前缀的列
+    which_no_prefix = kwargs['which_no_prefix']
+    which_sql = gen_which_sql_str(which, which_as_prefix,which_no_prefix)
     limit_sql = str(limit) if limit > 0 else ""
 
     where_is_list = kwargs['where_is_list']
@@ -75,19 +77,22 @@ def gen_where_sql(where_is_list, where_range_list):
     return where_sql
 
 
-def gen_which_sql_str(which):
+def gen_which_sql_str(which, which_as_prefix='',which_no_prefix=''):
     '''
     根据元组参数 生成sql查询语句的which部分
     :param which:
     :return:
     '''
     sql = "*"
+    # 指定 如果没有前缀 则不添加 as 语句  如果有前缀 则添加 as which_no_prefix+col_name
+    as_sql = lambda s: "" if s == which_no_prefix else " as '%s%s' " % (which_as_prefix, s)
+
     if which:
         if type(which) is str:
-            sql = which
+            sql = which + as_sql(which)
         else:
             sql = ""
             for s in which:
-                sql += s + ","
+                sql += s + as_sql(s) + ","
             sql = sql[:-1]
     return sql

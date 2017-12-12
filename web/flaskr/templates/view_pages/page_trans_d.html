@@ -50,16 +50,21 @@
 
     <h3>查询</h3>
 
-    <div class="row">
+    <small>标签点击可删除</small>
+    <div id="stock_labels">
+    </div>
+
+    <div class="row" style="margin-top: 10px;">
         <div class="col-xs-5 column">
             <div class="input-group">
                 <input id="searchWords" type="text" class="form-control" data-provide="typeahead" autocomplete="off"
                        placeholder="请输入股票名称或代码">
                 <span class="input-group-btn">
-                <button id="searchbtn" class="btn btn-default" type="button">Go!</button>
+                <button id="addOne" class="btn btn-default" type="button">AddOne</button>
             </span>
             </div>
         </div>
+        <button id="searchbtn" class="btn btn-default" type="button">Go!</button>
     </div>
 </div>
 {% endblock %}

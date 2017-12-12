@@ -14,7 +14,7 @@ def all_codes():
         print("stock表不存在，请先获取stock相关数据再执行此操作")
 
 
-def parseQueryStockStr(queryWord):
+def queryCode(queryWord):
     '''
     解析查询逻辑
     :param queryWord:

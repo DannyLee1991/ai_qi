@@ -24,7 +24,7 @@ def fs_data():
         if args_dict:
             for (k, v) in args_dict.items():
                 if k == 'nameCode':
-                    v = tu.parseQueryStockStr(v)
+                    v = tu.queryCode(v)
                 params.append(v)
 
         for item in t_items:

@@ -1,17 +1,31 @@
 $(function() {
 
+    $('#addOne').click(function(){
+        var words = $('#searchWords').val();
+        html = genLabelHtml(words);
+        $('#stock_labels').append(html);
+
+        $('#searchWords').val("");
+    });
+
+    function genLabelHtml(name) {
+        html = " <span class='label label-info label-stock' onclick='this.remove()'>" + name + "</span> ";
+        return html;
+    };
+
     $('#searchbtn').click(function(){
 
-        var words = $('#searchWords').val();
+//        var words = $('#searchWords').val();
 
+        var words = getSearchedWords();
         // 生成which查询语句
-        var selection=get_select_which();
+        var selection=getSelectWhich();
 
         var start = $('#ip_date_start').val();
         var end = $('#ip_date_end').val();
 
         if(!validSarchWord(words)) {
-            alert("请输入要查询的股票名或代码");
+            alert("请输入至少一个要查询的股票名或代码");
         } else if(selection.length == 0) {
             alert("至少需要选取一个特征");
         } else if (!validTime(start,end)) {
@@ -22,8 +36,18 @@ $(function() {
 
     });
 
+    // 获取当前需要查询的字符串数组
+    function getSearchedWords(){
+        var words = "";
+        $('.label-stock').each(function(){
+            var value = $(this).text();
+            words += value + ',';
+        });
+        return words;
+    }
+
     // 获取多选框选择的结果
-    function get_select_which(){
+    function getSelectWhich(){
         var select_which='';
         var cb_which_array =$("input[id^='cb_which_']");
         for(var i=0; i<cb_which_array.length; i++){
@@ -38,12 +62,12 @@ $(function() {
     }
 
     // 用户获取绘图结果的ajax请求
-    function ajaxForView(searchWord,selection,start,end){
+    function ajaxForView(words,selection,start,end){
         $.ajax({
             url:"/views/view_trans_d",
             type:'post',
             data:{
-                  queryWord:searchWord,
+                  queryWords:words,
                   which:selection,
                   start:start,
                   end:end
