@@ -36,4 +36,5 @@ def plot_overall_bar(type):
     plt.xticks(fontsize=7)
 
     data = gen_view_data(fig)
-    return data
+    error = ""
+    return data,error
