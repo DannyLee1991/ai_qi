@@ -5,11 +5,8 @@ $(function() {
         var id = this.id.substring(prefix.length,this.id.length);
 
         $.ajax({
-            url:"/views/layout",
-            type:'post',
-            data:{
-                  layout_id:id
-                },
+            url:"/visualization/" + id,
+            type:'get',
             dataType:"html",
             success: function(data,status){
               $('#view_container').html(data);
