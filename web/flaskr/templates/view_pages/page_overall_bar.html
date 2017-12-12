@@ -1,3 +1,5 @@
+{% extends "visualization.html" %}
+{% block view_content %}
 <script type="text/javascript" src="{{ url_for('static', filename='js/view_overall_bar.js') }}"></script>
 
 <div id="table_container" class="col-xs-9 column">
@@ -6,3 +8,4 @@
 
     <button id="bt_show" class="btn btn-default" type="submit">show</button>
 </div>
+{% endblock %}

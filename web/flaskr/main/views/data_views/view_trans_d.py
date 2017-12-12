@@ -6,7 +6,7 @@ from . import gen_view_data, make_view_response
 from ... import main
 
 
-def layout_resp():
+def resp(views):
     '''
     获取日交易数据操作界面的布局相应对象
     :return:
@@ -21,8 +21,7 @@ def layout_resp():
             columns.append({'name': name, 'label': label})
 
     date = {'start': perYearStr(), 'end': todayStr()}
-    resp = make_response(render_template('views/layout_trans_d.html', columns=columns, date=date))
-    return resp
+    return make_response(render_template('view_pages/page_trans_d.html',views=views, columns=columns, date=date))
 
 
 @main.route('/views/view_trans_d', methods=['POST'])

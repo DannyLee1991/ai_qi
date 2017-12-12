@@ -29,4 +29,4 @@ def make_view_response(plot_method,**kwargs):
         data = plot_method(kwargs)
     except Exception as e:
         error = e
-    return make_response(render_template('views/view.html', data=data, error=error))
+    return make_response(render_template('view_pages/view.html', data=data, error=error))

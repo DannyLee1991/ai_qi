@@ -1,32 +1,27 @@
 {% extends "base.html" %}
 {% block page_content %}
 <script src="{{ url_for('static', filename='js/bootstrap3-typeahead.min.js') }}"></script>
-<script type="text/javascript" src="{{ url_for('static', filename='js/visualization.js') }}"></script>
 
 <div class="container">
     <div class="row clearfix">
         <div class="col-md-3 column">
             <div class="page [secondary] with-sidebar">
                 <div class="page-sidebar">
-                    <ul>
+                    <div class="btn-group-vertical" role="group" aria-label="...">
                         {% if views %}
                         {% for view in views %}
-                        <li style="list-style-type:none;">
-                            <p>
-                                <button id="bt_view_{{view.id}}" type="button"
-                                        class="btn btn-info btn-block btn-sm">{{ view.name }}
-                                </button>
-                            </p>
-                        </li>
+                            <a class="btn btn-default" href="{{ url_for('main.visualization_layout', id=view.id) }}" role="button">{{ view.name }}</a>
                         {% endfor %}
                         {%endif%}
-                    </ul>
+                    </div>
                 </div>
             </div>
         </div>
-        <div id="view_container"></div>
+        <div id="view_container">
+            <!--绘图区域-->
+            {% block view_content %}{% endblock %}
+        </div>
     </div>
 </div>
-
 
 {% endblock %}

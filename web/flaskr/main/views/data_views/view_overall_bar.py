@@ -6,8 +6,8 @@ from . import gen_view_data, make_view_response
 from ... import main
 
 
-def layout_resp():
-    resp = make_response(render_template('views/layout_overall_bar.html'))
+def resp(views):
+    resp = make_response(render_template('view_pages/page_overall_bar.html',views=views))
     return resp
 
 
