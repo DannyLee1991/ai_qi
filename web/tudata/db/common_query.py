@@ -66,11 +66,11 @@ def query_name_by_code(code):
     return
 
 
-def read_top_data(table, top=100):
+def read_top_data(table_name, top=100):
     '''
     读取数据
-    :param table:
+    :param table_name:
     :param top:
     :return:
     '''
-    return execute_sql("select * from '%s' limit %s" % (table, top))
+    return execute_sql("select * from '%s' limit %s" % (table_name, top))
