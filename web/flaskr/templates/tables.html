@@ -10,8 +10,10 @@
                     <div class="btn-group-vertical" role="group" aria-label="...">
                         {% if tables %}
                         {% for table in tables %}
-                                <button id="bt_table_{{table.table}}" type="button"
-                                        class="btn btn-default btn-block btn-sm">{{ table.name }}
+                                <button id="bt_table_{{table.name}}" type="button"
+                                        class="btn btn-default btn-block btn-sm">{{ table.label }}
+                                    <br/>
+                                    <small>{{ table.name }}</small>
                                 </button>
                         {% endfor %}
                         {%endif%}

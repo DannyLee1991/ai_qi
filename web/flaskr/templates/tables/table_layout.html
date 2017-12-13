@@ -13,18 +13,18 @@
 
 <hr/>
 
-{% if table %}
+{% if table_body %}
 <div class="table-responsive">
     <table class="table table-bordered table-hover table-condensed">
         <thead>
         <tr>
-            {% for th in table.th %}
+            {% for th in table_body.th %}
             <th>{{th}}</th>
             {% endfor %}
         </tr>
         </thead>
         <tbody>
-        {% for tr in table.tb %}
+        {% for tr in table_body.tb %}
         <tr>
             {% for td in tr %}
             <td>{{td}}</td>

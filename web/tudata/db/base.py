@@ -26,7 +26,7 @@ TN_FUQUAN = 'fuquan'
 # 分笔数据表名
 TN_TICK = 'tick'
 
-table = lambda table, name: {"table": table, "name": name}
+table = lambda name, label: {"name": name, "label": label}
 
 # 相关表
 T_STOCK = table(TN_STOCK, "股票基本信息表")
