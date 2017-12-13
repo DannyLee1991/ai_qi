@@ -154,7 +154,6 @@ def fs_transaction_d_all():
 def fs_transaction_5min_all():
     '''
     获取全部股票的最新的5分钟交易数据 并入库
-    :param code:
     :return:
     '''
     codes = all_codes()

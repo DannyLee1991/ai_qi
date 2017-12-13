@@ -118,6 +118,115 @@ tu.read_top_data(table_name, top=100)
 
 返回结果是pandas DataFrame对象。
 
+##### 清空某个表：
+
+```
+tu.clear_data(table_name)
+```
+
+#### 获取数据
+
+##### 获取股票数据 并入库
+
+```
+tu.fs_stock()
+```
+
+##### 获取股票行业数据 并入库
+
+```
+tu.fs_stock_industry()
+```
+
+##### 获取股票地区数据 并入库
+
+```
+tu.fs_stock_area()
+```
+
+##### 获取股票概念数据 并入库
+
+```
+tu.fs_stock_concept()
+```
+
+##### 获取大盘某日股票基本信息数据 并入库
+
+```
+date = '2017-12-12'
+tu.fs_stock_basics_daily(date)
+```
+
+##### 获取大盘某个时间区间股票基本信息数据 并入库
+
+```
+begin_date = '2017-12-10'
+end_date = '2017-12-12'
+tu.fs_stock_basics_daily_r(begin_date, end_date)
+```
+
+##### 获取某只股票某天的分笔数据 并入库
+
+```
+code = '000001'
+date = '2017-12-12'
+tu.fs_tick(code,date)
+```
+
+##### 获取某只股票具体时间区间的分笔数据 并入库
+
+```
+code = '000001'
+begin_date = '2017-12-10'
+end_date = '2017-12-12'
+tu.fs_tick_r(code, begin_date, end_date)
+```
+
+##### 获取某只股票的最新的日交易数据 并入库
+
+```
+code = '000001'
+tu.fs_transaction_d(code)
+```
+
+##### 获取某只股票的最新的5分钟交易数据 并入库
+
+```
+code = '000001'
+tu.fs_transaction_5min(code)
+```
+
+##### 获取全部股票的最新的日交易数据 并入库
+
+```
+tu.fs_transaction_d_all()
+```
+
+##### 获取全部股票的最新的5分钟交易数据 并入库
+
+```
+tu.fs_transaction_5min_all()
+```
+
+##### 获取某个股票的复权数据 并入库
+
+```
+code = '000001'
+begin_date = '2017-12-10'
+end_date = '2017-12-12'
+autype = 'qfq' # 复权类型：前复权
+tu.fs_fuquan(code, begin_date, end_date, autype)
+```
+
+##### 获取全部股票的复权数据 并入库
+
+```
+begin_date = '2017-12-10'
+end_date = '2017-12-12'
+autype = 'qfq' # 复权类型：前复权
+tu.fs_fuquan_all(start_date, end_date, autype)
+```
+
 ---
 
 ### 界面层逻辑
