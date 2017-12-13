@@ -6,6 +6,25 @@
     <div id="view">
     </div>
 
-    <button id="bt_show" class="btn btn-default" type="submit">show</button>
+    <label for="radio">选项</label>
+    <div class="row">
+        <div class="radio col-xs-6">
+            {% for bar_type in bar_type_list %}
+            <label>
+                <input type="radio" name="typeOptions" id="or_{{bar_type.id}}">
+                {{bar_type.name}}
+            </label>
+            {% endfor %}
+        </div>
+    </div>
+
+    <label for="input_count">设置展示条数</label>
+    <div id="input_count" class="input-group col-xs-3">
+        <span class="input-group-addon">展示条数</span>
+        <input id="ip_count" type="number" class="form-control" value="20">
+    </div>
+
+
+    <button id="bt_show" class="btn btn-default" style="margin-top: 10px;">show</button>
 </div>
 {% endblock %}
