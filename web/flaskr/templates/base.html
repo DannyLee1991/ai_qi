@@ -29,10 +29,14 @@
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
                 <li id="nav-index"><a href="{{ url_for('main.index') }}">首页</a></li>
-                <li id="nav-setting"><a href="{{ url_for('main.setting') }}">设置</a></li>
                 <li id="nav-getdata"><a href="{{ url_for('main.getdata') }}">数据获取</a></li>
                 <li id="nav-tables"><a href="{{ url_for('main.tables') }}">Tables</a></li>
                 <li id="nav-visualization"><a href="{{ url_for('main.visualization') }}">可视化</a></li>
+                <li id="nav-models"><a href="{{ url_for('main.models') }}">模型</a></li>
+            </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                <li id="nav-setting"><a href="{{ url_for('main.setting') }}">设置</a></li>
             </ul>
         </div>
     </div>
