@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block page_content %}
+<div class="container">
+    <div class="row clearfix">
+        <div class="col-md-3 column">
+            <div class="page [secondary] with-sidebar">
+                <div class="page-sidebar">
+                    <div class="btn-group-vertical" role="group" aria-label="...">
+                        {% if creater_list %}
+                        {% for creater in creater_list %}
+                            <a class="btn btn-default" href="{{ url_for('main.dataset_add_type', type=creater.type) }}" role="button">{{ creater.name }}</a>
+                        {% endfor %}
+                        {%endif%}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="view_container">
+            <!--配置区域-->
+            {% block view_content %}{% endblock %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}

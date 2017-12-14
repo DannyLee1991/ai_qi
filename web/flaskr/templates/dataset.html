@@ -1,5 +1,21 @@
 {% extends "base.html" %}
 {% block page_content %}
-  <h2>数据集管理</h2>
-  {% if error %}<p class=error><strong>Error:</strong> {{ error }}{% endif %}
+<div class="container">
+    <div class="row clearfix col-md-9">
+
+        {% for info in info_list %}
+        <div class="jumbotron col-md-3 column" onclick="alert('aa')">
+            {{info}}
+        </div>
+        {% endfor %}
+        <div class="jumbotron col-md-3 column">
+            <h5>
+                <a href="{{ url_for('main.dataset_add') }}" target="_blank">
+                <span class="glyphicon glyphicon-plus"
+                      aria-hidden="true"></span>新增</a>
+            </h5>
+        </div>
+    </div>
+</div>
+
 {% endblock %}

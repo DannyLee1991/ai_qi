@@ -29,9 +29,9 @@ import pandas as pd
 # dstaset = ds.gen_trans_d_dataset('2017-11-01')
 # dstaset.save()
 
-list = ds.getAllDataSetFileName()
+list = ds.get_all_dataset_filename()
 print(list)
-dataset = ds.getDataSet(list[0])
+dataset = ds.get_dataset(list[0])
 print(dataset)
 
 # print("X------>")

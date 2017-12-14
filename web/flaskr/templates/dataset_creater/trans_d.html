@@ -1,0 +1,25 @@
+{% extends "dataset_add.html" %}
+{% block view_content %}
+<script type="text/javascript" src="{{ url_for('static', filename='js/view_overall_bar.js') }}"></script>
+
+<div id="table_container" class="col-xs-9 column">
+    <div id="view">
+    </div>
+
+    <label for="radio">选项</label>
+    <div class="row">
+        <div class="radio col-xs-6">
+
+        </div>
+    </div>
+
+    <label for="input_count">设置展示条数</label>
+    <div id="input_count" class="input-group col-xs-3">
+        <span class="input-group-addon">展示条数</span>
+        <input id="ip_count" type="number" class="form-control" value="20">
+    </div>
+
+
+    <button id="bt_show" class="btn btn-default" style="margin-top: 10px;">show</button>
+</div>
+{% endblock %}
