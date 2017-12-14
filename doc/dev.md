@@ -113,7 +113,7 @@ code = tu.queryCode(queryWord)
 ##### 查询某表的前n条数据
 
 ```
-tu.read_top_data(table_name, top=100)
+tu.query_top(table_name, top=100)
 ```
 
 返回结果是pandas DataFrame对象。

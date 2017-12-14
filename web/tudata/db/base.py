@@ -54,6 +54,7 @@ TABLE_LIST = [
 COLUMN_LABEL_DICT = {
     'code':'代码',
     'name':'名称',
+    'date':'时间',
     'industry':'细分行业',
     'area':'地区',
     'timeToMarket':'上市日期',
@@ -136,7 +137,8 @@ def execute_sql(sql):
     try:
         print("sql > %s" % sql)
         df = pd.read_sql(sql, engine)
-    except OperationalError:
+    except OperationalError as e:
+        print(e)
         df = None
     return df
 

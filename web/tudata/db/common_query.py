@@ -1,4 +1,5 @@
 from .base import *
+from utils import strutils
 
 
 @cache(use_mem=True)
@@ -12,6 +13,11 @@ def all_codes():
         return r['code']
     else:
         print("stock表不存在，请先获取stock相关数据再执行此操作")
+
+def all_trans_d_code():
+    r = execute_sql("select distinct code from %s" % TN_TRANSACTION_D)
+    if r is not None:
+        return r['code']
 
 
 def queryCode(queryWord):
@@ -66,7 +72,7 @@ def query_name_by_code(code):
     return
 
 
-def read_top_data(table_name, top=100):
+def query_top(table_name, top=100):
     '''
     读取数据
     :param table_name:
@@ -74,3 +80,24 @@ def read_top_data(table_name, top=100):
     :return:
     '''
     return execute_sql("select * from '%s' limit %s" % (table_name, top))
+
+
+def query_all(table_name):
+    '''
+    获取某表的全部数据
+    :param table_name:
+    :return:
+    '''
+    return execute_sql("select * from '%s'" % table_name)
+
+
+def query_trans_d(code, start_date, end_date=strutils.todayStr()):
+    '''
+    查询交易数据
+    :param code
+    :param start_date:
+    :param end_date:
+    :return:
+    '''
+    return execute_sql("select * from '%s' where date >= '%s' and date <= '%s' and code = '%s';" % (
+    TN_TRANSACTION_D, start_date, end_date, code))

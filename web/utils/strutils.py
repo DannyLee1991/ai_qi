@@ -97,3 +97,12 @@ def getEveryDay(begin_date, end_date=date2str(), format="%Y-%m-%d"):
         date_list.append(date_str)
         begin_date += datetime.timedelta(days=1)
     return date_list
+
+def getWeekIndex(date_str=todayStr()):
+    '''
+    根据时间字符串获取星期索引
+    :param date_str:
+    :return:
+    '''
+    date = str2date(date_str)
+    return date.tm_wday
