@@ -187,3 +187,4 @@ _cache/
 /web/migrations/
 /web/*.sqlite
 /web/*.db
+/web/_dataset/
