@@ -31,7 +31,7 @@ import pandas as pd
 
 list = ds.get_all_dataset_filename()
 print(list)
-dataset = ds.get_dataset(list[0])
+dataset = ds._get_dataset(list[0])
 print(dataset)
 
 # print("X------>")

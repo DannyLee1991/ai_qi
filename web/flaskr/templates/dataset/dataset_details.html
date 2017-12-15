@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block page_content %}
+
+<div class="panel panel-default">
+    <!-- Default panel contents -->
+    <div class="panel-heading">
+        <b>{{dataset.name}}</b> 详情：
+    </div>
+    <div class="panel-body">
+        <p>{{dataset.des}}</p>
+    </div>
+
+    <!-- List group -->
+    <ul class="list-group">
+        <li class="list-group-item">
+            <b class="col-md-2">数据集类型:</b>
+            {{dataset.typeObj.name}}
+        </li>
+        <li class="list-group-item">
+            <b class="col-md-2">数据量:</b>
+            {{dataset.X.shape[0]}}
+        </li>
+        <li class="list-group-item">
+            <b class="col-md-2">X shape:</b>
+            {{dataset.X.shape}}
+        </li>
+        <li class="list-group-item">
+            <b class="col-md-2">Y shape:</b>
+            {{dataset.Y.shape}}
+        </li>
+        <li class="list-group-item">
+            <b class="col-md-2">X 特征:</b>
+            {{dataset.col_x()}}
+        </li>
+        <li class="list-group-item">
+            <b class="col-md-2">X 特征对应名称:</b>
+            {{dataset.col_x_label()}}
+        </li>
+        <li class="list-group-item">
+            <b class="col-md-2">Y 特征:</b>
+            {{dataset.col_y()}}
+        </li>
+        <li class="list-group-item">
+            <b class="col-md-2">Y 特征对应名称:</b>
+            {{dataset.col_y_label()}}
+        </li>
+    </ul>
+</div>
+
+
+{% endblock %}

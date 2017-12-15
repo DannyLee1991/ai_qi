@@ -12,6 +12,7 @@ DATASET_TYPE_OBJ_LIST = [
     TO_TRANS_D,
 ]
 
+FILE_NAME_FORMAT = lambda type, name: "%s--%s.pkl" % (type, name)
 
 def get_all_types():
     '''
@@ -80,6 +81,6 @@ class DataSet():
         if not os.path.exists(path):
             os.makedirs(path)
 
-        file = path + os.path.sep + self.typeObj['type'] + "--" + self.name + ".pkl"
+        file = path + os.path.sep + FILE_NAME_FORMAT(self.typeObj['type'], self.name)
         with open(file, 'wb') as f:
             pk.dump(self, f)

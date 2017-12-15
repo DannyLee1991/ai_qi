@@ -13,6 +13,12 @@ def dataset_manage():
     return resp
 
 
+@main.route('/dataset/<type>/<name>')
+def dataset_details(type, name):
+    dataset = ds.get_dataset(type, name)
+    return make_response(render_template('dataset/dataset_details.html', dataset=dataset))
+
+
 @main.route('/dataset_manage/add')
 def dataset_add():
     return make_response(render_template('dataset/dataset_add.html', creater_list=creater_list()))
