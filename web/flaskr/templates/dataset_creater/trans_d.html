@@ -1,25 +1,20 @@
 {% extends "dataset_add.html" %}
-{% block view_content %}
-<script type="text/javascript" src="{{ url_for('static', filename='js/view_overall_bar.js') }}"></script>
-
-<div id="table_container" class="col-xs-9 column">
-    <div id="view">
-    </div>
-
-    <label for="radio">选项</label>
-    <div class="row">
-        <div class="radio col-xs-6">
-
-        </div>
-    </div>
-
-    <label for="input_count">设置展示条数</label>
-    <div id="input_count" class="input-group col-xs-3">
-        <span class="input-group-addon">展示条数</span>
-        <input id="ip_count" type="number" class="form-control" value="20">
-    </div>
+{% block dt_content %}
+<!--用于时间选择-->
+<script src="{{ url_for('static', filename='js/moment-with-locales.js') }}"></script>
+<link href="{{ url_for('static', filename='css/bootstrap-datetimepicker.min.css') }}" rel="stylesheet">
+<script src="{{ url_for('static', filename='js/bootstrap-datetimepicker.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/bootstrap-datetimepicker.zh-CN.js') }}"></script>
+<script src="{{ url_for('static', filename='js/datetimepick.js') }}"></script>
+<script src="{{ url_for('static', filename='js/dataset_trans_d.js') }}"></script>
+{% import "bootstrap/wtf.html" as wtf %}
 
 
-    <button id="bt_show" class="btn btn-default" style="margin-top: 10px;">show</button>
+<div class="page-header">
+    <h3>生成每日交易数据集</h3>
 </div>
+<div class="col-xs-5">
+    {{ wtf.quick_form(form) }}
+</div>
+
 {% endblock %}

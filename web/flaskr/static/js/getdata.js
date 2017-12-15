@@ -1,0 +1,3 @@
+$(function() {
+    addTimePick($(".date"));
+})

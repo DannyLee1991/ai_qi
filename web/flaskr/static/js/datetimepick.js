@@ -1,6 +1,6 @@
- $(function () {
-    $(".date").attr('readonly','readonly');
-    var picker = $(".date").datetimepicker({
+function addTimePick(which) {
+    which.attr('readonly','readonly');
+    var picker = which.datetimepicker({
         minView: "month",   //选择到日期为止，不会显示分钟
         format: "yyyy-mm-dd",
         locale: moment.locale('zh-CN'),
@@ -11,4 +11,4 @@
     picker.on('dp.change', function (e) {
         picker.data('DateTimePicker').minDate(e.date);
     });
-});
+}

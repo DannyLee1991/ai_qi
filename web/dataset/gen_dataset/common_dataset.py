@@ -13,6 +13,12 @@ def gen_trans_d_dataset(name, start_date, end_date=strutils.todayStr(), offset_d
     :param offset_day:
     :return:
     '''
+    print('开始创建【每日交易记录数据集】')
+    print('-- name => %s ' % name)
+    print('-- start_date => %s ' % start_date)
+    print('-- end_date => %s ' % end_date)
+    print('-- offset_day => %s ' % offset_day)
+
     X = None
     Y = None
 
@@ -35,4 +41,6 @@ def gen_trans_d_dataset(name, start_date, end_date=strutils.todayStr(), offset_d
     info = "开始时间%s,结束时间%s,日期间隔%s" % (start_date, end_date, offset_day)
     dataset = DataSet(X, Y, name, info)
     dataset.save()
+
+    print('%s 数据集创建成功' % name)
     return dataset
