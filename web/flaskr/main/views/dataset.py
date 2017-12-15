@@ -1,8 +1,9 @@
-from flask import render_template, make_response
+from flask import render_template, make_response, redirect, url_for
 from .. import main
 import dataset as ds
 from ..form.create_dataset_form import CreateTransDDataSetForm
 from utils.flash import *
+from utils.strutils import perYearStr, todayStr
 
 
 @main.route('/dataset_manage')
@@ -19,8 +20,8 @@ def dataset_add():
 
 @main.route('/dataset_manage/add/<type>', methods=['GET', 'POST'])
 def dataset_add_type(type):
-    if type == ds.TYPE_TRANS_D:
-        form = CreateTransDDataSetForm()
+    if type == ds.TO_TRANS_D['type']:
+        form = CreateTransDDataSetForm(perYearStr(), todayStr())
 
         if form.validate_on_submit():
             name = form.name.data
@@ -30,6 +31,7 @@ def dataset_add_type(type):
             if start_date < end_date:
                 ds.gen_trans_d_dataset(name, start_date, end_date, int(date_offset))
                 flash_success("数据集【%s】创建成功" % name)
+                return redirect(url_for('main.dataset_manage'))
             else:
                 flash_warning("起始日期需小于截止日期")
 
@@ -40,4 +42,4 @@ def dataset_add_type(type):
 
 
 def creater_list():
-    return ds.DATASET_CREATER_LIST
+    return ds.DATASET_TYPE_OBJ_LIST

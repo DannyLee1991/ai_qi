@@ -4,11 +4,12 @@
     <div class="row clearfix col-md-9">
 
         {% for info in info_list %}
-        <div class="jumbotron col-md-3 column" onclick="alert('aa')">
-            {{info}}
+        <div class="jumbotron col-md-4 col-md-offset-1" onclick="alert('aa')">
+            <h5>{{info.name}}</h5>
+            <small>{{info.typeObj.name}}</small>
         </div>
         {% endfor %}
-        <div class="jumbotron col-md-3 column">
+        <div class="jumbotron col-md-4 col-md-offset-1">
             <h5>
                 <a href="{{ url_for('main.dataset_add') }}" target="_blank">
                 <span class="glyphicon glyphicon-plus"

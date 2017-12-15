@@ -18,7 +18,7 @@ def get_all_dataset_info_list():
     infolist = []
     for name in get_all_dataset_filename():
         dataset = get_dataset(name)
-        infolist.append(dataset.info)
+        infolist.append(dataset.info())
     return infolist
 
 def get_dataset(name):

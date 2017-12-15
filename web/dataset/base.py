@@ -4,19 +4,41 @@ import os
 
 DATA_SET_PATH = './_dataset'
 
+type_func = lambda type, name: {"type": type, "name": name}
+
+TO_TRANS_D = type_func("trans_d", "每日交易数据")
+
+DATASET_TYPE_OBJ_LIST = [
+    TO_TRANS_D,
+]
+
+
+def get_all_types():
+    '''
+    获取所有的类型
+    :return:
+    '''
+    types = []
+    for t in DATASET_TYPE_OBJ_LIST:
+        type = t['type']
+        types.append(type)
+    return types
+
+
 class DataSet():
-    def __init__(self, X, Y, name, des=''):
+    def __init__(self, typeObj, name, X, Y, des):
         self.X = X
         self.Y = Y
+        self.typeObj = typeObj
         self.name = name
         self.des = des
-        self.info = self._info()
 
     def __str__(self):
-        return str(self.des)
+        return str(self.info())
 
-    def _info(self):
+    def info(self):
         return {"name": self.name,
+                "typeObj": self.typeObj,
                 "des": self.des,
                 "size": len(self.X),
                 "x_shape": self.X.shape,
@@ -58,6 +80,6 @@ class DataSet():
         if not os.path.exists(path):
             os.makedirs(path)
 
-        file = path + os.path.sep + self.name + ".pkl"
-        with open(file,'wb') as f:
-            pk.dump(self,f)
+        file = path + os.path.sep + self.typeObj['type'] + "--" + self.name + ".pkl"
+        with open(file, 'wb') as f:
+            pk.dump(self, f)

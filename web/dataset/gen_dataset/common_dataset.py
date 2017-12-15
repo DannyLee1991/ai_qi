@@ -1,4 +1,4 @@
-from ..base import DataSet
+from ..base import DataSet, TO_TRANS_D
 import tudata as tu
 import pandas as pd
 from utils import strutils
@@ -38,8 +38,8 @@ def gen_trans_d_dataset(name, start_date, end_date=strutils.todayStr(), offset_d
         else:
             Y = y
 
-    info = "开始时间%s,结束时间%s,日期间隔%s" % (start_date, end_date, offset_day)
-    dataset = DataSet(X, Y, name, info)
+    des = "开始时间%s,结束时间%s,日期间隔%s" % (start_date, end_date, offset_day)
+    dataset = DataSet(TO_TRANS_D, name, X, Y, des)
     dataset.save()
 
     print('%s 数据集创建成功' % name)
