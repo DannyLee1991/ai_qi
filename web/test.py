@@ -8,10 +8,10 @@ mpl.rcParams['axes.unicode_minus'] = False  # 解决保存图像是负号'-'显�
 
 
 sql1 = "select open as '000002_open' ,date from transaction_d where code = '000002'  and  date >= '2016-12-13'  and  date <= '2017-12-13'  order by date "
-df1 = tu.execute_sql(sql1)
+df1 = tu.read_sql(sql1)
 
 sql2 = "select open as '000001_open' ,date from transaction_d where code = '000001'  and  date >= '2016-12-13'  and  date <= '2017-12-13'  order by date "
-df2 = tu.execute_sql(sql2)
+df2 = tu.read_sql(sql2)
 # df =pd.DataFrame(np.random.randn(100, 4), columns=list('ABCD'))
 
 df = pd.merge(df1, df2, on='date')

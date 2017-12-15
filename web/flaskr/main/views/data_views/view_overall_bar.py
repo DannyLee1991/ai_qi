@@ -63,7 +63,7 @@ def gen_plot(type, limit):
 
 def gen_industry_plot(limit):
     sql = "select count(*) as count,c_name from stock_industry group by c_name order by count desc limit %s" % (limit)
-    df = tu.execute_sql(sql)
+    df = tu.read_sql(sql)
     df.cumsum(0)
     plot = df.plot(x='c_name', title="公司行业分布", kind='bar')
     return plot
@@ -71,7 +71,7 @@ def gen_industry_plot(limit):
 
 def gen_area_plot(limit):
     sql = "select count(*) as count,area from stock_area group by area order by count desc limit %s" % (limit)
-    df = tu.execute_sql(sql)
+    df = tu.read_sql(sql)
     df.cumsum(0)
     plot = df.plot(x='area', title="公司地区分布", kind='bar')
     return plot
@@ -79,7 +79,7 @@ def gen_area_plot(limit):
 
 def gen_concept_plot(limit):
     sql = "select count(*) as count,c_name from stock_concept group by c_name order by count desc limit %s" % (limit)
-    df = tu.execute_sql(sql)
+    df = tu.read_sql(sql)
     df.cumsum(0)
     plot = df.plot(x='c_name', title="公司概念分布", kind='bar')
     return plot

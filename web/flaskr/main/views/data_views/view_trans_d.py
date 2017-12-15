@@ -73,7 +73,7 @@ def plot_trans_d(kwargs):
 
         which_as_prefix = "%s(%s)_" % (stock_name, code)
         sql = make_sql(code, date_end, date_start, limit, which, which_as_prefix=which_as_prefix)
-        _df = tu.execute_sql(sql)
+        _df = tu.read_sql(sql)
         if len(_df) > 0:
             if df is not None:
                 df = pd.merge(df, _df, on='date')

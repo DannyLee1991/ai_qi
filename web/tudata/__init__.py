@@ -65,6 +65,8 @@ def fs_stock_basics_daily(date=todayStr()):
         try:
             df = fetch_stock_basics_daily(date)
             write2db(df, TN_STOCK_BASICS_DAILY, if_exists='append')
+
+            _delete_duplicate_data(TN_STOCK_BASICS_DAILY, 'code', 'date')
         except:
             print("该日期 %s 没有数据" % date)
 
@@ -93,6 +95,7 @@ def fs_tick(code, date):
         df = fetch_tick(code, date)
         if df is not None:
             write2db(df, TN_TICK, if_exists='append')
+            _delete_duplicate_data(TN_TICK, 'code', 'date', 'time')
 
 
 def fs_tick_r(code, begin_date, end_date):
@@ -127,6 +130,8 @@ def fs_transaction_d(code):
         df = fetch_transaction(code, s, ktype)
         write2db(df, TN_TRANSACTION_D, if_exists='append')
 
+        _delete_duplicate_data(TN_TRANSACTION_D, 'code', 'date')
+
 
 def fs_transaction_5min(code):
     '''
@@ -138,6 +143,8 @@ def fs_transaction_5min(code):
     s = start_date(code, ktype)
     df = fetch_transaction(code, s, ktype)
     write2db(df, TN_TRANSACTION_5MIN, if_exists='append')
+
+    _delete_duplicate_data(TN_TRANSACTION_5MIN, 'code', 'date')
 
 
 def fs_transaction_d_all():
@@ -178,6 +185,8 @@ def fs_fuquan(code, start_date=perYearStr(), end_date=todayStr(), autype='qfq'):
     if s_date and e_date:
         df = fetch_fuquan(code, s_date, e_date, autype)
         write2db(df, TN_FUQUAN, 'append')
+
+        _delete_duplicate_data(TN_FUQUAN,'date','code','autype')
     else:
         print("%s数据已是最新，不需要重新获取")
 
@@ -193,3 +202,13 @@ def fs_fuquan_all(start_date=perYearStr(), end_date=todayStr(), autype='qfq'):
     codes = all_codes()
     for code in codes:
         fs_fuquan(code, start_date, end_date, autype)
+
+
+def _delete_duplicate_data(table_name, *fields):
+    '''
+    删除重复数据
+    :param table_name:
+    :param fields:
+    :return:
+    '''
+    execute_sql(sql_delete_duplicate_data(table_name, *fields))

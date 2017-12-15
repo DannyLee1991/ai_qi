@@ -5,7 +5,7 @@ def check_is_exist_in_stock_basics_daily(date):
     检查指定日期数据是否已经存在于股票基本信息中
     :return:
     '''
-    df = execute_sql("select * from '%s' where date = '%s'" % (TN_STOCK_BASICS_DAILY, date))
+    df = read_sql("select * from '%s' where date = '%s'" % (TN_STOCK_BASICS_DAILY, date))
     if df is not None:
         return len(df) > 0
     else:
@@ -19,7 +19,7 @@ def check_is_exist_in_tick(code, date):
     :param date:
     :return:
     '''
-    df = execute_sql("select date from %s where code = '%s' and date = '%s'" % (TN_TICK, code, date))
+    df = read_sql("select date from %s where code = '%s' and date = '%s'" % (TN_TICK, code, date))
     if df is not None:
         return len(df) > 0
     else:

@@ -2,10 +2,10 @@ from sqlalchemy import VARCHAR
 from utils.cache import cache
 from ..db import *
 from sqlalchemy.exc import OperationalError
+from sqlalchemy.orm import sessionmaker
 
 from sqlalchemy import create_engine
 import pandas as pd
-
 
 # 股票基本信息表名
 TN_STOCK = "stock"
@@ -52,60 +52,61 @@ TABLE_LIST = [
 ]
 
 COLUMN_LABEL_DICT = {
-    'code':'代码',
-    'name':'名称',
-    'date':'时间',
-    'industry':'细分行业',
-    'area':'地区',
-    'timeToMarket':'上市日期',
-    'pe':'市盈率',
-    'outstanding':'流通股本',
-    'totals':'总股本(万)',
-    'totalAssets':'总资产(万)',
-    'liquidAssets':'流动资产(万)',
-    'fixedAssets':'固定资产(万)',
-    'reserved':'公积金(万)',
-    'bvps':'每股净资',
-    'pb':'市净率',
-    'undp':'未分利润',
-    'perundp':'每股未分配',
-    'rev':'收入同比( %)',
-    'profit':'利润同比( %)',
-    'gpr':'毛利率( %)',
-    'npr':'净利润率( %)',
-    'holders':'股东人数',
-    'open':'开盘价',
-    'high':'最高价',
-    'close':'收盘价',
-    'low':'最低价',
-    'volume':'成交量',
-    'price_change':'价格变动',
-    'p_change':'涨跌幅',
-    'ma5':'5日均价',
-    'ma10':'10日均价',
-    'ma20':'20日均价',
-    'v_ma5':'5日均量',
-    'v_ma10':'10日均量',
-    'v_ma20':'20日均量',
-    'turnover':'换手率',
-    'autype':'复权类型',
-    'amount':'成交金额',
-    'type':'类型',
-    'year':'年度',
-    'quarter':'季度',
-    'eps':'每股收益',
-    'eps_yoy':'每股收益同比(%)',
-    'roe':'净资产收益率(%)',
-    'epcf':'每股现金流量(元)',
-    'net_profits':'净利润(万元)',
-    'profits_yoy':'净利润同比(%)',
-    'distrib':'分配方案',
-    'report_date':'发布日期',
-    'net_profit_ratio':'净利率( %)',
-    'gross_profit_rate':'毛利率( %)',
-    'business_income':'营业收入(百万元)',
-    'bips':'每股主营业务收入(元)',
+    'code': '代码',
+    'name': '名称',
+    'date': '时间',
+    'industry': '细分行业',
+    'area': '地区',
+    'timeToMarket': '上市日期',
+    'pe': '市盈率',
+    'outstanding': '流通股本',
+    'totals': '总股本(万)',
+    'totalAssets': '总资产(万)',
+    'liquidAssets': '流动资产(万)',
+    'fixedAssets': '固定资产(万)',
+    'reserved': '公积金(万)',
+    'bvps': '每股净资',
+    'pb': '市净率',
+    'undp': '未分利润',
+    'perundp': '每股未分配',
+    'rev': '收入同比( %)',
+    'profit': '利润同比( %)',
+    'gpr': '毛利率( %)',
+    'npr': '净利润率( %)',
+    'holders': '股东人数',
+    'open': '开盘价',
+    'high': '最高价',
+    'close': '收盘价',
+    'low': '最低价',
+    'volume': '成交量',
+    'price_change': '价格变动',
+    'p_change': '涨跌幅',
+    'ma5': '5日均价',
+    'ma10': '10日均价',
+    'ma20': '20日均价',
+    'v_ma5': '5日均量',
+    'v_ma10': '10日均量',
+    'v_ma20': '20日均量',
+    'turnover': '换手率',
+    'autype': '复权类型',
+    'amount': '成交金额',
+    'type': '类型',
+    'year': '年度',
+    'quarter': '季度',
+    'eps': '每股收益',
+    'eps_yoy': '每股收益同比(%)',
+    'roe': '净资产收益率(%)',
+    'epcf': '每股现金流量(元)',
+    'net_profits': '净利润(万元)',
+    'profits_yoy': '净利润同比(%)',
+    'distrib': '分配方案',
+    'report_date': '发布日期',
+    'net_profit_ratio': '净利率( %)',
+    'gross_profit_rate': '毛利率( %)',
+    'business_income': '营业收入(百万元)',
+    'bips': '每股主营业务收入(元)',
 }
+
 
 def column_label(column):
     '''
@@ -114,6 +115,7 @@ def column_label(column):
     :return:
     '''
     return COLUMN_LABEL_DICT[column]
+
 
 # ----------------------------------------------------------------------------------------
 
@@ -126,9 +128,18 @@ conn_sqlite = 'sqlite:///%s.db' % DB_NAME
 
 engine = create_engine(conn_sqlite, echo=False)
 
-
-
 def execute_sql(sql):
+    '''
+    执行sql
+    :param sql:
+    :return:
+    '''
+    DB_Session = sessionmaker(bind=engine)
+    session = DB_Session()
+    session.execute(sql)
+
+
+def read_sql(sql):
     '''
     根据sql查询数据
     :param sql:
@@ -149,12 +160,11 @@ def column_names(table_name):
     :param table_name:
     :return:
     '''
-    df = execute_sql("select * from %s limit 1" % table_name)
+    df = read_sql("select * from %s limit 1" % table_name)
     if df is not None:
         columns = [column for column in df]
         return columns
     return None
-
 
 
 def write2db(df, table, if_exists):
@@ -167,7 +177,13 @@ def write2db(df, table, if_exists):
         index_name = df.index.name
         dtype = {}
         if index_name:
-            dtype[index_name] = VARCHAR(df.index.get_level_values(index_name).str.len().max())
+            try:
+                v = df.index.get_level_values(index_name)
+                max = v.str.len().max()
+            except Exception as e:
+                print(e)
+                max = 20
+            dtype[index_name] = VARCHAR(max)
 
         df.to_sql(table, engine, if_exists=if_exists, dtype=dtype)
         print("新数据插入成功 [table: %s ]" % (table))

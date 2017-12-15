@@ -20,7 +20,7 @@ def execute_sql():
     if sql is None or sql == "":
         title = "查询语句不能为空"
     else:
-        df = tu.execute_sql(sql)
+        df = tu.read_sql(sql)
         if df is None:
             title = "没有查到相关数据，请检查您的sql是否正确以及检查相关数据是否已经获取"
         else:

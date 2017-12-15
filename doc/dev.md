@@ -68,7 +68,7 @@ tu.TABLE_LIST
 
 ```
 sql = 'select * from stock limit 100'
-tu.execute_sql(sql)
+tu.read_sql(sql)
 ```
 
 这里可以执行任意sql语句，如果执行的是查询语句，返回结果是pandas的DataFrame对象。
