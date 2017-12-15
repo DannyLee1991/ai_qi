@@ -5,6 +5,10 @@
     <!-- Default panel contents -->
     <div class="panel-heading">
         <b>{{dataset.name}}</b> 详情：
+        <div class="pull-right" onclick="window.location='{{url_for('main.dataset_del',type=dataset.typeObj.type,name=dataset.name)}}'">
+            <span class="glyphicon glyphicon-trash span-right"
+                  aria-hidden="true"></span>
+        </div>
     </div>
     <div class="panel-body">
         <p>{{dataset.des}}</p>

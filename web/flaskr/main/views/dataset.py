@@ -16,7 +16,14 @@ def dataset_manage():
 @main.route('/dataset/<type>/<name>')
 def dataset_details(type, name):
     dataset = ds.get_dataset(type, name)
-    return make_response(render_template('dataset/dataset_details.html', dataset=dataset))
+    return make_response(render_template('dataset/dataset_details.html',
+                                         dataset=dataset))
+
+@main.route('/dataset-del/<type>/<name>')
+def dataset_del(type, name):
+    ds.remove_dataset(type, name)
+    flash_success("数据集【%s】删除成功" % name)
+    return redirect(url_for('main.dataset_manage'))
 
 
 @main.route('/dataset_manage/add')
