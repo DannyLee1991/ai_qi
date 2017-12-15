@@ -9,13 +9,13 @@ from utils.strutils import perYearStr, todayStr
 @main.route('/dataset_manage')
 def dataset_manage():
     info_list = ds.get_all_dataset_info_list()
-    resp = make_response(render_template('dataset.html', info_list=info_list))
+    resp = make_response(render_template('dataset/dataset.html', info_list=info_list))
     return resp
 
 
 @main.route('/dataset_manage/add')
 def dataset_add():
-    return make_response(render_template('dataset_add.html', creater_list=creater_list()))
+    return make_response(render_template('dataset/dataset_add.html', creater_list=creater_list()))
 
 
 @main.route('/dataset_manage/add/<type>', methods=['GET', 'POST'])
@@ -35,10 +35,10 @@ def dataset_add_type(type):
             else:
                 flash_warning("起始日期需小于截止日期")
 
-        return make_response(render_template('dataset_creater/trans_d.html',
+        return make_response(render_template('dataset/creater/trans_d.html',
                                              creater_list=creater_list(),
                                              form=form))
-    return make_response(render_template('dataset_add.html'))
+    return make_response(render_template('dataset/dataset_add.html'))
 
 
 def creater_list():

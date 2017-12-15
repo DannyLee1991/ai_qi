@@ -4,16 +4,15 @@
     <div class="row clearfix col-md-9">
 
         {% for info in info_list %}
-        <div class="jumbotron col-md-4 col-md-offset-1" onclick="alert('aa')">
+        <div class="jumbotron col-md-4 col-md-offset-1" onclick="window.location=''">
             <h5>{{info.name}}</h5>
             <small>{{info.typeObj.name}}</small>
         </div>
         {% endfor %}
-        <div class="jumbotron col-md-4 col-md-offset-1">
+        <div class="jumbotron col-md-4 col-md-offset-1" onclick="window.location='{{ url_for('main.dataset_add') }}'">
             <h5>
-                <a href="{{ url_for('main.dataset_add') }}" target="_blank">
                 <span class="glyphicon glyphicon-plus"
-                      aria-hidden="true"></span>新增</a>
+                      aria-hidden="true"></span>新增
             </h5>
         </div>
     </div>
