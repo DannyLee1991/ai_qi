@@ -44,6 +44,8 @@ def gen_trans_d_dataset(name, start_date, end_date=strutils.todayStr(), offset_d
         # 为尽量保证数据不丢失 每100步 存一次
         if index % 10 == 0:
             print("---【%s】执行一次保存操作 x shape %s---" % (name, X.shape))
+            dataset.X = X
+            dataset.Y = Y
             dataset.save()
 
     dataset.save()
