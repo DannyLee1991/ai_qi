@@ -1,8 +1,9 @@
 import tudata as tu
 import pickle as pk
 import os
+from config import basedir
 
-DATA_SET_PATH = './_dataset'
+DATA_SET_PATH = basedir + '/_dataset'
 
 type_func = lambda type, name: {"type": type, "name": name}
 
@@ -37,11 +38,14 @@ class DataSet():
     def __str__(self):
         return str(self.info())
 
+    def datasize(self):
+        return len(self.X)
+
     def info(self):
         return {"name": self.name,
                 "typeObj": self.typeObj,
                 "des": self.des,
-                "size": len(self.X),
+                "datasize": self.datasize(),
                 "x_shape": self.X.shape,
                 "y_shape": self.Y.shape,
                 "x_col": self.col_x(),
