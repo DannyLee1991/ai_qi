@@ -1,6 +1,7 @@
 import dataset as ds
 import random
 import numpy as np
+from web.dataset_preproces.common import uniform_distribution
 
 info_list = ds.get_all_dataset_info_list()
 print(info_list)
@@ -21,11 +22,32 @@ test_size = int(size * 0.2)
 
 X = dataset.X.as_matrix()
 Y = dataset.Y.as_matrix()
+
+# 剔除日期字段
+X = X[:, 1:]
+# 改变数据的dtype
+X = X.astype('float')
+
+
 # 将Y 转换成int类别
-Y = np.asarray(list(map(int, Y)))
-# 变形成 n,1 的形状
-Y = Y.reshape(Y.shape[0], 1)
-print("Y shape is %s" % Y.shape)
+# 由于tensorflow 接受的类别标签必须是 大于0的数 所以对Y值转成int之后再 +10
+# Y = np.asarray(list(map(lambda x: int(x) + 10, Y)))
+Y = np.asarray(list(map(float, Y)))
+
+# def label_func(num):
+#     # 设置数据分段区间，使得各个区间保持均匀分布
+#     split_points = [-10.08, -2.3900000000000001, -1.4199999999999999, -0.84999999999999998, -0.40999999999999998, 0.0, 0.28999999999999998, 0.68999999999999995, 1.24, 2.25, 10.16]
+#     for index, point in enumerate(split_points):
+#         if num < point:
+#             return index
+#     return len(split_points)
+#
+# Y = np.asarray(list(map(label_func, Y)))
+
+Y = uniform_distribution(Y,21,'n')
+print(Y)
+
+print("Y shape is %s" % str(Y.shape))
 
 # 生成训练集
 train_X = X[index_list[:train_size]]
@@ -50,3 +72,28 @@ print("test X shape %s" % (str(test_X.shape)))
 print("test Y shape %s" % (str(test_Y.shape)))
 
 print(test_Y)
+
+print(test_X.dtype)
+
+uniqueTrain = set()
+for l in train_Y:
+    uniqueTrain.add(l)
+
+uniqueTrain = list(uniqueTrain)
+numClasses = len(uniqueTrain)
+print(uniqueTrain)
+print(numClasses)
+
+#
+#
+#
+#
+#
+# 画图逻辑
+# import matplotlib.pyplot as plt
+#
+# fig, axs = plt.subplots()
+#
+# axs.hist(Y, bins=numClasses)
+#
+# plt.show()

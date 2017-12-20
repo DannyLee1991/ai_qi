@@ -188,3 +188,4 @@ _cache/
 /web/*.sqlite
 /web/*.db
 /web/_dataset/
+/web/_models/
