@@ -1,108 +1,62 @@
-from base import register, get_model_path
+import dataset_preproces as dp
+import keras
+from keras.models import Sequential
+from keras.layers import Dense, Activation
+from utils.cache import cache
+from config import basedir
 
-MODEL_NAME = 'DNN'
 
-register(MODEL_NAME)
+def train_trans_d_model(name):
+    type = "trans_d"
 
-import tensorflow as tf
-import numpy as np
-from dataset_preproces.pp_trans_d import *
+    log_dir = basedir + '/' + type + '/' + name
 
-path = get_model_path(MODEL_NAME)
+    data = dp.pp_trans_d_for_model(name)
+    train_X = data['train_X']
+    train_Y = data['train_Y']
+    valid_X = data['valid_X']
+    valid_Y = data['valid_Y']
+    test_X = data['test_X']
+    test_Y = data['test_Y']
+    num_classes = 22
 
-feature_columns = [tf.feature_column.numeric_column("x", shape=[15])]
+    model = Sequential()
+    model.add(Dense(32, input_dim=15, activation='relu'))
+    model.add(Dense(64, activation='relu'))
+    model.add(Dense(64, activation='relu'))
+    model.add(Dense(64, activation='relu'))
+    model.add(Dense(32, activation='relu'))
+    model.add(Dense(num_classes, activation='relu'))
 
-# Build 3 layer DNN with 10, 20, 10 units respectively.
-classifier = tf.estimator.DNNClassifier(feature_columns=feature_columns,
-                                        hidden_units=[20, 30, 20, 10, 10],
-                                        n_classes=22,
-                                        model_dir=path,
-                                        )
+    # For a multi-class classification problem
+    optimizer = keras.optimizers.Adam(lr=0.001, beta_1=0.9, beta_2=0.999, epsilon=1e-8)
 
-# Define the training inputs
-train_input_fn = tf.estimator.inputs.numpy_input_fn(
-    x={"x": train_X},
-    y=train_Y,
-    num_epochs=None,
-    shuffle=True)
+    model.compile(optimizer=optimizer,
+                  loss='categorical_crossentropy',
+                  metrics=['accuracy'])
 
-# Train model.
-classifier.train(input_fn=train_input_fn, steps=20000)
+    # Train the model, iterating on the data in batches of 32 samples
 
-# Define the test inputs
-valid_input_fn = tf.estimator.inputs.numpy_input_fn(
-    x={"x": valid_X},
-    y=valid_Y,
-    num_epochs=1,
-    shuffle=True)
+    one_hot_labels = keras.utils.to_categorical(train_Y, num_classes=num_classes)
 
-# Evaluate accuracy.
-accuracy_score = classifier.evaluate(input_fn=valid_input_fn)["accuracy"]
+    one_hot_valid_Y = keras.utils.to_categorical(valid_Y, num_classes=num_classes)
 
-print("\nTest Accuracy: {0:f}\n".format(accuracy_score))
+    print(one_hot_labels.shape)
+    print(one_hot_labels[1])
 
-new_samples = test_X[:100]
+    # 绘图回调，开启之后会比较卡
+    # tb_cb = keras.callbacks.TensorBoard(log_dir=log_dir, write_images=1, histogram_freq=1)
+    callbacks = []
+    # callbacks.append(tb_cb)
 
-predict_input_fn = tf.estimator.inputs.numpy_input_fn(
-    x={"x": new_samples},
-    num_epochs=1,
-    shuffle=False)
+    model.fit(train_X,
+              one_hot_labels,
+              epochs=20,
+              batch_size=64,
+              callbacks=callbacks,
+              validation_data=(valid_X, one_hot_valid_Y))
+    return model
 
-predictions = list(classifier.predict(input_fn=predict_input_fn))
-predicted_classes = [p["classes"] for p in predictions]
 
-print(
-    "New Samples, Class Predictions:    {}\n"
-        .format(predicted_classes))
-
-print(test_Y[:5])
-
-#
-#
-#
-#
-#
-_X = test_X[:1000]
-_Y = test_Y[:1000]
-test_input_fn = tf.estimator.inputs.numpy_input_fn(
-    x={"x": _X},
-    y=_Y,
-    num_epochs=1,
-    shuffle=True)
-#
-#
-#
-#
-# 计算召回率  和 F1Score
-preds = list(classifier.predict(input_fn=test_input_fn))
-p_classes = [p["classes"] for p in preds]
-y_pred = np.asarray(p_classes).astype('int')
-y_pred = y_pred.reshape(y_pred.shape[0])
-y_true = _Y
-
-print('===>')
-print(y_pred.shape)
-print(y_true.shape)
-
-print(y_true)
-# print(y_pred * y_true)
-#
-TP = np.count_nonzero(y_pred * y_true)
-print("TP", TP)
-TN = np.count_nonzero((y_pred - 1) * (y_true - 1))
-print("TN", TN)
-FP = np.count_nonzero(y_pred * (y_true - 1))
-print("FP", FP)
-FN = np.count_nonzero((y_pred - 1) * y_true)
-print("FN", FN)
-
-precision = TP / (TP + FP)
-recall = TP / (TP + FN)
-
-print("precision -------->")
-print(precision)
-print("recall -------->")
-print(recall)
-f1 = 2 * precision * recall / (precision + recall)
-print("F1 ------->")
-print(f1)
+name = "过去一年每日交易数据集"
+train_trans_d_model(name)

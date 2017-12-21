@@ -1,7 +1,8 @@
 # coding=utf-8
 import pickle, os, hashlib
+from config import basedir
 
-CACHE_PATH = './_cache'
+CACHE_PATH = basedir + '/_cache'
 
 mem_cache = {}
 
