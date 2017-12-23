@@ -1,11 +1,13 @@
 from sqlalchemy import VARCHAR
 from utils.cache import cache
 from ..db import *
+from .config import *
 from sqlalchemy.exc import OperationalError
 from sqlalchemy.orm import sessionmaker
 
-from sqlalchemy import create_engine
 import pandas as pd
+
+set_db_config('sqlite','tu','root','root')
 
 # 股票基本信息表名
 TN_STOCK = "stock"
@@ -119,22 +121,13 @@ def column_label(column):
 
 # ----------------------------------------------------------------------------------------
 
-USER_NAME = 'root'
-PASS_WORD = 'root'
-DB_NAME = 'tu'
-
-conn_mysql = 'mysql+mysqlconnector://%s:%s@localhost:3306/%s?charset=utf8' % (USER_NAME, PASS_WORD, DB_NAME)
-conn_sqlite = 'sqlite:///%s.db' % DB_NAME
-
-engine = create_engine(conn_sqlite, echo=False)
-
 def execute_sql(sql):
     '''
     执行sql
     :param sql:
     :return:
     '''
-    DB_Session = sessionmaker(bind=engine)
+    DB_Session = sessionmaker(bind=get_engine())
     session = DB_Session()
     session.execute(sql)
 
@@ -147,7 +140,7 @@ def read_sql(sql):
     '''
     try:
         print("sql > %s" % sql)
-        df = pd.read_sql(sql, engine)
+        df = pd.read_sql(sql, get_engine())
     except OperationalError as e:
         print(e)
         df = None
@@ -185,7 +178,7 @@ def write2db(df, table, if_exists):
                 max = 20
             dtype[index_name] = VARCHAR(max)
 
-        df.to_sql(table, engine, if_exists=if_exists, dtype=dtype)
+        df.to_sql(table, get_engine(), if_exists=if_exists, dtype=dtype)
         print("新数据插入成功 [table: %s ]" % (table))
     else:
         print("数据异常 没有数据入库")

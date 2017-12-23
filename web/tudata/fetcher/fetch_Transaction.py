@@ -2,7 +2,7 @@ import pandas as pd
 import tushare as ts
 from utils.strutils import nextDayStr, nextMinStr
 
-from ..db import engine, TN_TRANSACTION_D, TN_TRANSACTION_5MIN
+from ..db import read_sql, TN_TRANSACTION_D, TN_TRANSACTION_5MIN
 
 '''
 个股历史交易记录
@@ -84,7 +84,7 @@ def get_newest_date(code, ktype='D'):
     else:
         table = TN_TRANSACTION_D
 
-    df = pd.read_sql("select date from '%s' where code = '%s'" % (table, str(code)), engine)
+    df = read_sql("select date from '%s' where code = '%s'" % (table, str(code)))
 
     # 当前记录中 当前股票的最新记录日期
     return df['date'][0]
