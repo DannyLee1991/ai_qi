@@ -1,11 +1,14 @@
 {% extends "base.html" %}
 {% block page_content %}
 
+{% import "bootstrap/wtf.html" as wtf %}
+
 <div class="panel panel-default">
     <!-- Default panel contents -->
     <div class="panel-heading">
         <b>{{dataset.name}}</b> 详情：
-        <div class="pull-right" onclick="window.location='{{url_for('main.dataset_del',type=dataset.typeObj.type,name=dataset.name)}}'">
+        <div class="pull-right"
+             onclick="window.location='{{url_for('main.dataset_del',type=dataset.typeObj.type,name=dataset.name)}}'">
             <span class="glyphicon glyphicon-trash span-right"
                   aria-hidden="true"></span>
         </div>
@@ -50,6 +53,14 @@
         </li>
     </ul>
 </div>
+
+{% if dataset.isOK %}
+
+{% else %}
+<label for="continue_build">数据集尚未完成构建</label>
+{{ wtf.quick_form(form) }}
+
+{% endif %}
 
 
 {% endblock %}

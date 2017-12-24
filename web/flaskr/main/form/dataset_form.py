@@ -1,11 +1,9 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, TextAreaField, BooleanField, SelectField, \
-    SubmitField
+from wtforms import StringField, SubmitField, Label
 from wtforms.validators import Required, Length, Email, Regexp, NumberRange
 
 
 class CreateTransDDataSetForm(FlaskForm):
-
     def __init__(self, start_date_def, end_date_def, *args, **kwargs):
         super(CreateTransDDataSetForm, self).__init__(*args, **kwargs)
         self.start_date.data = start_date_def
@@ -18,3 +16,7 @@ class CreateTransDDataSetForm(FlaskForm):
                                                  Regexp('^[0-9]*$', 0,
                                                         '请输入数值')])
     submit = SubmitField('生成')
+
+
+class ContinueBuildForm(FlaskForm):
+    submit = SubmitField('继续构建数据集')

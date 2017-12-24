@@ -4,9 +4,13 @@
     <div class="row clearfix col-md-9">
 
         {% for info in info_list %}
-        <div class="panel panel-default col-md-4 col-md-offset-1" onclick="window.location='{{url_for('main.dataset_details',type=info.typeObj.type,name=info.name)}}'">
+        <div class="panel panel-info col-md-4 col-md-offset-1" onclick="window.location='{{url_for('main.dataset_details',type=info.typeObj.type,name=info.name)}}'">
             <div class="panel-body">
-                <h5>{{info.name}}</h5>
+                <h4>{{info.name}}
+                    {% if not info.isOK %}
+                    <span class="label label-warning">数据不完整</span>
+                    {% endif %}
+                </h4>
                 <small>{{info.typeObj.name}}</small>
             </div>
         </div>

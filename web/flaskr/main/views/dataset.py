@@ -1,7 +1,7 @@
 from flask import render_template, make_response, redirect, url_for
 from .. import main
 import dataset as ds
-from ..form.create_dataset_form import CreateTransDDataSetForm
+from ..form.dataset_form import CreateTransDDataSetForm,ContinueBuildForm
 from utils.flash import *
 from utils.strutils import perYearStr, todayStr
 
@@ -13,11 +13,17 @@ def dataset_manage():
     return resp
 
 
-@main.route('/dataset/<type>/<name>')
+@main.route('/dataset/<type>/<name>',methods=['GET', 'POST'])
 def dataset_details(type, name):
     dataset = ds.get_dataset(type, name)
+    form = ContinueBuildForm()
+    if form.validate_on_submit():
+        # 继续构建数据集
+        dataset.feed_all()
+
     return make_response(render_template('dataset/dataset_details.html',
-                                         dataset=dataset))
+                                         dataset=dataset,
+                                         form=form))
 
 
 @main.route('/dataset-del/<type>/<name>')
@@ -49,7 +55,7 @@ def dataset_add_type(type):
                     flash_danger("类型为【%s】的数据集【%s】已存在，请尝试换一个名字，或删除重名数据集" % (ds.TO_TRANS_D['name'], name))
                 else:
                     dataset = ds.gen_trans_d_dataset(name, start_date, end_date, int(date_offset))
-                    dataset.feed_and_save_all()
+                    dataset.feed_all()
 
                     flash_success("数据集【%s】创建成功" % name)
                 return redirect(url_for('main.dataset_manage'))

@@ -29,10 +29,6 @@ def get_all_types():
     return types
 
 
-# 状态
-# 初始状态，构建中，暂停中，完成，
-
-
 class DataSet():
     def __init__(self, typeObj, name, X, Y, des):
         self.X = X
@@ -40,10 +36,14 @@ class DataSet():
         self.typeObj = typeObj
         self.name = name
         self.des = des
-        self.status = 'init'
+        # 数据集是否完成创建（只有完整的数据集才可以被送入预处理阶段）
+        self.isOK = False
 
     def __str__(self):
         return str(self.info())
+
+    def set_isOK(self, isOk):
+        self.isOK = isOk
 
     def datasize(self):
         return len(self.X)
@@ -58,7 +58,8 @@ class DataSet():
                 "x_col": self.col_x(),
                 "y_col": self.col_y(),
                 "x_label": self.col_x_label(),
-                "y_label": self.col_y_label()
+                "y_label": self.col_y_label(),
+                "isOK": self.isOK
                 }
 
     def _col(self, which):
@@ -126,7 +127,11 @@ class TransDDataSet(DataSet):
         info['offset_day'] = self.offset_day
         return info
 
-    def feed(self, code):
+    def feed_item(self, code):
+        if self.isOK:
+            print("数据集以完整获取")
+            return
+
         if code in self.cache_codes:
             print("code = %s 数据已存在，不需要重复获取" % code)
         else:
@@ -143,14 +148,20 @@ class TransDDataSet(DataSet):
             else:
                 self.Y = y
 
-            self.save_cache(code)
+            # 记录本次获取到的缓存位
+            self.cache_codes.append(code)
 
-    def feed_and_save_all(self):
-        for index, code in enumerate(tu.all_trans_d_code()):
-            self.feed(code)
-            print("---【%s】执行一次保存操作 x shape %s---" % (self.name, self.X.shape))
             self.save()
-        print('%s 数据集创建成功' % self.name)
 
-    def save_cache(self, code):
-        self.cache_codes.append(code)
+    def feed_all(self):
+        if self.isOK:
+            print("数据集以完整获取")
+            return
+
+        for index, code in enumerate(tu.all_trans_d_code()):
+            self.feed_item(code)
+            print("---【%s】执行一次保存操作 x shape %s---" % (self.name, self.X.shape))
+
+        # 数据集创建完成
+        self.set_isOK(True)
+        print('%s 数据集创建成功' % self.name)
