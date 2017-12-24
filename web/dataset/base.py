@@ -113,6 +113,7 @@ class TransDDataSet(DataSet):
         self.start_date = start_date
         self.end_date = end_date
         self.offset_day = offset_day
+        self.cache_codes = []
 
     def info(self):
         info = super(TransDDataSet, self).info()
@@ -122,15 +123,23 @@ class TransDDataSet(DataSet):
         return info
 
     def feed(self, code):
-        df = tu.query_trans_d(code, self.start_date, self.end_date)
-        # 由于涨跌幅是次日的  所以要对数据进行'错位' 并且'错位之后'对X剔除末尾行，对Y剔除首行
-        x = df[:-self.offset_day]
-        y = pd.DataFrame({'p_change': df['p_change']})[self.offset_day:]
-        if len(self.X) > 0:
-            self.X = self.X.append(x, ignore_index=True)
+        if code in self.cache_codes:
+            print("code = %s 数据已存在，不需要重复获取" % code)
         else:
-            self.X = x
-        if len(self.Y) > 0:
-            self.Y = self.Y.append(y, ignore_index=True)
-        else:
-            self.Y = y
+            df = tu.query_trans_d(code, self.start_date, self.end_date)
+            # 由于涨跌幅是次日的  所以要对数据进行'错位' 并且'错位之后'对X剔除末尾行，对Y剔除首行
+            x = df[:-self.offset_day]
+            y = pd.DataFrame({'p_change': df['p_change']})[self.offset_day:]
+            if len(self.X) > 0:
+                self.X = self.X.append(x, ignore_index=True)
+            else:
+                self.X = x
+            if len(self.Y) > 0:
+                self.Y = self.Y.append(y, ignore_index=True)
+            else:
+                self.Y = y
+
+            self.save_cache(code)
+
+    def save_cache(self, code):
+        self.cache_codes.append(code)

@@ -31,8 +31,9 @@ def _get_dataset(file_name):
     :return:
     '''
     filepath = _get_dataset_file_path(file_name)
-    with open(filepath, 'rb') as f:
-        return pk.load(f)
+    if os.path.exists(filepath):
+        with open(filepath, 'rb') as f:
+            return pk.load(f)
 
 
 def get_dataset(type, name):
