@@ -3,7 +3,6 @@ import pickle as pk
 import os
 from config import basedir
 import pandas as pd
-from utils.cache import cache
 
 DATA_SET_PATH = basedir + '/_dataset'
 
@@ -30,6 +29,10 @@ def get_all_types():
     return types
 
 
+# 状态
+# 初始状态，构建中，暂停中，完成，
+
+
 class DataSet():
     def __init__(self, typeObj, name, X, Y, des):
         self.X = X
@@ -37,6 +40,7 @@ class DataSet():
         self.typeObj = typeObj
         self.name = name
         self.des = des
+        self.status = 'init'
 
     def __str__(self):
         return str(self.info())
@@ -140,6 +144,13 @@ class TransDDataSet(DataSet):
                 self.Y = y
 
             self.save_cache(code)
+
+    def feed_and_save_all(self):
+        for index, code in enumerate(tu.all_trans_d_code()):
+            self.feed(code)
+            print("---【%s】执行一次保存操作 x shape %s---" % (self.name, self.X.shape))
+            self.save()
+        print('%s 数据集创建成功' % self.name)
 
     def save_cache(self, code):
         self.cache_codes.append(code)

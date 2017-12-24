@@ -19,6 +19,7 @@ def dataset_details(type, name):
     return make_response(render_template('dataset/dataset_details.html',
                                          dataset=dataset))
 
+
 @main.route('/dataset-del/<type>/<name>')
 def dataset_del(type, name):
     ds.remove_dataset(type, name)
@@ -42,8 +43,15 @@ def dataset_add_type(type):
             end_date = form.end_date.data
             date_offset = form.date_offset.data
             if start_date < end_date:
-                ds.gen_trans_d_dataset(name, start_date, end_date, int(date_offset))
-                flash_success("数据集【%s】创建成功" % name)
+                type = ds.TO_TRANS_D['type']
+                dataset = ds.get_dataset(type, name)
+                if dataset:
+                    flash_danger("类型为【%s】的数据集【%s】已存在，请尝试换一个名字，或删除重名数据集" % (ds.TO_TRANS_D['name'], name))
+                else:
+                    dataset = ds.gen_trans_d_dataset(name, start_date, end_date, int(date_offset))
+                    dataset.feed_and_save_all()
+
+                    flash_success("数据集【%s】创建成功" % name)
                 return redirect(url_for('main.dataset_manage'))
             else:
                 flash_warning("起始日期需小于截止日期")
