@@ -2,6 +2,8 @@ import tudata as tu
 import pickle as pk
 import os
 from config import basedir
+import pandas as pd
+from utils.cache import cache
 
 DATA_SET_PATH = basedir + '/_dataset'
 
@@ -14,6 +16,7 @@ DATASET_TYPE_OBJ_LIST = [
 ]
 
 FILE_NAME_FORMAT = lambda type, name: "%s--%s.pkl" % (type, name)
+
 
 def get_all_types():
     '''
@@ -88,3 +91,46 @@ class DataSet():
         file = path + os.path.sep + FILE_NAME_FORMAT(self.typeObj['type'], self.name)
         with open(file, 'wb') as f:
             pk.dump(self, f)
+
+
+class TransDDataSet(DataSet):
+    '''
+    日交易数据集
+    '''
+
+    def __init__(self, typeObj, name, X, Y, des, start_date, end_date, offset_day):
+        '''
+        :param typeObj:
+        :param name:
+        :param X:
+        :param Y:
+        :param des:
+        :param start_date: 数据起始日期
+        :param end_date: 数据结束日期
+        :param offset_day: Y标签数据 相对X标签日期的偏移天数
+        '''
+        super(TransDDataSet, self).__init__(typeObj, name, X, Y, des)
+        self.start_date = start_date
+        self.end_date = end_date
+        self.offset_day = offset_day
+
+    def info(self):
+        info = super(TransDDataSet, self).info()
+        info['start_date'] = self.start_date
+        info['end_date'] = self.end_date
+        info['offset_day'] = self.offset_day
+        return info
+
+    def feed(self, code):
+        df = tu.query_trans_d(code, self.start_date, self.end_date)
+        # 由于涨跌幅是次日的  所以要对数据进行'错位' 并且'错位之后'对X剔除末尾行，对Y剔除首行
+        x = df[:-self.offset_day]
+        y = pd.DataFrame({'p_change': df['p_change']})[self.offset_day:]
+        if len(self.X) > 0:
+            self.X = self.X.append(x, ignore_index=True)
+        else:
+            self.X = x
+        if len(self.Y) > 0:
+            self.Y = self.Y.append(y, ignore_index=True)
+        else:
+            self.Y = y

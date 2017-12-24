@@ -9,13 +9,29 @@ mem_cache = {}
 
 # 写入文件缓存
 def write_file_cache(cache_name, cache):
-    with open(cache_name, 'wb') as f:
+    path = _get_cache_path(cache_name)
+    if not os.path.exists(CACHE_PATH):
+        os.makedirs(CACHE_PATH)
+
+    with open(path, 'wb') as f:
         pickle.dump(cache, f, True)
 
 
 # 写入内存缓存
 def write_mem_cache(cache_name, cache):
     mem_cache[cache_name] = cache
+
+
+# 读取文件缓存
+def read_file_cache(cache_name):
+    path = _get_cache_path(cache_name)
+    if os.path.exists(path):
+        with open(path, 'rb') as f:
+            return pickle.load(f)
+
+
+def _get_cache_path(cache_name):
+    return CACHE_PATH + os.path.sep + cache_name
 
 
 # 计算md5
@@ -25,7 +41,7 @@ def md5(arg):
     return md5.hexdigest()
 
 
-def cache(use_mem=False, use_file=True, print_log=False, cache_path=CACHE_PATH):
+def cache(use_mem=False, use_file=True, print_log=False):
     # use_mem = True
     # use_file = True
     # print_log = True
@@ -40,7 +56,7 @@ def cache(use_mem=False, use_file=True, print_log=False, cache_path=CACHE_PATH):
     '''
 
     def _cache(func):
-        cache_file = cache_path + os.path.sep + func.__name__
+        cache_file = func.__name__
 
         def wrapper(*args, **kwargs):
             args_str = ""
@@ -69,21 +85,17 @@ def cache(use_mem=False, use_file=True, print_log=False, cache_path=CACHE_PATH):
             # 使用文件缓存
             if use_file:
                 try:
-                    if os.path.exists(cache_file_with_args):
-                        with open(cache_file_with_args, 'rb') as f:
-                            cache = pickle.load(f)
-                            if cache is not None:
-                                if print_log:
-                                    print("load from file cache -> %s" % cache_file_with_args)
-                                if use_mem:
-                                    write_mem_cache(cache_file_with_args, cache)
-                                return cache
+                    cache = read_file_cache(cache_file_with_args)
+                    if cache is not None:
+                        if print_log:
+                            print("load from file cache -> %s" % cache_file_with_args)
+                        if use_mem:
+                            write_mem_cache(cache_file_with_args, cache)
+                        return cache
                 except Exception as e:
                     if print_log:
                         print(e)
-                    pass
-            if not os.path.exists(cache_path):
-                os.makedirs(cache_path)
+
             result = func() if len(args) == len(kwargs) == 0 else func(*args, **kwargs)
             # 写入文件缓存
             if use_file:
