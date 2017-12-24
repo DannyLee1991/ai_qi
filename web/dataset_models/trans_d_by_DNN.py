@@ -44,7 +44,7 @@ def train_trans_d_model(name):
     print(one_hot_labels.shape)
     print(one_hot_labels[1])
 
-    # 绘图回调，开启之后会比较卡
+    # TensorBoard回调，开启之后会比较卡
     # tb_cb = keras.callbacks.TensorBoard(log_dir=log_dir, write_images=1, histogram_freq=1)
     callbacks = []
     # callbacks.append(tb_cb)

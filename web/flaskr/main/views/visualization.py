@@ -18,4 +18,4 @@ def visualization_layout(id):
     for page in view_pages:
         if id == page['id']:
             return page['resp'](view_pages)
-    return make_response(render_template('visualization.html', views=view_pages))
+    return visualization()

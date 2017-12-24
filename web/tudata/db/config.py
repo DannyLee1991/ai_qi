@@ -2,12 +2,15 @@ from sqlalchemy import create_engine
 
 global _engine
 
+support_db_types = ["sqlite", "mysql"]
+
 db_config = {
     'engine_type': 'sqlite',
     'db_name': 'tu',
     'user_name': 'root',
     'pass_word': 'root'
 }
+
 
 def get_conn():
     '''
@@ -16,7 +19,7 @@ def get_conn():
     '''
     if db_config['engine_type'] == 'mysql':
         conn = 'mysql+mysqlconnector://%s:%s@localhost:3306/%s?charset=utf8' % (
-        db_config['user_name'], db_config['pass_word'], db_config['db_name'])
+            db_config['user_name'], db_config['pass_word'], db_config['db_name'])
     else:
         conn = 'sqlite:///%s.db' % db_config['db_name']
     return conn
