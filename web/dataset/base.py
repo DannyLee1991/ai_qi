@@ -3,6 +3,7 @@ import pickle as pk
 import os
 from config import basedir
 import pandas as pd
+import random
 
 DATA_SET_PATH = basedir + '/_dataset'
 
@@ -62,6 +63,16 @@ class DataSet():
                 "isOK": self.isOK
                 }
 
+    def random_pick(self):
+        size = self.datasize()
+        index = random.randint(0, size - 1)
+        return self.get_row(index)
+
+    def get_row(self, index):
+        x = self.X.iloc[index]
+        y = self.Y.iloc[index]
+        return {'x': x, 'y': y}
+
     def _col(self, which):
         return [column for column in which]
 
@@ -87,6 +98,21 @@ class DataSet():
 
     def col_y_label(self):
         return self._col_label(self.Y)
+
+    def get_label_name(self,which):
+        '''
+        获取标签的名称
+        :param which:
+        :return:
+        '''
+        label_name_list = []
+        label_name_list.extend(self.col_x_label())
+        label_name_list.extend(self.col_y_label())
+        label_list = []
+        label_list.extend(self.col_x())
+        label_list.extend(self.col_y())
+        index = label_list.index(which)
+        return label_name_list[index]
 
     def save(self):
         path = DATA_SET_PATH

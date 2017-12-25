@@ -3,7 +3,7 @@
 
 {% import "bootstrap/wtf.html" as wtf %}
 
-<div class="panel panel-default">
+<div class="panel panel-success">
     <!-- Default panel contents -->
     <div class="panel-heading">
         <b>{{dataset.name}}</b> 详情：
@@ -54,13 +54,102 @@
     </ul>
 </div>
 
+<!--随机数据展示-->
+<div id="div_random"></div>
+<!--最小值数据展示-->
+<div id="div_min"></div>
+<!--最大值数据展示-->
+<div id="div_max"></div>
+<!--均值数据展示-->
+<div id="div_mean"></div>
+<!--中位数数据展示-->
+<div id="div_median"></div>
+<!--方差数据展示-->
+<div id="div_var"></div>
+<!--标准差数据展示-->
+<div id="div_std"></div>
+<!--样本值的偏度（三阶矩）数据展示-->
+<div id="div_skew"></div>
+<!--样本值的峰度（四阶矩）数据展示-->
+<div id="div_kurt"></div>
+
+
+<!--更多操作部分-->
+
 {% if dataset.isOK %}
 
 {% else %}
-<label for="continue_build">数据集尚未完成构建</label>
+<label>数据集尚未完成构建</label>
 {{ wtf.quick_form(form) }}
 
 {% endif %}
 
 
+
+<script type="text/javascript">
+$(function () {
+    <!--获取随机一条数据的展示html-->
+    $.get('{{url_for('main.dataset_random_pick',type=dataset.typeObj.type,name=dataset.name)}}',
+        function(data,status){
+            $('#div_random').html(data);
+        }
+    );
+
+    <!--最小值数据的展示html-->
+    $.get('{{url_for('main.dataset_min',type=dataset.typeObj.type,name=dataset.name)}}',
+        function(data,status){
+            $('#div_min').html(data);
+        }
+    );
+
+    <!--最大值数据的展示html-->
+    $.get('{{url_for('main.dataset_max',type=dataset.typeObj.type,name=dataset.name)}}',
+        function(data,status){
+            $('#div_max').html(data);
+        }
+    );
+
+    <!--均值数据展示html-->
+    $.get('{{url_for('main.dataset_mean',type=dataset.typeObj.type,name=dataset.name)}}',
+        function(data,status){
+            $('#div_mean').html(data);
+        }
+    );
+
+    <!--中位数数据展示html-->
+    $.get('{{url_for('main.dataset_median',type=dataset.typeObj.type,name=dataset.name)}}',
+        function(data,status){
+            $('#div_median').html(data);
+        }
+    );
+
+    <!--方差数据展示html-->
+    $.get('{{url_for('main.dataset_var',type=dataset.typeObj.type,name=dataset.name)}}',
+        function(data,status){
+            $('#div_var').html(data);
+        }
+    );
+
+    <!--标准差数据展示html-->
+    $.get('{{url_for('main.dataset_std',type=dataset.typeObj.type,name=dataset.name)}}',
+        function(data,status){
+            $('#div_std').html(data);
+        }
+    );
+
+    <!--样本值的偏度（三阶矩）数据展示html-->
+    $.get('{{url_for('main.dataset_skew',type=dataset.typeObj.type,name=dataset.name)}}',
+        function(data,status){
+            $('#div_skew').html(data);
+        }
+    );
+
+    <!--样本值的峰度（四阶矩）数据展示html-->
+    $.get('{{url_for('main.dataset_kurt',type=dataset.typeObj.type,name=dataset.name)}}',
+        function(data,status){
+            $('#div_kurt').html(data);
+        }
+    );
+});
+</script>
 {% endblock %}

@@ -1,0 +1,49 @@
+<div class="panel panel-info">
+    <div class="panel-heading"><b>{{name}}</b></div>
+    <div class="panel-body">
+        {% set randomitem = dataset.random_pick() %}
+
+        <b>X:</b>
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover table-condensed">
+                <thead>
+                <tr>
+                    {% for index in X.index %}
+                    <th><b>{{dataset.get_label_name(index)}}</b>
+                        <small>{{index}}</small>
+                    </th>
+                    {% endfor %}
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    {% for item in X %}
+                    <td>{{item}}</td>
+                    {% endfor %}
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <b>Y:</b>
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover table-condensed">
+                <thead>
+                <tr>
+                    {% for index in Y.index %}
+                    <th><b>{{dataset.get_label_name(index)}}</b>
+                        <small>{{index}}</small>
+                    </th>
+                    {% endfor %}
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    {% for item in Y %}
+                    <td>{{item}}</td>
+                    {% endfor %}
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
