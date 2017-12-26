@@ -139,6 +139,24 @@ class DataSet():
         fsize = fsize / float(1024 * 1024)
         return round(fsize, 2)
 
+    def dump_info(self):
+        self.min_info = {"X": self.X.min(), "Y": self.Y.min()}
+        self.max_info = {"X": self.X.min(), "Y": self.Y.min()}
+        self.median_info = {"X": self.X.median(), "Y": self.Y.median()}
+        self.var_info = {"X": self.X.var(), "Y": self.Y.var()}
+        self.std_info = {"X": self.X.std(), "Y": self.Y.std()}
+        self.skew_info = {"X": self.X.skew(), "Y": self.Y.skew()}
+        self.kurt_info = {"X": self.X.kurt(), "Y": self.Y.kurt()}
+
+    def complete(self):
+        '''
+        完成创建
+        :return:
+        '''
+        self.set_isOK(True)
+        self.dump_info()
+        self.save()
+
 
 class TransDDataSet(DataSet):
     '''
@@ -205,6 +223,5 @@ class TransDDataSet(DataSet):
             print("---【%s】执行一次保存操作 x shape %s---" % (self.name, self.X.shape))
 
         # 数据集创建完成
-        self.set_isOK(True)
-        self.save()
+        self.complete()
         print('%s 数据集创建成功' % self.name)

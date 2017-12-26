@@ -37,70 +37,63 @@ def dataset_random_pick(type, name):
 
 @main.route('/dataset_min/<type>/<name>')
 def dataset_min(type, name):
-    print("计算各列最小值 > ")
     dataset = ds.get_dataset(type, name)
     name = '各列最小值数据'
-    X = dataset.X.min()
-    Y = dataset.Y.min()
+    X = dataset.min_info['X']
+    Y = dataset.min_info['Y']
     return make_dataset_resp(name=name, dataset=dataset, X=X, Y=Y)
 
 
 @main.route('/dataset_max/<type>/<name>')
 def dataset_max(type, name):
-    print("计算各列最大值 > ")
     dataset = ds.get_dataset(type, name)
     name = '各列最大值数据'
-    X = dataset.X.max()
-    Y = dataset.Y.max()
+    X = dataset.max_info['X']
+    Y = dataset.max_info['Y']
     return make_dataset_resp(name=name, dataset=dataset, X=X, Y=Y)
 
 @main.route('/dataset_median/<type>/<name>')
 def dataset_median(type, name):
-    print("计算各列中位数 > ")
     dataset = ds.get_dataset(type, name)
     name = '各列中位数'
-    X = dataset.X.median()
-    Y = dataset.Y.median()
+    X = dataset.median_info['X']
+    Y = dataset.median_info['Y']
     return make_dataset_resp(name=name, dataset=dataset, X=X, Y=Y)
 
 
 @main.route('/dataset_var/<type>/<name>')
 def dataset_var(type, name):
-    print("计算各列方差 > ")
     dataset = ds.get_dataset(type, name)
     name = '各列方差'
-    X = dataset.X.var()
-    Y = dataset.Y.var()
+    X = dataset.var_info['X']
+    Y = dataset.var_info['Y']
     return make_dataset_resp(name=name, dataset=dataset, X=X, Y=Y)
 
 
 @main.route('/dataset_std/<type>/<name>')
 def dataset_std(type, name):
-    print("计算各列标准差 > ")
     dataset = ds.get_dataset(type, name)
     name = '各列标准差'
-    X = dataset.X.std()
-    Y = dataset.Y.std()
+    X = dataset.std_info['X']
+    Y = dataset.std_info['Y']
     return make_dataset_resp(name=name, dataset=dataset, X=X, Y=Y)
 
 
 @main.route('/dataset_skew/<type>/<name>')
 def dataset_skew(type, name):
-    print("计算各列偏度 > ")
     dataset = ds.get_dataset(type, name)
     name = '样本值的偏度（三阶矩）'
-    X = dataset.X.std()
-    Y = dataset.Y.std()
+    X = dataset.skew_info['X']
+    Y = dataset.skew_info['Y']
     return make_dataset_resp(name=name, dataset=dataset, X=X, Y=Y)
 
 
 @main.route('/dataset_kurt/<type>/<name>')
 def dataset_kurt(type, name):
-    print("计算各列峰度 > ")
     dataset = ds.get_dataset(type, name)
     name = '样本值的峰度（四阶矩）'
-    X = dataset.X.kurt()
-    Y = dataset.Y.kurt()
+    X = dataset.kurt_info['X']
+    Y = dataset.kurt_info['Y']
     return make_dataset_resp(name=name, dataset=dataset, X=X, Y=Y)
 
 
