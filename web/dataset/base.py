@@ -99,7 +99,7 @@ class DataSet():
     def col_y_label(self):
         return self._col_label(self.Y)
 
-    def get_label_name(self,which):
+    def get_label_name(self, which):
         '''
         获取标签的名称
         :param which:
@@ -119,9 +119,25 @@ class DataSet():
         if not os.path.exists(path):
             os.makedirs(path)
 
-        file = path + os.path.sep + FILE_NAME_FORMAT(self.typeObj['type'], self.name)
+        file = self._file_path()
         with open(file, 'wb') as f:
             pk.dump(self, f)
+
+    def _file_name(self):
+        return FILE_NAME_FORMAT(self.typeObj['type'], self.name)
+
+    def _file_path(self):
+        return DATA_SET_PATH + os.path.sep + self._file_name()
+
+    def file_size(self):
+        '''
+        获取数据集文件大小
+        :return:
+        '''
+        file = self._file_path()
+        fsize = os.path.getsize(file)
+        fsize = fsize / float(1024 * 1024)
+        return round(fsize, 2)
 
 
 class TransDDataSet(DataSet):
