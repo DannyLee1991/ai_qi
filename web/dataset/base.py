@@ -141,7 +141,7 @@ class DataSet():
 
     def dump_info(self):
         self.min_info = {"X": self.X.min(), "Y": self.Y.min()}
-        self.max_info = {"X": self.X.min(), "Y": self.Y.min()}
+        self.max_info = {"X": self.X.max(), "Y": self.Y.max()}
         self.median_info = {"X": self.X.median(), "Y": self.Y.median()}
         self.var_info = {"X": self.X.var(), "Y": self.Y.var()}
         self.std_info = {"X": self.X.std(), "Y": self.Y.std()}
