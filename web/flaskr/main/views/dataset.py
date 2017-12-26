@@ -37,6 +37,7 @@ def dataset_random_pick(type, name):
 
 @main.route('/dataset_min/<type>/<name>')
 def dataset_min(type, name):
+    print("计算各列最小值 > ")
     dataset = ds.get_dataset(type, name)
     name = '各列最小值数据'
     X = dataset.X.min()
@@ -46,24 +47,16 @@ def dataset_min(type, name):
 
 @main.route('/dataset_max/<type>/<name>')
 def dataset_max(type, name):
+    print("计算各列最大值 > ")
     dataset = ds.get_dataset(type, name)
     name = '各列最大值数据'
     X = dataset.X.max()
     Y = dataset.Y.max()
     return make_dataset_resp(name=name, dataset=dataset, X=X, Y=Y)
 
-
-@main.route('/dataset_mean/<type>/<name>')
-def dataset_mean(type, name):
-    dataset = ds.get_dataset(type, name)
-    name = '各列均值'
-    X = dataset.X.mean()
-    Y = dataset.Y.mean()
-    return make_dataset_resp(name=name, dataset=dataset, X=X, Y=Y)
-
-
 @main.route('/dataset_median/<type>/<name>')
 def dataset_median(type, name):
+    print("计算各列中位数 > ")
     dataset = ds.get_dataset(type, name)
     name = '各列中位数'
     X = dataset.X.median()
@@ -73,6 +66,7 @@ def dataset_median(type, name):
 
 @main.route('/dataset_var/<type>/<name>')
 def dataset_var(type, name):
+    print("计算各列方差 > ")
     dataset = ds.get_dataset(type, name)
     name = '各列方差'
     X = dataset.X.var()
@@ -82,6 +76,7 @@ def dataset_var(type, name):
 
 @main.route('/dataset_std/<type>/<name>')
 def dataset_std(type, name):
+    print("计算各列标准差 > ")
     dataset = ds.get_dataset(type, name)
     name = '各列标准差'
     X = dataset.X.std()
@@ -91,6 +86,7 @@ def dataset_std(type, name):
 
 @main.route('/dataset_skew/<type>/<name>')
 def dataset_skew(type, name):
+    print("计算各列偏度 > ")
     dataset = ds.get_dataset(type, name)
     name = '样本值的偏度（三阶矩）'
     X = dataset.X.std()
@@ -100,6 +96,7 @@ def dataset_skew(type, name):
 
 @main.route('/dataset_kurt/<type>/<name>')
 def dataset_kurt(type, name):
+    print("计算各列峰度 > ")
     dataset = ds.get_dataset(type, name)
     name = '样本值的峰度（四阶矩）'
     X = dataset.X.kurt()
@@ -114,6 +111,7 @@ def dataset_kurt(type, name):
 # ---------------------------------------------------------------------------------------------
 
 
+# 删除数据集
 @main.route('/dataset-del/<type>/<name>')
 def dataset_del(type, name):
     ds.remove_dataset(type, name)
@@ -121,11 +119,13 @@ def dataset_del(type, name):
     return redirect(url_for('main.dataset_manage'))
 
 
+# 添加数据集
 @main.route('/dataset_manage/add')
 def dataset_add():
     return make_response(render_template('dataset/dataset_add.html', creater_list=creater_list()))
 
 
+# 添加指定类型的数据集
 @main.route('/dataset_manage/add/<type>', methods=['GET', 'POST'])
 def dataset_add_type(type):
     if type == ds.TO_TRANS_D['type']:

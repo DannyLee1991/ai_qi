@@ -190,4 +190,5 @@ class TransDDataSet(DataSet):
 
         # 数据集创建完成
         self.set_isOK(True)
+        self.save()
         print('%s 数据集创建成功' % self.name)
