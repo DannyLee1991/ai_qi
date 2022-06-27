@@ -25,7 +25,7 @@ Mako==1.0.7
 Markdown==2.6.10
 MarkupSafe==1.0
 matplotlib==2.1.0
-mysql-connector-python==8.0.5
+mysql-connector-python==8.0.14
 numpy==1.13.3
 pandas==0.21.0
 protobuf==3.5.0.post1
