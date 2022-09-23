@@ -28,7 +28,7 @@ matplotlib==2.1.0
 mysql-connector-python==8.0.5
 numpy==1.13.3
 pandas==0.21.0
-protobuf==3.5.0.post1
+protobuf==3.18.3
 pyparsing==2.2.0
 python-dateutil==2.6.1
 python-editor==1.0.3
